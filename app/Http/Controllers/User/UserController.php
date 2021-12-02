@@ -67,6 +67,7 @@ class UserController extends Controller
 
     public function exit(){
         Auth::logout();
+        return redirect()->route('login');
     }
      protected function dashboards(){
         $sales = Payment::where('is_paid', true)->sum('amount');

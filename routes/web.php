@@ -61,5 +61,5 @@ Route::group(['prefix' => 'easy/admin'], function(){
     Route::get('/log/out', [App\Http\Controllers\User\UserController::class, 'exit'])->name('app.exit');
 });
 
-Auth::routes();
+Auth::routes(['except' => 'register']);
 
