@@ -28,7 +28,7 @@ class UserController extends Controller
         ]);
     }
     protected function getServices(){
-        $data = Services::all();
+        $data = Service::all();
         if( !is_object($data) ){
             return [];
         }
