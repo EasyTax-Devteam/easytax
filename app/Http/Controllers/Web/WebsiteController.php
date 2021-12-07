@@ -138,7 +138,6 @@ class WebsiteController extends Controller
                 'Easytax order'
             );
             $response = $mpesa->TriggerStkPush();
-            // throw new \Exception($response.$mpesaPhone);
             $response = json_decode($response);
             if($response->ResponseCode == '0'){
                 Session::put('CheckoutRequestID', $response->CheckoutRequestID);
@@ -161,7 +160,24 @@ class WebsiteController extends Controller
                 config('app.app_mpesa_env')
             );
             $CheckoutRequestID = Session::get('CheckoutRequestID');
-            $response = $mpesa->QueryStkStatus($CheckoutRequestID);
+            $json = $mpesa->QueryStkStatus($CheckoutRequestID);
+            $res = json_decode($json);
+            $response = $res->response;
+            $responseCode = $response->ResponseCode;
+            $resultCode = $response->ResultCode;
+            if( $resultCode == '0'){
+                $bill = Bill::where('mpesa_checkout_id', $CheckoutRequestID)->first();
+                $kra = $bill->created_by;
+                $bill->payment_status = true;
+                $bill->mpesa_log = $json;
+                $bill->save();
+                $customer = Customer::where('pin', $kra)->first();
+                if( !is_object($customer) ){
+                    return redirect()->route('w.f.return', ['id' => 0]);
+                }
+                Session::put('login_kra_pin', $customer);
+                return redirect()->route('w.u.orders');
+            }
             return response(['response' => $response ], 200);
         } catch (\Throwable $th) {
             return response(['response' => $th->getMessage()], 200);
