@@ -162,7 +162,7 @@ class WebsiteController extends Controller
             $CheckoutRequestID = Session::get('CheckoutRequestID');
             $json = $mpesa->QueryStkStatus($CheckoutRequestID);
             $res = json_decode($json);
-            $response = $res->response;
+            $response = $res;
             $responseCode = $response->ResponseCode;
             $resultCode = $response->ResultCode;
             if( $resultCode == '0'){
