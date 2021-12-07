@@ -12,7 +12,6 @@ return [
     | any other location as required by the application or its packages.
     |
     */
-
     'name' => env('APP_NAME', 'Laravel'),
 
     /*
@@ -67,6 +66,22 @@ return [
     |
     */
 
+    /**
+     * MPESA configurations goes here.
+     * paybill, keys, callback urls etc 
+     */
+    'app_mpesa_c_key' => env('APP_MPESA_C_KEY'),
+    'app_mpesa_c_secret' => env('APP_MPESA_C_SECRET'),
+    'app_mpesa_c2b_c_key' => env('APP_MPESA_C2B_C_KEY'),
+    'app_mpesa_c2b_c_secret' => env('APP_MPESA_C2B_C_SECRET'),
+    'app_mpesa_paybill' => env('APP_MPESA_PAYBILL'),
+    'app_mpesa_passkey' => env('APP_MPESA_PASSKEY'),
+    'app_mpesa_trans_type' => env('APP_MPESA_TRANS_TYPE'),
+    'app_mpesa_env' => env('APP_MPESA_ENV'),
+    'app_mpesa_c2b_phone' => env('APP_MPESA_C2B_PHONE'),
+    'app_mpesa_c2b_paybill' => env('APP_MPESA_C2B_PAYBILL'),
+
+    
     'timezone' => 'UTC',
 
     /*

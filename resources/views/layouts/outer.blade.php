@@ -69,6 +69,13 @@
                 max-height: 70px;
                 font-size: 17px;
             }
+            .rs-checkout .full-grid .form-content-box .form-group .form-control-mod {
+                border-bottom: 2px solid #dbd9d9!important;
+                border-radius: 50px!important;
+                border-top: none!important;
+                border-left: none!important;
+                border-right: solid 2px #dbd9d9!important;
+            }
         </style>
         
     </head>
@@ -279,6 +286,26 @@
         <script src="{{ asset('assets/js/contact.form.js') }}"></script>
         <!-- main js -->
         <script src="{{ asset('assets/js/main.js') }}"></script>
+
+        <script>
+            setTimeout(() => {
+                $('.check-status').show();
+            }, 30000);
+            
+            checkStatus = function(){
+                $.ajax({
+                    method: 'post',
+                    data: 'data=none',
+                    url: "{{ route('w.f.checkStatus') }}",
+                    success: function(data){
+                        console.log('data', data);
+                    },
+                    error: function(xhr, status, error){
+                        console.log('ajax errors', xhr, status, error);
+                    }
+                });
+            }
+        </script>
 
     </body>
 

@@ -16,10 +16,27 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\Web\WebsiteController::class, 'index'])->name('w.index');
 Route::get('/about', [App\Http\Controllers\Web\WebsiteController::class, 'about'])->name('w.about');
 Route::group(['prefix' => 'file/step'], function(){
-    Route::get('/one/{id}', [App\Http\Controllers\Web\WebsiteController::class, 'file_return'])->name('w.f.return');
-    Route::get('/two', [App\Http\Controllers\Web\WebsiteController::class, 'step_two'])->name('w.f.r.two');
-    Route::get('/three', [App\Http\Controllers\Web\WebsiteController::class, 'step_three'])->name('w.f.r.three');
-    Route::get('/four', [App\Http\Controllers\Web\WebsiteController::class, 'step_four'])->name('w.f.r.four');
+    Route::get('/init/{id}', [App\Http\Controllers\Web\WebsiteController::class, 'file_return'])->name('w.f.return');
+    Route::get('/nill', [App\Http\Controllers\Web\WebsiteController::class, 'file_Nill'])->name('w.f.nill');
+    Route::post('/post/nill', [App\Http\Controllers\Web\WebsiteController::class, 'post_Nill'])->name('w.f.post.nill');
+    Route::get('/pay/form', [App\Http\Controllers\Web\WebsiteController::class, 'payform'])->name('w.f.payform');
+    Route::post('/payment', [App\Http\Controllers\Web\WebsiteController::class, 'post_Pay'])->name('w.f.payment');
+    /** mpesa */
+    Route::get('/pay/status', [App\Http\Controllers\Web\WebsiteController::class, 'checkStatus'])->name('w.f.checkStatus');
+});
+
+Route::group(['prefix' => 'callbacks'], function(){
+    Route::any('/payment', [App\Http\Controllers\Web\WebsiteController::class, 'callback'])->name('mpesa.callback');
+});
+
+
+/** user */
+Route::group(['prefix' => 'users'], function(){
+    Route::get('/home', [App\Http\Controllers\Web\UserController::class, 'orders'])->name('w.u.orders');
+    /** user logout */
+    Route::get('/access', [App\Http\Controllers\Web\UserController::class, 'login'])->name('w.u.login');
+    Route::post('/post/access', [App\Http\Controllers\Web\UserController::class, 'post_login'])->name('w.u.post_login');
+    Route::get('/logout/app', [App\Http\Controllers\Web\UserController::class, 'logout'])->name('w.u.logout');
 });
 
 Route::group(['prefix' => 'easy/admin'], function(){

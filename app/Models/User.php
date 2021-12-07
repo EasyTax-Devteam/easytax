@@ -76,6 +76,17 @@ class User extends Authenticatable
             'working_hours' => null, 'facebook' => null, 'twitter' => null, 'linkedin' => null,
         ]));
     }
+    public static function getYears(){
+        $currentYear = intval(date('Y'));
+        $needed = 5;
+        $iter = 0;
+        $rtn = [];
+        while( $iter < $needed ){
+            array_push($rtn, $currentYear - $iter);
+            $iter ++;
+        }
+        return $rtn;
+    }
     public static function getServices($case = 2){
         switch ($case) {
             case 1:
