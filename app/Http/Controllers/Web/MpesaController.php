@@ -48,11 +48,11 @@ class MpesaController extends Controller
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         $info = curl_getinfo($curl);
         $curl_response = curl_exec($curl);
-        if(!is_object(json_decode($curl_response)))
-        {
-            throw new \Exception('mpesa server error:: ' . json_encode($info));
+        $response = json_decode($curl_response);
+        if( !is_object($response) || !isset($response->access_token)){
+            throw new \Exception('mpesa server error:: ' . $curl_response);
         }
-        return json_decode($curl_response)->access_token;
+        return $response->access_token;
 	}
 	function TriggerStkPush(){
         $url = 'https://'.$this->Environ.'.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
