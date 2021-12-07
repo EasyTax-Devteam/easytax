@@ -21,11 +21,10 @@ Route::group(['prefix' => 'file/step'], function(){
     Route::post('/post/nill', [App\Http\Controllers\Web\WebsiteController::class, 'post_Nill'])->name('w.f.post.nill');
     Route::get('/pay/form', [App\Http\Controllers\Web\WebsiteController::class, 'payform'])->name('w.f.payform');
     Route::post('/payment', [App\Http\Controllers\Web\WebsiteController::class, 'post_Pay'])->name('w.f.payment');
-    /** mpesa */
-    Route::get('/pay/status', [App\Http\Controllers\Web\WebsiteController::class, 'checkStatus'])->name('w.f.checkStatus');
 });
 
 Route::group(['prefix' => 'callbacks'], function(){
+    Route::get('/pay/status', [App\Http\Controllers\Web\WebsiteController::class, 'checkStatus'])->name('w.f.checkStatus');
     Route::any('/payment', [App\Http\Controllers\Web\WebsiteController::class, 'callback'])->name('mpesa.callback');
 });
 

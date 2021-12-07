@@ -41,7 +41,7 @@
                     <div class="bottom-area">
                         <p class="mt-15"></p>
                         <button class="add-btn" type="submit">Make Payment</button>
-                        <button class="btn-link btn check-status" style="display: none;" onclick="checkStatus()">Check payment status</button>
+                        <button type="button" class="btn-link btn check-status mt-4" style="display: none;" onclick="checkStatus()">Check payment status</button>
                     </div>
                 </div>
             </form>

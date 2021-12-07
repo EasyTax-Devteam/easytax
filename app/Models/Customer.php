@@ -18,3 +18,4 @@ class Customer extends Model
         'itax_password',
     ];
 }
+
