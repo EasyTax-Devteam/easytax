@@ -24,7 +24,7 @@ Route::group(['prefix' => 'file/step'], function(){
 });
 
 Route::group(['prefix' => 'callbacks'], function(){
-    Route::get('/pay/status', [App\Http\Controllers\Web\WebsiteController::class, 'checkStatus'])->name('w.f.checkStatus');
+    Route::post('/pay/status', [App\Http\Controllers\Web\WebsiteController::class, 'checkStatus'])->name('w.f.checkStatus');
     Route::any('/payment', [App\Http\Controllers\Web\WebsiteController::class, 'callback'])->name('mpesa.callback');
 });
 
