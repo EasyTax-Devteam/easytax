@@ -142,11 +142,11 @@ class WebsiteController extends Controller
                 Session::put('CheckoutRequestID', $response->CheckoutRequestID);
                 $bill->mpesa_checkout_id = $response->CheckoutRequestID;
                 $bill->save();
-                return redirect()->back()->with(['Msg' => 'Payment notification has been send to your phone. Please enter your PIN to complete your order']);
+                return redirect()->back()->withInput()->with(['Msg' => 'Payment notification has been send to your phone. Please enter your PIN to complete your order']);
             }
-            return redirect()->back()->with(['Err' => 'Error Sending Payment notification. Please try again']);
+            return redirect()->back()->withInput()->with(['Err' => 'Error Sending Payment notification. Please try again']);
         } catch (\Throwable $th) {
-            return redirect()->back()->with(['Err' => $th->getMessage() ]);
+            return redirect()->back()->withInput()->with(['Err' => $th->getMessage() ]);
         }
     }
     public function checkStatus(Request $request){
