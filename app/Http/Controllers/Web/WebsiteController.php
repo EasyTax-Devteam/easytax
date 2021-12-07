@@ -137,7 +137,9 @@ class WebsiteController extends Controller
                 config('app.name'),
                 'Easytax order'
             );
-            $response = json_decode($mpesa->TriggerStkPush());
+            $response = $mpesa->TriggerStkPush();
+            // throw new \Exception($response.$mpesaPhone);
+            $response = json_decode($response);
             if($response->ResponseCode == '0'){
                 Session::put('CheckoutRequestID', $response->CheckoutRequestID);
                 $bill->mpesa_checkout_id = $response->CheckoutRequestID;
@@ -169,14 +171,7 @@ class WebsiteController extends Controller
 
     }
     protected function formatPhone($phone){
-        try {
-            if( substr($phone, 0, 2) == '01'){
-                return '2541' . substr($phone, -9);
-            }
-            return '2547' . substr($phone, -9);
-        } catch (\Throwable $th) {
-            throw new \Exception("Error Processing Request. ìnvalid phone");
-        }
+        return '254' . substr($phone, -9);
     }
     protected function existsUser($pin){
         return Customer::where('pin', $pin)->count() > 0;
