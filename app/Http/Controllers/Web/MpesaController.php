@@ -49,7 +49,7 @@ class MpesaController extends Controller
         $curl_response = curl_exec($curl);
         if(!is_object(json_decode($curl_response)))
         {
-            throw new \Exception('mpesa server error');
+            throw new \Exception('mpesa server error:: ' . $curl_response);
         }
         return json_decode($curl_response)->access_token;
 	}
