@@ -18,8 +18,18 @@ Route::get('/about', [App\Http\Controllers\Web\WebsiteController::class, 'about'
 Route::group(['prefix' => 'file/step'], function(){
 
     Route::get('/init/{id}', [App\Http\Controllers\Web\FilingController::class, 'file_return'])->name('w.f.return');
+    /** nill */
     Route::get('/nill', [App\Http\Controllers\Web\FilingController::class, 'file_Nill'])->name('w.f.nill');
     Route::post('/post/nill', [App\Http\Controllers\Web\FilingController::class, 'post_Nill'])->name('w.f.post.nill');
+    /** freelance */
+    Route::get('/freelance', [App\Http\Controllers\Web\FilingController::class, 'file_Freelance'])->name('w.f.freelance');
+    Route::post('/post/freelance', [App\Http\Controllers\Web\FilingController::class, 'post_Freelance'])->name('w.f.post.freelance');
+    /** employee */
+    Route::get('/employee', [App\Http\Controllers\Web\FilingController::class, 'file_Employee'])->name('w.f.employee');
+    Route::post('/post/employee', [App\Http\Controllers\Web\FilingController::class, 'post_Employee'])->name('w.f.post.employee');
+    /** employee */
+    Route::get('/company', [App\Http\Controllers\Web\FilingController::class, 'file_Company'])->name('w.f.company');
+    Route::post('/post/company', [App\Http\Controllers\Web\FilingController::class, 'post_Company'])->name('w.f.post.company');
     
     /** payment section */
     Route::get('/pay/form', [App\Http\Controllers\Web\WebsiteController::class, 'payform'])->name('w.f.payform');
@@ -30,7 +40,6 @@ Route::group(['prefix' => 'callbacks'], function(){
     Route::post('/pay/status', [App\Http\Controllers\Web\WebsiteController::class, 'checkStatus'])->name('w.f.checkStatus');
     Route::any('/payment', [App\Http\Controllers\Web\WebsiteController::class, 'callback'])->name('mpesa.callback');
 });
-
 
 /** user */
 Route::group(['prefix' => 'users'], function(){

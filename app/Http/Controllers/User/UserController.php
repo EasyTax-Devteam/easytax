@@ -69,6 +69,11 @@ class UserController extends Controller
         Auth::logout();
         return redirect()->route('login');
     }
+    public function stream($file){
+        $filename = ('app/customers/' . $file);
+        return response()->download(storage_path($filename), null, [], null);
+    }
+
      protected function dashboards(){
         $sales = Payment::where('is_paid', true)->sum('amount');
         $customers = 0;//Customer::where('id', '>', 0)->count();

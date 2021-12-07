@@ -290,6 +290,15 @@
 
 
         <script>
+            $('.insupolicies').change(function() {
+                if( this.value === 'Yes' ){
+                    $('.showhide').show();
+                }else{
+                    $('.showhide').hide();
+                    $(".kip:checkbox").prop('checked',false);
+                }
+            });
+            //
             setTimeout(() => {
                 $('.check-status').show();
             }, 6000);
