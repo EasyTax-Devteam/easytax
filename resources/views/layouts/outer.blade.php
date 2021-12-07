@@ -286,6 +286,8 @@
         <script src="{{ asset('assets/js/contact.form.js') }}"></script>
         <!-- main js -->
         <script src="{{ asset('assets/js/main.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+
 
         <script>
             setTimeout(() => {
@@ -293,15 +295,23 @@
             }, 30000);
             
             checkStatus = function(){
+                $.LoadingOverlay('show');
                 $.ajax({
                     method: 'post',
                     data: 'data=none',
                     url: "{{ route('w.f.checkStatus') }}",
                     success: function(data){
-                        console.log('data', data);
+                        $.LoadingOverlay('hide');
+                        if( data.hasOwnProperty('Url') ){
+                            window.location.href = data.Url;
+                            return;
+                        }
+                        alert(data.Err);
                     },
                     error: function(xhr, status, error){
+                        $.LoadingOverlay('hide');
                         console.log('ajax errors', xhr, status, error);
+                        alert(error);
                     }
                 });
             }

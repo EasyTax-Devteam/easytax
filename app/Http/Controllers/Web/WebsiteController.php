@@ -173,14 +173,13 @@ class WebsiteController extends Controller
                 $bill->save();
                 $customer = Customer::where('pin', $kra)->first();
                 if( !is_object($customer) ){
-                    return redirect()->route('w.f.return', ['id' => 0]);
+                    return response(['Err' => 'failed login', 'Url' => route('w.u.login') ], 200);
                 }
                 Session::put('login_kra_pin', $customer);
-                return redirect()->route('w.u.orders');
+                return response(['Msg' => 'logged', 'Url' => route('w.u.orders') ], 200);
             }
-            return response(['response' => $response ], 200);
         } catch (\Throwable $th) {
-            return response(['response' => $th->getMessage()], 200);
+            return response(['Err' => $th->getMessage()], 200);
         }
     }
     public function callback(){
