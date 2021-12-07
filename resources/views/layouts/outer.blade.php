@@ -292,7 +292,7 @@
         <script>
             setTimeout(() => {
                 $('.check-status').show();
-            }, 30000);
+            }, 6000);
             
             checkStatus = function(){
                 $.LoadingOverlay('show');
@@ -306,7 +306,10 @@
                             window.location.href = data.Url;
                             return;
                         }
-                        alert(data.Err);
+                        if( data.hasOwnProperty('Err') ){
+                            alert(data.Err);
+                            return;
+                        }
                     },
                     error: function(xhr, status, error){
                         $.LoadingOverlay('hide');

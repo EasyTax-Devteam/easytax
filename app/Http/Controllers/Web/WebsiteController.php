@@ -178,6 +178,7 @@ class WebsiteController extends Controller
                 Session::put('login_kra_pin', $customer);
                 return response(['Msg' => 'logged', 'Url' => route('w.u.orders') ], 200);
             }
+            throw new \Exception("Payment not completed yet. Please wait and try again in 2minutes");
         } catch (\Throwable $th) {
             return response(['Err' => $th->getMessage()], 200);
         }
