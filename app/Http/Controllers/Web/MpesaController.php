@@ -46,10 +46,11 @@ class MpesaController extends Controller
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        $info = curl_getinfo($curl);
         $curl_response = curl_exec($curl);
         if(!is_object(json_decode($curl_response)))
         {
-            throw new \Exception('mpesa server error:: ' . $curl_response);
+            throw new \Exception('mpesa server error:: ' . $info);
         }
         return json_decode($curl_response)->access_token;
 	}
