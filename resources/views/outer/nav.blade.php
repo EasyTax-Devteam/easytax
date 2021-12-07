@@ -8,6 +8,17 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+        .customer-login{
+            padding: 13px!important;
+            border: solid 1px #800000!important;
+            color:  #800000!important;
+        }
+        .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li a {
+            height: 55px;
+            line-height: 32px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
     </style>
     <!-- Topbar Area Start -->
     <div class="topbar-area style1">
@@ -75,6 +86,9 @@
                                     </li>
                                     <li class="">
                                         <a href="{{ route('w.index') }}">Blog</a>
+                                    </li>
+                                    <li >
+                                        <a class="customer-login" href="{{ route('w.u.login') }}">Client Area</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -186,6 +200,9 @@
             </li>
             <li class="">
                 <a href="{{ route('w.index') }}">Blog</a>
+            </li>
+            <li>
+                <a class="customer-login" href="{{ route('w.u.login') }}">Client Area</a>
             </li>
         </ul> 
         

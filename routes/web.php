@@ -16,9 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\Web\WebsiteController::class, 'index'])->name('w.index');
 Route::get('/about', [App\Http\Controllers\Web\WebsiteController::class, 'about'])->name('w.about');
 Route::group(['prefix' => 'file/step'], function(){
-    Route::get('/init/{id}', [App\Http\Controllers\Web\WebsiteController::class, 'file_return'])->name('w.f.return');
-    Route::get('/nill', [App\Http\Controllers\Web\WebsiteController::class, 'file_Nill'])->name('w.f.nill');
-    Route::post('/post/nill', [App\Http\Controllers\Web\WebsiteController::class, 'post_Nill'])->name('w.f.post.nill');
+
+    Route::get('/init/{id}', [App\Http\Controllers\Web\FilingController::class, 'file_return'])->name('w.f.return');
+    Route::get('/nill', [App\Http\Controllers\Web\FilingController::class, 'file_Nill'])->name('w.f.nill');
+    Route::post('/post/nill', [App\Http\Controllers\Web\FilingController::class, 'post_Nill'])->name('w.f.post.nill');
+    
+    /** payment section */
     Route::get('/pay/form', [App\Http\Controllers\Web\WebsiteController::class, 'payform'])->name('w.f.payform');
     Route::post('/payment', [App\Http\Controllers\Web\WebsiteController::class, 'post_Pay'])->name('w.f.payment');
 });

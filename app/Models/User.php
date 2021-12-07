@@ -76,6 +76,9 @@ class User extends Authenticatable
             'working_hours' => null, 'facebook' => null, 'twitter' => null, 'linkedin' => null,
         ]));
     }
+    public static function getOrderBillTotal($order){
+        return Bill::where('order', $order)->sum('amount');
+    }
     public static function getYears(){
         $currentYear = intval(date('Y'));
         $needed = 5;

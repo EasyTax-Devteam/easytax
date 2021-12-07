@@ -26,21 +26,37 @@
                 <table class="table app-table-hover mb-0 text-left">
                     <thead>
                         <tr>
-                            <th class="cell">#Bill ID</th>
-                            <th class="cell">Associated Order</th>
+                            <th class="cell">#Bill Id</th>
+                            <th class="cell">Narration</th>
+                            <th class="cell">Created by</th>
+                            <th class="cell">Associated order</th>
                             <th class="cell">Amount</th>
                             <th class="cell">Status</th>
                             <th class="cell">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
+                      @foreach( $bills as $_bill )
+                        @php( $order = \App\Models\Order::find($_bill['order']) )
+                        @php( $service = \App\Models\Service::find($order->service) )
                         <tr>
-                            <td class="cell">#1234</td>
-                            <td class="cell">#1234 : Abc service</td>
-                            <td class="cell">KES 100</td>
-                            <td class="cell"> <span class="badge bg-success">awaiting payment</span></td>
-                            <td class="cell"> <span class="badge bg-success">Pay Now</span></td>
+                            <td class="cell">#{{ $_bill['id'] }}</td>
+                            <td class="cell">{{ $_bill['narration'] }}</td>
+                            <td class="cell">{{ $order->pin == $_bill['created_by'] ? 'System' : $_bill['created_by'] }}</td>
+                            <td class="cell">#{{ $order->id }} : {{ $service->name }}</td>
+                            <td class="cell">KES {{ number_format($_bill['amount'], 2)  }}</td>
+                            <td class="cell"> 
+                              <span class="badge {{ $_bill['payment_status'] == 1 ? 'bg-success' : 'bg-warning'}} "> 
+                                {{ $_bill['payment_status'] == 1 ? 'paid' : 'pending'}}
+                              </span>
+                            </td>
+                            <td class="cell">
+                              @if( $_bill['payment_status'] != 1 )
+                                <a href="#" class="badge bg-success">Pay Now</a>
+                              @endif
+                            </td>
                         </tr>
+                      @endforeach
                     </tbody>
                 </table>
             </div>
@@ -73,19 +89,25 @@
                 <table class="table app-table-hover mb-0 text-left">
                     <thead>
                         <tr>
-                            <th class="cell">#Order ID</th>
+                            <th class="cell">#Order Id</th>
+                            <th class="cell">KRA pin</th>
                             <th class="cell">Service</th>
-                            <th class="cell">KRA Pin</th>
-                            <th class="cell">Status</th>
+                            <th class="cell">Cost</th>
+                            <th class="cell">Total bills</th>
                         </tr>
                     </thead>
                     <tbody>
+                      @foreach( $orders as $_order )
+                        @php( $billsum = \App\Models\User::getOrderBillTotal($_order['id']) )
+                          @php( $service = \App\Models\Service::find($_order['service']) )
                         <tr>
-                            <td class="cell">#1234</td>
-                            <td class="cell">Abc service</td>
-                            <td class="cell">A007234567G</td>
-                            <td class="cell"> <span class="badge bg-success">paid</span></td>
+                            <td class="cell">#{{ $_order['id'] }}</td>
+                            <td class="cell">{{ $_order['pin'] }}</td>
+                            <td class="cell">{{ $service->name }}</td>
+                            <td class="cell">KES {{ number_format($service->price, 2)  }}</td>
+                            <td class="cell">KES {{ number_format($billsum, 2)  }}</td>
                         </tr>
+                      @endforeach;
                     </tbody>
                 </table>
             </div>
