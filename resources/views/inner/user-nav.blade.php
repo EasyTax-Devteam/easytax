@@ -35,7 +35,7 @@
                 <div class="app-utility-item app-user-dropdown dropdown">
                     <a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img class="img-circle" src="http://placehold.jp/150x150.png" alt="user profile"></a>
                     <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
-                        <li><a class="dropdown-item" href="#">{{ $customer->firstName }}</a></li>
+                        <li><a class="dropdown-item" href="#">{{ $customer->fname }} {{ $customer->lname }} </a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{{route('w.u.logout')}}">Log Out</a></li>
                     </ul>
