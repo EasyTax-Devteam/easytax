@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [App\Http\Controllers\Web\WebsiteController::class, 'index'])->name('w.index');
+Route::get('/email', [App\Http\Controllers\Web\WebsiteController::class, 'email']);
 Route::get('/about', [App\Http\Controllers\Web\WebsiteController::class, 'about'])->name('w.about');
 Route::group(['prefix' => 'file/step'], function(){
 

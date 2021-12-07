@@ -13,6 +13,10 @@ use Session;
 use Validator;
 use Storage;
 use App\Http\Controllers\Web\MpesaController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CustomerWelcome;
+use App\Mail\CustomerPayment;
+use App\Mail\AdminPayment;
 
 class FilingController extends Controller
 {
@@ -108,6 +112,8 @@ class FilingController extends Controller
             Session::forget('active_service');
             Session::save();
             Session::put('bill_id', $billId);
+            $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
+            Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
             DB::commit();
             return redirect()->route('w.f.payform');
         } catch (\Throwable $th) {
@@ -197,6 +203,8 @@ class FilingController extends Controller
             Session::forget('active_service');
             Session::save();
             Session::put('bill_id', $billId);
+            $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
+            Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
             DB::commit();
             return redirect()->route('w.f.payform');
         } catch (\Throwable $th) {
@@ -286,6 +294,8 @@ class FilingController extends Controller
             Session::forget('active_service');
             Session::save();
             Session::put('bill_id', $billId);
+            $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
+            Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
             DB::commit();
             return redirect()->route('w.f.payform');
         } catch (\Throwable $th) {
@@ -373,6 +383,8 @@ class FilingController extends Controller
             Session::forget('active_service');
             Session::save();
             Session::put('bill_id', $billId);
+            $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
+            Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
             DB::commit();
             return redirect()->route('w.f.payform');
         } catch (\Throwable $th) {

@@ -10,11 +10,23 @@ use Illuminate\Support\Facades\DB;
 use Session;
 use Validator;
 use App\Http\Controllers\Web\MpesaController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AdminPayment;
+use App\Mail\CustomerPayment;
 
 class WebsiteController extends Controller
 {
     public function index(){
         return view('web.welcome');
+    }
+    public function email(){
+        $data = [
+            'pin' => 'A007jgjggjgjgjX',
+            'name' => 'Juma james',
+            'amount' => 100
+        ];
+        return view('emails.admin.payment', [ 'payload' => $data]);
+        // return view('emails.customer.welcome', [ 'payload' => $data]);
     }
     public function about(){
         return view('web.about');
@@ -82,6 +94,7 @@ class WebsiteController extends Controller
             if( $resultCode == '0'){
                 $bill = Bill::where('mpesa_checkout_id', $CheckoutRequestID)->first();
                 $kra = $bill->created_by;
+                $amount = $bill->amount;
                 $bill->payment_status = true;
                 $bill->mpesa_log = $json;
                 $bill->save();
@@ -90,6 +103,9 @@ class WebsiteController extends Controller
                     return response(['Err' => 'failed login', 'Url' => route('w.u.login') ], 200);
                 }
                 Session::put('login_kra_pin', $customer);
+                $mail_data = [ 'amount' => $amount, 'name' => $customer->fname ];
+                Mail::to(config('mail.from.admin'))->send(new AdminPayment($mail_data));
+                Mail::to($customer->email)->send(new CustomerPayment($mail_data));
                 return response(['Msg' => 'logged', 'Url' => route('w.u.orders') ], 200);
             }
             throw new \Exception("Payment not completed yet. Please wait and try again in 2minutes");
