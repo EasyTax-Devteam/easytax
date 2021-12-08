@@ -15,5 +15,6 @@ class Payment extends Model
         'amount',
         'is_paid',
         'order',
+        'mpesa_log',
     ];
 }

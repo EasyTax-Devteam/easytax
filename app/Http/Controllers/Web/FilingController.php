@@ -87,7 +87,8 @@ class FilingController extends Controller
                 'service' => $input['service']
             ];
             $customerId = null;
-            if( $this->existsUser(trim($input['kraPin'])) ){
+            $existsUser = $this->existsUser(trim($input['kraPin']));
+            if( $existsUser ){
                 $customer = $this->getExistingUser(trim($input['kraPin']));
                 $customerId = $customer->id;
             }else{
@@ -112,8 +113,10 @@ class FilingController extends Controller
             Session::forget('active_service');
             Session::save();
             Session::put('bill_id', $billId);
-            $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
-            Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
+            if( !$existsUser ){
+                $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
+                Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
+            }
             DB::commit();
             return redirect()->route('w.f.payform');
         } catch (\Throwable $th) {
@@ -165,7 +168,8 @@ class FilingController extends Controller
                 'service' => $input['service']
             ];
             $customerId = null;
-            if( $this->existsUser(trim($input['kraPin'])) ){
+            $existsUser = $this->existsUser(trim($input['kraPin']));
+            if( $existsUser ){
                 $customer = $this->getExistingUser(trim($input['kraPin']));
                 $customerId = $customer->id;
             }else{
@@ -203,8 +207,10 @@ class FilingController extends Controller
             Session::forget('active_service');
             Session::save();
             Session::put('bill_id', $billId);
-            $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
-            Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
+            if( !$existsUser ){
+                $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
+                Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
+            }
             DB::commit();
             return redirect()->route('w.f.payform');
         } catch (\Throwable $th) {
@@ -256,7 +262,8 @@ class FilingController extends Controller
                 'service' => $input['service']
             ];
             $customerId = null;
-            if( $this->existsUser(trim($input['kraPin'])) ){
+            $existsUser = $this->existsUser(trim($input['kraPin']));
+            if( $existsUser ){
                 $customer = $this->getExistingUser(trim($input['kraPin']));
                 $customerId = $customer->id;
             }else{
@@ -294,8 +301,10 @@ class FilingController extends Controller
             Session::forget('active_service');
             Session::save();
             Session::put('bill_id', $billId);
-            $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
-            Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
+            if( !$existsUser ){
+                $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
+                Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
+            }
             DB::commit();
             return redirect()->route('w.f.payform');
         } catch (\Throwable $th) {
@@ -344,7 +353,8 @@ class FilingController extends Controller
                 'service' => $input['service']
             ];
             $customerId = null;
-            if( $this->existsUser(trim($input['kraPin'])) ){
+            $existsUser = $this->existsUser(trim($input['kraPin']));
+            if( $existsUser ){
                 $customer = $this->getExistingUser(trim($input['kraPin']));
                 $customerId = $customer->id;
             }else{
@@ -383,8 +393,10 @@ class FilingController extends Controller
             Session::forget('active_service');
             Session::save();
             Session::put('bill_id', $billId);
-            $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
-            Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
+            if( !$existsUser ){
+                $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
+                Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
+            }
             DB::commit();
             return redirect()->route('w.f.payform');
         } catch (\Throwable $th) {
