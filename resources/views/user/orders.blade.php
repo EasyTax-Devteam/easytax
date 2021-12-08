@@ -82,6 +82,7 @@
                                     @php( $service = \App\Models\Service::find($_order['service']) )
                                     @php( $customer = \App\Models\Customer::find($_order['customer']) )
                                     @php( $date = $_order['created_at'] )
+                                    @php( $paymentStatus = \App\Models\User::getOrderBillPaid($_order['id']) )
                                     @php( $pipeline = \App\Models\User::getOrderPipeline($_order['progress']) )
                                     @php( $getOrderBillTotals = \App\Models\User::getOrderBillTotals($_order['id']) )
                                     <tr>
@@ -92,7 +93,7 @@
                                         <td class="cell">{!! $pipeline !!}</td>
                                         <td class="cell">
                                             KES {{ number_format($getOrderBillTotals[0], 2) }} <br>
-                                            <span class="badge bg-info tiny">paid kes {{ number_format($getOrderBillTotals[1], 2) }}</span>
+                                            <span class="badge {{ $paymentStatus == true ? 'bg-success' : 'bg-warning' }} tiny">paid kes {{ number_format($getOrderBillTotals[1], 2) }}</span>
                                         </td>
                                         <td class="cell"><a class="btn-sm app-btn-secondary" href="{{ route('e.tax.order', ['id' => 123 ] ) }}">View</a></td>
                                     </tr>
