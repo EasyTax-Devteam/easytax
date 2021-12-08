@@ -13,6 +13,11 @@
             border: solid 1px #800000!important;
             color:  #800000!important;
         }
+        .staff-login{
+            padding: 13px!important;
+            border: solid 0px #800000!important;
+            color:  #800000!important;
+        }
         .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li a {
             height: 55px;
             line-height: 32px;
@@ -88,8 +93,12 @@
                                         <a href="{{ route('w.index') }}">Blog</a>
                                     </li>
                                     <li >
+                                        <a class="staff-login" target="_blank" href="https://web.mail.eu-west-1.awsapps.com/">Staff Mail</a>
+                                    </li>
+                                    <li >
                                         <a class="customer-login" href="{{ route('w.u.login') }}">Client Area</a>
                                     </li>
+                                    
                                 </ul>
                             </nav>
                         </div>
@@ -200,6 +209,9 @@
             </li>
             <li class="">
                 <a href="{{ route('w.index') }}">Blog</a>
+            </li>
+            <li >
+                <a class="staff-login" target="_blank" href="https://web.mail.eu-west-1.awsapps.com/">Staff Mail</a>
             </li>
             <li>
                 <a class="customer-login" href="{{ route('w.u.login') }}">Client Area</a>

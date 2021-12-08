@@ -60,11 +60,14 @@ Route::group(['prefix' => 'easy/admin'], function(){
         Route::post('/update', [App\Http\Controllers\User\UserController::class, 'update_user'])->name('e.tax.update.user');
         Route::get('/enable/{id}', [App\Http\Controllers\User\UserController::class, 'enable_user'])->name('e.tax.enable.user');
         Route::get('/disable/{id}', [App\Http\Controllers\User\UserController::class,'disable_user'])->name('e.tax.disable.user');
+        Route::get('/stream/{file}', [App\Http\Controllers\User\UserController::class,'stream'])->name('f.stream');
     });
 
     Route::group(['prefix' => 'orders'], function(){
         Route::get('/', [App\Http\Controllers\User\OrderController::class, 'orders'])->name('e.tax.orders');
         Route::get('/details/{id}', [App\Http\Controllers\User\OrderController::class, 'order'])->name('e.tax.order');
+        Route::post('/assign', [App\Http\Controllers\User\OrderController::class,'assign_order'])->name('f.assign_order');
+        Route::post('/add/bill', [App\Http\Controllers\User\OrderController::class,'add_bill'])->name('f.add_bill');
     });
 
     Route::group(['prefix' => 'services'], function(){

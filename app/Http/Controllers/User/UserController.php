@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\NewAccount;
 use App\Models\Customer;
+use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Service;
 use App\Models\User;
@@ -76,9 +77,9 @@ class UserController extends Controller
 
      protected function dashboards(){
         $sales = Payment::where('is_paid', true)->sum('amount');
-        $customers = 0;//Customer::where('id', '>', 0)->count();
+        $customers = Customer::where('id', '>', 0)->count();
         $services = Service::where('id', '>', 0)->count();
-        $orders = 0;
+        $orders = Order::all()->count();
         return [
             'sales' => $sales,
             'customers' => $customers,

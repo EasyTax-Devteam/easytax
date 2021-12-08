@@ -38,11 +38,11 @@
                 <table class="table app-table-hover mb-0 text-left">
                     <thead>
                         <tr>
-                        <th class="cell">ID</th>
+                        <th class="cell">#ID</th>
                         <th class="cell">Reference</th>
                         <th class="cell">Paid By</th>
                         <th class="cell">Amount</th>
-                        <th class="cell">Order</th>
+                        <th class="cell">#Bill</th>
                         <th class="cell">Status</th>
                         </tr>
                     </thead>

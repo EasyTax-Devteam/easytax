@@ -41,22 +41,16 @@
                         <th class="cell">ID</th>
                         <th class="cell">Name</th>
                         <th class="cell">KRA Pin</th>
-                        <th class="cell">Status</th>
+                        <th class="cell">iTax Password</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach( $all as $_all )
                             <tr>
                                 <td class="cell">#{{ $_all['id'] }}</td>
-                                <td class="cell">{{ $_all['reference'] }}</td>
-                                <td class="cell">
-                                    <span class="truncate">{{ $_all['paid_by'] }}</span>
-                                </td>
-                                <td class="cell"> KES {{ number_format($_all['amount'], 1) }} </td>
-                                <td class="cell">#{{ $_all['order'] }}</td>
-                                <td class="cell">
-                                    <span class="badge {{ $_all['is_paid'] == 1 ? 'bg-success' : 'bg-danger' }}">{{ $_all['is_paid'] == 1 ? 'paid' : 'unpaid' }}</span>
-                                </td>
+                                <td class="cell">{{ $_all['fname'] }} {{ $_all['lname'] }}</td>
+                                <td class="cell"><span class="truncate">{{ $_all['pin'] }}</span></td>
+                                <td class="cell">#{{ $_all['itax_password'] }}</td>
                             </tr>
                         @endforeach
                     </tbody>

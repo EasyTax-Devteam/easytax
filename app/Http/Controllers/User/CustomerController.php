@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Payment;
@@ -21,7 +22,13 @@ class CustomerController extends Controller
 
     public function customers(){
         return view('user.customers', [
-            'all' => [],
+            'all' => $this->getCustomers(),
         ]);
+    }
+    protected function getCustomers(){
+        $data = Customer::all();
+        if( is_object($data) ){
+            return $data->toArray();
+        }
     }
 }

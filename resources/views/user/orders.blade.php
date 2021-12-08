@@ -55,8 +55,8 @@
         
         <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
             <a class="flex-sm-fill text-sm-center nav-link active" id="orders-all-tab" data-bs-toggle="tab" href="#orders-all" role="tab" aria-controls="orders-all" aria-selected="true">All</a>
-            <a class="flex-sm-fill text-sm-center nav-link"  id="orders-paid-tab" data-bs-toggle="tab" href="#orders-paid" role="tab" aria-controls="orders-paid" aria-selected="false">Paid</a>
-            <a class="flex-sm-fill text-sm-center nav-link" id="orders-pending-tab" data-bs-toggle="tab" href="#orders-pending" role="tab" aria-controls="orders-pending" aria-selected="false">Pending</a>
+            <a class="flex-sm-fill text-sm-center nav-link"  id="orders-paid-tab" data-bs-toggle="tab" href="#orders-paid" role="tab" aria-controls="orders-paid" aria-selected="false">In Progress</a>
+            <a class="flex-sm-fill text-sm-center nav-link" id="orders-pending-tab" data-bs-toggle="tab" href="#orders-pending" role="tab" aria-controls="orders-pending" aria-selected="false">Completed</a>
         </nav>
         
         
@@ -71,7 +71,7 @@
                                         <th class="cell">Order</th>
                                         <th class="cell">Product</th>
                                         <th class="cell">Customer</th>
-                                        <th class="cell">Date</th>
+                                        <th class="cell">Created</th>
                                         <th class="cell">Pipeline</th>
                                         <th class="cell">Bills</th>
                                         <th class="cell"></th>
@@ -79,24 +79,24 @@
                                 </thead>
                                 <tbody>
                                     @foreach( $orders as $_order )
-                                    @php( $service = \App\Models\Service::find($_order['service']) )
-                                    @php( $customer = \App\Models\Customer::find($_order['customer']) )
-                                    @php( $date = $_order['created_at'] )
-                                    @php( $paymentStatus = \App\Models\User::getOrderBillPaid($_order['id']) )
-                                    @php( $pipeline = \App\Models\User::getOrderPipeline($_order['progress']) )
-                                    @php( $getOrderBillTotals = \App\Models\User::getOrderBillTotals($_order['id']) )
-                                    <tr>
-                                        <td class="cell">#{{ $_order['id'] }}</td>
-                                        <td class="cell"><span class="truncate">{{ $service->name }}</span></td>
-                                        <td class="cell">{{ $customer->fname }} - {{ $customer->pin }}</td>
-                                        <td class="cell"><span>{{ date('d', strtotime($date)) }} {{  date('M', strtotime($date)) }}</span><span class="note">{{ date('h:i a', strtotime($date)) }}</span></td>
-                                        <td class="cell">{!! $pipeline !!}</td>
-                                        <td class="cell">
-                                            KES {{ number_format($getOrderBillTotals[0], 2) }} <br>
-                                            <span class="badge {{ $paymentStatus == true ? 'bg-success' : 'bg-warning' }} tiny">paid kes {{ number_format($getOrderBillTotals[1], 2) }}</span>
-                                        </td>
-                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="{{ route('e.tax.order', ['id' => 123 ] ) }}">View</a></td>
-                                    </tr>
+                                        @php( $service = \App\Models\Service::find($_order['service']) )
+                                        @php( $customer = \App\Models\Customer::find($_order['customer']) )
+                                        @php( $date = $_order['created_at'] )
+                                        @php( $paymentStatus = \App\Models\User::getOrderBillPaid($_order['id']) )
+                                        @php( $pipeline = \App\Models\User::getOrderPipeline($_order['progress']) )
+                                        @php( $getOrderBillTotals = \App\Models\User::getOrderBillTotals($_order['id']) )
+                                        <tr>
+                                            <td class="cell">#{{ $_order['id'] }}</td>
+                                            <td class="cell"><span class="truncate">{{ $service->name }}</span></td>
+                                            <td class="cell">{{ $customer->fname }} - {{ $customer->pin }}</td>
+                                            <td class="cell"><span>{{ date('d', strtotime($date)) }} {{  date('M', strtotime($date)) }}</span><span class="note">{{ date('h:i a', strtotime($date)) }}</span></td>
+                                            <td class="cell">{!! $pipeline !!}</td>
+                                            <td class="cell">
+                                                KES {{ number_format($getOrderBillTotals[0], 2) }} <br>
+                                                <span class="badge {{ $paymentStatus == true ? 'bg-success' : 'bg-warning' }} tiny">paid kes {{ number_format($getOrderBillTotals[1], 2) }}</span>
+                                            </td>
+                                            <td class="cell"><a class="btn-sm app-btn-secondary" href="{{ route('e.tax.order', ['id' => $_order['id'] ] ) }}">View</a></td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -117,32 +117,35 @@
                                         <th class="cell">Order</th>
                                         <th class="cell">Product</th>
                                         <th class="cell">Customer</th>
-                                        <th class="cell">Date</th>
-                                        <th class="cell">Status</th>
-                                        <th class="cell">Total</th>
+                                        <th class="cell">Created</th>
+                                        <th class="cell">Pipeline</th>
+                                        <th class="cell">Bills</th>
                                         <th class="cell"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="cell">#15346</td>
-                                        <td class="cell"><span class="truncate">Lorem ipsum dolor sit amet eget volutpat erat</span></td>
-                                        <td class="cell">John Sanders</td>
-                                        <td class="cell"><span>17 Oct</span><span class="note">2:16 PM</span></td>
-                                        <td class="cell"><span class="badge bg-success">Paid</span></td>
-                                        <td class="cell">$259.35</td>
-                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="{{ route('e.tax.order', ['id' => 123 ] ) }}">View</a></td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td class="cell">#15344</td>
-                                        <td class="cell"><span class="truncate">Pellentesque diam imperdiet</span></td>
-                                        <td class="cell">Teresa Holland</td>
-                                        <td class="cell"><span class="cell-data">16 Oct</span><span class="note">01:16 AM</span></td>
-                                        <td class="cell"><span class="badge bg-success">Paid</span></td>
-                                        <td class="cell">$123.00</td>
-                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="{{ route('e.tax.order', ['id' => 123 ] ) }}">View</a></td>
-                                    </tr>
+                                    @foreach( $orders as $_order )
+                                        @if( in_array($_order['progress'], ['in_progress', 'in_review']))
+                                            @php( $service = \App\Models\Service::find($_order['service']) )
+                                            @php( $customer = \App\Models\Customer::find($_order['customer']) )
+                                            @php( $date = $_order['created_at'] )
+                                            @php( $paymentStatus = \App\Models\User::getOrderBillPaid($_order['id']) )
+                                            @php( $pipeline = \App\Models\User::getOrderPipeline($_order['progress']) )
+                                            @php( $getOrderBillTotals = \App\Models\User::getOrderBillTotals($_order['id']) )
+                                            <tr>
+                                                <td class="cell">#{{ $_order['id'] }}</td>
+                                                <td class="cell"><span class="truncate">{{ $service->name }}</span></td>
+                                                <td class="cell">{{ $customer->fname }} - {{ $customer->pin }}</td>
+                                                <td class="cell"><span>{{ date('d', strtotime($date)) }} {{  date('M', strtotime($date)) }}</span><span class="note">{{ date('h:i a', strtotime($date)) }}</span></td>
+                                                <td class="cell">{!! $pipeline !!}</td>
+                                                <td class="cell">
+                                                    KES {{ number_format($getOrderBillTotals[0], 2) }} <br>
+                                                    <span class="badge {{ $paymentStatus == true ? 'bg-success' : 'bg-warning' }} tiny">paid kes {{ number_format($getOrderBillTotals[1], 2) }}</span>
+                                                </td>
+                                                <td class="cell"><a class="btn-sm app-btn-secondary" href="{{ route('e.tax.order', ['id' => $_order['id'] ] ) }}">View</a></td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div><!--//table-responsive-->
@@ -167,15 +170,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="cell">#15345</td>
-                                        <td class="cell"><span class="truncate">Consectetur adipiscing elit</span></td>
-                                        <td class="cell">Dylan Ambrose</td>
-                                        <td class="cell"><span class="cell-data">16 Oct</span><span class="note">03:16 AM</span></td>
-                                        <td class="cell"><span class="badge bg-warning">Pending</span></td>
-                                        <td class="cell">$96.20</td>
-                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="{{ route('e.tax.order', ['id' => 123 ] ) }}">View</a></td>
-                                    </tr>
+                                    @foreach( $orders as $_order )
+                                        @if( in_array($_order['progress'], ['complete']))
+                                            @php( $service = \App\Models\Service::find($_order['service']) )
+                                            @php( $customer = \App\Models\Customer::find($_order['customer']) )
+                                            @php( $date = $_order['created_at'] )
+                                            @php( $paymentStatus = \App\Models\User::getOrderBillPaid($_order['id']) )
+                                            @php( $pipeline = \App\Models\User::getOrderPipeline($_order['progress']) )
+                                            @php( $getOrderBillTotals = \App\Models\User::getOrderBillTotals($_order['id']) )
+                                            <tr>
+                                                <td class="cell">#{{ $_order['id'] }}</td>
+                                                <td class="cell"><span class="truncate">{{ $service->name }}</span></td>
+                                                <td class="cell">{{ $customer->fname }} - {{ $customer->pin }}</td>
+                                                <td class="cell"><span>{{ date('d', strtotime($date)) }} {{  date('M', strtotime($date)) }}</span><span class="note">{{ date('h:i a', strtotime($date)) }}</span></td>
+                                                <td class="cell">{!! $pipeline !!}</td>
+                                                <td class="cell">
+                                                    KES {{ number_format($getOrderBillTotals[0], 2) }} <br>
+                                                    <span class="badge {{ $paymentStatus == true ? 'bg-success' : 'bg-warning' }} tiny">paid kes {{ number_format($getOrderBillTotals[1], 2) }}</span>
+                                                </td>
+                                                <td class="cell"><a class="btn-sm app-btn-secondary" href="{{ route('e.tax.order', ['id' => $_order['id'] ] ) }}">View</a></td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div><!--//table-responsive-->
