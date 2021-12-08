@@ -13,6 +13,9 @@ use App\Http\Controllers\Web\MpesaController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AdminPayment;
 use App\Mail\CustomerPayment;
+use App\Models\Order;
+use App\Models\Payment;
+use Storage;
 
 class WebsiteController extends Controller
 {
@@ -94,6 +97,7 @@ class WebsiteController extends Controller
             if( $resultCode == '0'){
                 $bill = Bill::where('mpesa_checkout_id', $CheckoutRequestID)->first();
                 $kra = $bill->created_by;
+                $billStatus =  $bill->payment_status;
                 $amount = $bill->amount;
                 $bill->payment_status = true;
                 $bill->mpesa_log = $json;
@@ -104,8 +108,10 @@ class WebsiteController extends Controller
                 }
                 Session::put('login_kra_pin', $customer);
                 $mail_data = [ 'amount' => $amount, 'name' => $customer->fname ];
-                Mail::to(config('mail.from.admin'))->send(new AdminPayment($mail_data));
-                Mail::to($customer->email)->send(new CustomerPayment($mail_data));
+                if( !$billStatus ){
+                    Mail::to(config('mail.from.admin'))->send(new AdminPayment($mail_data));
+                    Mail::to($customer->email)->send(new CustomerPayment($mail_data));
+                }
                 return response(['Msg' => 'logged', 'Url' => route('w.u.orders') ], 200);
             }
             throw new \Exception("Payment not completed yet. Please wait and try again in 2minutes");
@@ -114,7 +120,52 @@ class WebsiteController extends Controller
         }
     }
     public function callback(){
-
+        try {
+            $data = file_get_contents("php://input");
+            if(!$data) {
+                return response(['ResultCode' => '1', 'ResultDesc' => 'Failed']);
+            }
+            else{
+                Storage::disk('local')->prepend('mpesa.log', $data);
+                /** callback urls */
+                $paylog = json_decode($data, true);
+                $stkCallback = $paylog['Body']['stkCallback'];
+                $CheckoutRequestID = $stkCallback['CheckoutRequestID'];
+                $bill = Bill::where('mpesa_checkout_id', $CheckoutRequestID)->first();
+                if( $stkCallback['ResultCode'] == '0' )//success
+                {
+                    $userCheckedStatus = $bill->payment_status;
+                    $bill->payment_status = true;
+                    $bill->mpesa_log = json_encode($paylog);
+                    $bill->save();
+                    $stk_meta_data = $stkCallback['CallbackMetadata']['Item'];
+                    $mpesaCode = $stk_meta_data[1]['Value'];
+                    $mpesaAmount = $stk_meta_data[0]['Value'];
+                    $paidFromPhone = $stk_meta_data[4]['Value'];
+                    $paymentEntry = [
+                        'reference' => $mpesaCode,
+                        'paid_by' => $paidFromPhone,
+                        'amount' => $mpesaAmount,
+                        'is_paid' => true,
+                        'order' => $bill->id,
+                        'mpesa_log' => json_encode($paylog)
+                    ];
+                    Payment::create($paymentEntry);
+                    if( !$userCheckedStatus ){
+                        $orderMeta = Order::find($bill->order);
+                        $customer = Customer::find($orderMeta->customer);
+                        $mail_data = [ 'amount' => $mpesaAmount, 'name' => $customer->fname ];
+                        Mail::to(config('mail.from.admin'))->send(new AdminPayment($mail_data));
+                        Mail::to($customer->email)->send(new CustomerPayment($mail_data));
+                    }
+                }
+                /** end callbacks */
+                return response(['ResultCode' => '0', 'ResultDesc' => 'Accepted Successfully']);
+            }
+        } catch (\Throwable $th) {
+            Storage::disk('local')->prepend('mpesaErrors.log', $th->getMessage());
+            return response(['ResultCode' => '0', 'ResultDesc' => 'Accepted Successfully']);
+        }
     }
     protected function formatPhone($phone){
         return '254' . substr($phone, -9);
