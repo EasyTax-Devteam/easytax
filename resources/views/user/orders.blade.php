@@ -79,13 +79,16 @@
                                 </thead>
                                 <tbody>
                                     @foreach( $orders as $_order )
+                                    @php( $service = \App\Models\Service::find($_order['service']) )
+                                    @php( $customer = \App\Models\Customer::find($_order['customer']) )
+                                    @php( $date = $_order['created_at'] )
                                     <tr>
                                         <td class="cell">#{{ $_order['id'] }}</td>
-                                        <td class="cell"><span class="truncate">Lorem ipsum dolor sit amet eget volutpat erat</span></td>
-                                        <td class="cell">John Sanders</td>
-                                        <td class="cell"><span>17 Oct</span><span class="note">2:16 PM</span></td>
+                                        <td class="cell"><span class="truncate">{{ $service->name }}</span></td>
+                                        <td class="cell">{{ $customer->fname }} - {{ $customer->pin }}</td>
+                                        <td class="cell"><span>{{ date('d', strtotime($date)) }} {{  date('M', strtotime($date)) }}</span><span class="note">{{ date('h:i a', strtotime($date)) }}</span></td>
                                         <td class="cell"><span class="badge bg-success">Paid</span></td>
-                                        <td class="cell">$259.35</td>
+                                        <td class="cell">KES 259.35</td>
                                         <td class="cell"><a class="btn-sm app-btn-secondary" href="{{ route('e.tax.order', ['id' => 123 ] ) }}">View</a></td>
                                     </tr>
                                     @endforeach
