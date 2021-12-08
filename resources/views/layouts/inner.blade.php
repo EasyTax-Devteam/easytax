@@ -20,6 +20,9 @@
             width: 120px;
             height: auto;
         }
+        .tiny{
+            font-size: 8px!important;
+        }
     </style>
 </head> 
 

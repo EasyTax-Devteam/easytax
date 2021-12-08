@@ -76,6 +76,35 @@ class User extends Authenticatable
             'working_hours' => null, 'facebook' => null, 'twitter' => null, 'linkedin' => null,
         ]));
     }
+    public static function getOrderBillTotals($order){
+        $totalBills = Bill::where('order', $order)->sum('amount');
+        $totalBillsPaid = Bill::where('order', $order)->where('payment_status', true)->sum('amount');
+        return [$totalBills, $totalBillsPaid];
+    }
+    public static function getOrderPipeline($progress){
+        switch ($progress) {
+            case 'not_assigned':
+               return '<span class="badge bg-danger">Not assigned</span>';
+                break;
+            case 'in_progress':
+                return '<span class="badge bg-warning">in progress</span>';
+                    break;
+            case 'in_review':
+                return '<span class="badge bg-info">in review</span>';
+                    break;
+            case 'complete':
+                return '<span class="badge bg-success">complete</span>';
+                    break;
+            default:
+               return '<span class="badge bg-secondary">unknown</span>';
+                break;
+        }
+    }
+    public static function getOrderBillPaid($order){
+        $totalBills = Bill::where('order', $order)->sum('amount');
+        $totalBillsPaid = Bill::where('order', $order)->where('payment_status', true)->sum('amount');
+        return intval($totalBills) == intval($totalBillsPaid);
+    }
     public static function getOrderBillTotal($order){
         return Bill::where('order', $order)->sum('amount');
     }

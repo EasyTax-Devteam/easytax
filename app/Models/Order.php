@@ -20,6 +20,7 @@ class Order extends Model
         'p_nine_form',
         'income_and_expenses_schedule',
         'financial_statements',
-        'service'
+        'service',
+        'progress',
     ];
 }
