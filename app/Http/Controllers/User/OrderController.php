@@ -7,6 +7,7 @@ use App\Models\OrderAssignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\NewAccount;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -20,7 +21,9 @@ class OrderController extends Controller
     }
 
     public function orders(){
-        return view('user.orders');
+        return view('user.orders', [
+            'orders' => $this->getOrders()
+        ]);
     }
 
     public function order($id){
@@ -39,9 +42,22 @@ class OrderController extends Controller
         $admin = $data->admin;
         return User::find($admin);
     }
-
     protected function is_assigned($order){
         return OrderAssignment::where('order', $order)->count() > 0;
+    }
+    protected function getOrders(){
+        $data = Order::where('id', '>', 0)->get();
+        if( is_object($data) ){
+            return $data->toArray();
+        }
+        return [];
+    }
+    protected function getOrderBills($order){
+        $data = Bill::where('order', $order)->get();
+        if( is_object($data) ){
+            return $data->toArray();
+        }
+        return [];
     }
     protected function getUsers($case = 1){
         switch ($case) {
