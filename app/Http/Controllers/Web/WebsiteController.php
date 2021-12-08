@@ -119,6 +119,9 @@ class WebsiteController extends Controller
             return response(['Err' => $th->getMessage()], 200);
         }
     }
+    protected function existsPayment($mpesaCode){
+        return Payment::where('reference', $mpesaCode)->count() > 0;
+    }
     public function callback(){
         try {
             $data = file_get_contents("php://input");
@@ -150,7 +153,9 @@ class WebsiteController extends Controller
                         'order' => $bill->id,
                         'mpesa_log' => json_encode($paylog)
                     ];
-                    Payment::create($paymentEntry);
+                    if( !$this->existsPayment($mpesaCode) ){
+                        Payment::create($paymentEntry);
+                    }
                     if( !$userCheckedStatus ){
                         $orderMeta = Order::find($bill->order);
                         $customer = Customer::find($orderMeta->customer);
