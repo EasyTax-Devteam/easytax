@@ -50,10 +50,11 @@
 
     <!-- Charts JS -->
     <script src="{{ asset('auth/assets/plugins/chart.js/chart.min.js') }}"></script> 
-    <script src="{{ asset('auth/assets/js/index-charts.js') }}"></script> 
+    <!-- <script src="{{ asset('auth/assets/js/index-charts.js') }}"></script>  -->
     
     <!-- Page Specific JS -->
     <script src="{{ asset('auth/assets/js/app.js') }}"></script> 
+    @yield('page_scripts')
 
 </body>
 </html> 

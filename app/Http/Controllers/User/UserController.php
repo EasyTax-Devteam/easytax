@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Mail\NewAccount;
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\OrderAssignment;
 use App\Models\Payment;
 use App\Models\Service;
 use App\Models\User;
@@ -23,9 +24,58 @@ class UserController extends Controller
     }
 
     public function index(){
+        if( Auth::user()->admin == 1 ){
+            return view('user.index', [
+                'orders' => $this->getMyOrders()
+            ]);
+        }
         return view('user.index', [
-            'data' => $this->dashboards()
+            'data' => $this->dashboards(),
+            'ordersGraph' => $this->getOrdersGraphData(),
+            'revenueGraph' => $this->getRevenueGraphData()
         ]);
+    }
+    protected function getOrdersGraphData(){
+        $lastSix = User::lastSixMonths();
+        $labels = $data = [];
+        foreach( array_reverse($lastSix) as $date => $month ):
+            $ordersCount =  Order::where('created_at', 'like', '%' . $date . '%')->count();
+            array_push($labels, $month);
+            array_push($data, $ordersCount);
+        endforeach;
+        return [
+            'label' => $labels,
+            'data' => $data
+        ];
+    }
+    protected function getRevenueGraphData(){
+        $lastSix = User::lastSixMonths();
+        $labels = $data = [];
+        foreach( array_reverse($lastSix) as $date => $month ):
+            $revenue =  Payment::where('is_paid', true)->where('created_at', 'like', '%' . $date . '%')->sum('amount');
+            array_push($labels, $month);
+            array_push($data, $revenue);
+        endforeach;
+        return [
+            'label' => $labels,
+            'data' => $data
+        ];
+    }
+    protected function getMyOrders(){
+        $idList = $this->getMyOrdersIds();
+        $data = Order::whereIn('id', $idList)->orderBy('id', 'desc')->get();
+        if( is_object($data) ){
+            return $data->toArray();
+        }
+        return [];
+    }
+
+    protected function getMyOrdersIds(){
+        $data = OrderAssignment::select('order')->where('admin', Auth::user()->id)->get();
+        if( is_object($data) ){
+            return $data->toArray();
+        }
+        return [];
     }
 
     public function users(){

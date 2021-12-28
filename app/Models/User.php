@@ -142,4 +142,14 @@ class User extends Authenticatable
         }
         return [];
     }
+    public static function lastSixMonths(){
+        return [
+            date('Y-m') =>  date('M'),
+            date('Y-m', strtotime('-1 months')) => date('M', strtotime('-1 months')),
+            date('Y-m', strtotime('-2 months')) =>  date('M', strtotime('-2 months')),
+            date('Y-m', strtotime('-3 months')) => date('M', strtotime('-3 months')),
+            date('Y-m', strtotime('-4 months')) => date('M', strtotime('-4 months')),
+            date('Y-m', strtotime('-5 months')) =>  date('M', strtotime('-5 months')),
+        ];
+    }
 }

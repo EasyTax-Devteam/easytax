@@ -48,7 +48,21 @@ class OrderController extends Controller
             return redirect()->back()->with([ 'Err' => $th->getMessage() ]);
         }
     }
-
+    public function update_status(Request $request ){
+        try {
+            $validator = Validator::make($request->all(), [  'new_status' => 'required|string', 'order' => 'required|string',]);
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with([ 'Err' => 'Invalid  input fields', ]);
+            }
+            $input = $request->all();
+            Order::find($input['order'])->update([ 'progress' => $input['new_status'] ]);
+            return redirect()->back()->with([ 'Msg' => 'Order status changed successfully!']);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([ 'Err' => $th->getMessage() ]);
+        }
+    }
     public function add_bill(Request $request ){
         DB::beginTransaction();
         try {
