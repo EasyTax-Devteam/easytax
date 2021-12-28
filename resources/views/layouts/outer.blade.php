@@ -65,6 +65,11 @@
             .full-width-header .rs-header .menu-area .logo-area img {
                 max-height: 60px;
             }
+            @media only screen and (max-width: 991px){
+                .rs-header .menu-area .logo-area {
+                    top: 4px!important;
+                }
+            }
             .rs-services.style3 .services-item .services-content .services-title, .rs-services.style5 .flip-box-inner .flip-box-wrap .front-part .front-content-part .front-title-part .title, .rs-services.style5 .flip-box-inner .flip-box-wrap .back-part .back-front-content .back-title-part .back-title, .rs-services.home-style2 .services-item .services-text .title, .rs-services.main-home .services-item .services-text .title {
                 max-height: 70px;
                 font-size: 17px;

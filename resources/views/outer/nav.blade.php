@@ -211,8 +211,14 @@
             <li class="">
                 <a href="{{ route('w.index') }}">Home</a>
             </li>
-            <li class="">
-                <a href="{{ route('w.f.return', ['id' => 0]) }}">File Returns</a>
+            <li class="menu-item-has-children">
+                <a href="#">Services</a>
+                <ul class="sub-menu">
+                    @foreach( $glabal_services as $_service  )
+                        <li><a href="{{ route('w.f.return', ['id' => $_service['id'] ]) }}">{{ $_service['name'] }}</a></li>
+                    @endforeach
+                    <li><a href="{{ route('w.f.return', ['id' => 0]) }}">View all services</a></li>
+                </ul>
             </li>
             <li class="">
                 <a href="{{ route('w.about') }}">About</a>
