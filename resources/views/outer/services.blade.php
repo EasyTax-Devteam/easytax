@@ -34,7 +34,7 @@
                                 <p class="services-txt">@ <b>KES {{ number_format($_service['price'], 0) }}</b> per return</p>
                                 <br>
                                 <a class="readon consultant discover" href="{{ route('w.f.return', ['id' => $_service['id'] ]) }}">
-                                    File Now
+                                    Request Service
                                 </a>
                             </div>
                         </div>

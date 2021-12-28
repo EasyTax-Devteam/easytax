@@ -13,7 +13,7 @@
                     </div>
                     <div class="desc">EasyTax is here to help you get it done.</div>
                     <div class="slider-bottom ">
-                        <a class="readon consultant slider" href="#step-one">Let's File Returns</a>
+                        <a class="readon consultant slider" href="#step-one">Browser services</a>
                     </div>
                 </div>
             </div>

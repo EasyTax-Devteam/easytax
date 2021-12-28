@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/sms', [App\Http\Controllers\Web\WebsiteController::class, 'smstest'])->name('w.smstest');
+
 
 Route::get('/', [App\Http\Controllers\Web\WebsiteController::class, 'index'])->name('w.index');
 Route::get('/email', [App\Http\Controllers\Web\WebsiteController::class, 'email']);

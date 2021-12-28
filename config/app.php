@@ -81,7 +81,16 @@ return [
     'app_mpesa_c2b_phone' => env('APP_MPESA_C2B_PHONE'),
     'app_mpesa_c2b_paybill' => env('APP_MPESA_C2B_PAYBILL'),
 
+
     
+    /** SMS configurations */
+  
+    'sms_sender_id' => env('SENDER_ID'),
+    'sms_key' => env('SMS_KEY'),
+    'sms_url' => env('SMS_URL'),
+    'sms_partner' => env('SMS_PARTNER'),
+
+
     'timezone' => 'UTC',
 
     /*

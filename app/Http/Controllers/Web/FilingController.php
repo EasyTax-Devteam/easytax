@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Sms\SmsController;
 use Illuminate\Support\Facades\DB;
 use Session;
 use Validator;
@@ -115,6 +116,9 @@ class FilingController extends Controller
             Session::put('bill_id', $billId);
             if( !$existsUser ){
                 $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
+                $customer_sms = 'Hi ' . $input['firstName'] . ', your EasyTax account is set. Visit ' . config('app.url') . 'users/access to view your orders';
+                $advanta = new SmsController();
+                $advanta->dispatchSms($input['phoneNumber'], $customer_sms);
                 Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
             }
             DB::commit();
@@ -209,6 +213,9 @@ class FilingController extends Controller
             Session::put('bill_id', $billId);
             if( !$existsUser ){
                 $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
+                $customer_sms = 'Hi ' . $input['firstName'] . ', your EasyTax account is set. Visit ' . config('app.url') . 'users/access to view your orders';
+                $advanta = new SmsController();
+                $advanta->dispatchSms($input['phoneNumber'], $customer_sms);
                 Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
             }
             DB::commit();
@@ -303,6 +310,9 @@ class FilingController extends Controller
             Session::put('bill_id', $billId);
             if( !$existsUser ){
                 $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
+                $customer_sms = 'Hi ' . $input['firstName'] . ', your EasyTax account is set. Visit ' . config('app.url') . 'users/access to view your orders';
+                $advanta = new SmsController();
+                $advanta->dispatchSms($input['phoneNumber'], $customer_sms);
                 Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
             }
             DB::commit();
@@ -395,6 +405,9 @@ class FilingController extends Controller
             Session::put('bill_id', $billId);
             if( !$existsUser ){
                 $mail_data = [ 'name' => $input['firstName'], 'pin' => $input['kraPin'] ];
+                $customer_sms = 'Hi ' . $input['firstName'] . ', your EasyTax account is set. Visit ' . config('app.url') . 'users/access to view your orders';
+                $advanta = new SmsController();
+                $advanta->dispatchSms($input['phoneNumber'], $customer_sms);
                 Mail::to($input['emailAddress'])->send(new CustomerWelcome($mail_data));
             }
             DB::commit();

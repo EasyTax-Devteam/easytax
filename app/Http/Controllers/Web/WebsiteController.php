@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Session;
 use Validator;
 use App\Http\Controllers\Web\MpesaController;
+use App\Http\Controllers\Sms\SmsController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AdminPayment;
 use App\Mail\CustomerPayment;
@@ -19,6 +20,12 @@ use Storage;
 
 class WebsiteController extends Controller
 {
+    public function smstest(){
+        $msg = new SmsController();
+        // $resp = $msg->dispatchSms('0112384140');
+        // print_r($resp);
+    }
+
     public function index(){
         return view('web.welcome');
     }
@@ -109,6 +116,9 @@ class WebsiteController extends Controller
                 Session::put('login_kra_pin', $customer);
                 $mail_data = [ 'amount' => $amount, 'name' => $customer->fname ];
                 if( !$billStatus ){
+                    $customer_sms = 'Hi ' . $customer->fname . ', your payment of KES ' . number_format($amount) . ' to EasyTax has been received';
+                    $advanta = new SmsController();
+                    $advanta->dispatchSms($customer->phone, $customer_sms);
                     Mail::to(config('mail.from.admin'))->send(new AdminPayment($mail_data));
                     Mail::to($customer->email)->send(new CustomerPayment($mail_data));
                 }
@@ -160,6 +170,9 @@ class WebsiteController extends Controller
                         $orderMeta = Order::find($bill->order);
                         $customer = Customer::find($orderMeta->customer);
                         $mail_data = [ 'amount' => $mpesaAmount, 'name' => $customer->fname ];
+                        $customer_sms = 'Hi ' . $customer->fname . ', your payment of KES ' . number_format($mpesaAmount) . ' to EasyTax has been received.';
+                        $advanta = new SmsController();
+                        $advanta->dispatchSms($customer->phone, $customer_sms);
                         Mail::to(config('mail.from.admin'))->send(new AdminPayment($mail_data));
                         Mail::to($customer->email)->send(new CustomerPayment($mail_data));
                     }

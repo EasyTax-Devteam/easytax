@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\OrderAssignment;
+use App\Http\Controllers\Sms\SmsController;
 use App\Mail\NewTask;
 use App\Mail\NewBill;
 use Illuminate\Http\Request;
@@ -81,6 +82,9 @@ class OrderController extends Controller
             $order = Order::find($input['order']);
             $customer = Customer::find($order->customer);
             $mail_data = [ 'name' => $customer->fname ];
+            $customer_sms = 'Hi ' . $customer->fname . ', a new bill of KES ' . number_format($input['amount']) . ' has been created. Visit ' . config('app.url') . 'users/access to complete payment';
+            $advanta = new SmsController();
+            $advanta->dispatchSms($customer->phone, $customer_sms);
             Mail::to($customer->email)->send(new NewBill($mail_data));
             DB::commit();
             return redirect()->back()->with([ 'Msg' => 'Bill created successfully! Customer has been notified']);

@@ -57,10 +57,10 @@
                 color: #f3f3f1;
             }
             .readon.consultant {
-                border-radius: 25px 0px 30px 0px;
+                border-radius: 18px 0px 20px 0px;
                 color: #800000;
                 background: #fffefe;
-                font-size: 26px!important;
+                font-size: 18px!important;
             }
             .full-width-header .rs-header .menu-area .logo-area img {
                 max-height: 60px;
