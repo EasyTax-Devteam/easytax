@@ -25,6 +25,9 @@
             border-radius: 8px;
             margin-top: 10px;
         }
+        .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li.menu-item-has-children > a:before {
+            top: 34%;
+        }
     </style>
     <!-- Topbar Area Start -->
     <div class="topbar-area style1">
