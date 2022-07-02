@@ -1,7 +1,21 @@
 @php( $glabal_settings = \App\Models\User::getSettings() )
-@php( $glabal_services = \App\Models\User::getServices() )
+@php( $glabal_groups = \App\Models\User::getServiceGroups() )
 <header id="rs-header" class="rs-header style2 header-transparent">
     <style>
+        @media only screen and (max-width: 1366px) {
+            .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li {
+                margin-right: 0px;
+            }
+        }
+
+        .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li.menu-item-has-children>a {
+            padding-right: 11px;
+        }
+
+        .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li {
+            margin-right: 5px;
+        }
+
         .truncate {
             max-width: 100px;
             display: inline-block;
@@ -9,23 +23,27 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        .customer-login{
-            padding: 13px!important;
-            border: solid 1px #800000!important;
-            color:  #800000!important;
+
+        .customer-login {
+            padding: 8px !important;
+            border: solid 0px #58a9f7 !important;
+            color: #58a9f7 !important;
         }
-        .staff-login{
-            padding: 13px!important;
-            border: solid 0px #800000!important;
-            color:  #800000!important;
+
+        .staff-login {
+            padding: 13px !important;
+            border: solid 0px #1e3666 !important;
+            color: #58a9f7 !important;
         }
+
         .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li a {
             height: 55px;
             line-height: 32px;
             border-radius: 8px;
             margin-top: 10px;
         }
-        .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li.menu-item-has-children > a:before {
+
+        .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li.menu-item-has-children>a:before {
             top: 34%;
         }
     </style>
@@ -45,10 +63,10 @@
                                 <a href="tel:{{ $glabal_settings->phone }}"> {{ $glabal_settings->phone }}</a>
                             </li>
                             <li>
-                                <span class="truncate">
-                                    <i class="flaticon-location"></i>
-                                    {{ $glabal_settings->address }}
-                                </span>
+                                <a class="staff-login" target="_blank" href="https://web.mail.eu-west-1.awsapps.com/">Staff Mail</a>
+                            </li>
+                            <li>
+                                <a class="customer-login" href="{{ route('w.u.login') }}">Client Area</a>
                             </li>
                         </ul>
                     </div>
@@ -70,12 +88,12 @@
 
     <!-- Menu Start -->
     <div class="menu-area menu-sticky">
-        <div class="container custom">
+        <div class="container custom logo-hd-holder">
             <div class="row-table">
-                <div class="col-cell header-logo">                                  
+                <div class="col-cell header-logo">
                     <div class="logo-area">
                         <a href="{{ route('w.index') }}">
-                            <img src="{{ asset('assets/images/logo-dark.png') }}" alt="logo">  
+                            <img style="margin-top: 20px;margin-bottom: 20px;" src="{{ asset('assets/images/logo-dark.png') }}" alt="logo">
                         </a>
                     </div>
                 </div>
@@ -87,28 +105,17 @@
                                     <li class="">
                                         <a href="{{ route('w.index') }}">Home</a>
                                     </li>
+                                    @foreach( $glabal_groups as $_group )
+                                    @php( $group_services = \App\Models\User::getServicesByGroup($_group['id']) )
                                     <li class="menu-item-has-children">
-                                        <a href="#">Services</a>
+                                        <a href="{{ route('w.s.category', ['id' => $_group['id']]) }}">{{ $_group['name'] }}</a>
                                         <ul class="sub-menu">
-                                            @foreach( $glabal_services as $_service  )
-                                                <li><a href="{{ route('w.f.return', ['id' => $_service['id'] ]) }}">{{ $_service['name'] }}</a></li>
+                                            @foreach( $group_services as $_service )
+                                            <li><a href="{{ route('w.s.service', ['id' => $_service['id']]) }}">{{ $_service['name'] }}</a></li>
                                             @endforeach
-                                            <li><a href="{{ route('w.f.return', ['id' => 0]) }}">View all services</a></li>
                                         </ul>
                                     </li>
-                                    <li class="">
-                                        <a href="{{ route('w.about') }}">About</a>
-                                    </li>
-                                    <li class="">
-                                        <a href="{{ route('w.index') }}">Blog</a>
-                                    </li>
-                                    <li >
-                                        <a class="staff-login" target="_blank" href="https://web.mail.eu-west-1.awsapps.com/">Staff Mail</a>
-                                    </li>
-                                    <li >
-                                        <a class="customer-login" href="{{ route('w.u.login') }}">Client Area</a>
-                                    </li>
-                                    
+                                    @endforeach
                                 </ul>
                             </nav>
                         </div>
@@ -177,7 +184,7 @@
                         <h4 class="title">Email</h4>
                         <em><a href="mailto:{{ $glabal_settings->support_email }}">{{ $glabal_settings->support_email }}</a></em>
                     </div>
-                    </div>
+                </div>
                 <div class="address-list">
                     <div class="info-icon">
                         <i class="flaticon-call"></i>
@@ -211,59 +218,61 @@
             <li class="">
                 <a href="{{ route('w.index') }}">Home</a>
             </li>
+            @foreach( $glabal_groups as $_group )
+            @php( $group_services = \App\Models\User::getServicesByGroup($_group['id']) )
             <li class="menu-item-has-children">
-                <a href="#">Services</a>
+                <a href="{{ route('w.s.category', ['id' => $_group['id']]) }}">{{ $_group['name'] }}</a>
                 <ul class="sub-menu">
-                    @foreach( $glabal_services as $_service  )
-                        <li><a href="{{ route('w.f.return', ['id' => $_service['id'] ]) }}">{{ $_service['name'] }}</a></li>
+                    @foreach( $group_services as $_service )
+                    <li><a href="{{ route('w.s.service', ['id' => $_service['id']]) }}">{{ $_service['name'] }}</a></li>
                     @endforeach
-                    <li><a href="{{ route('w.f.return', ['id' => 0]) }}">View all services</a></li>
                 </ul>
             </li>
+            @endforeach
             <li class="">
                 <a href="{{ route('w.about') }}">About</a>
             </li>
             <li class="">
                 <a href="{{ route('w.index') }}">Blog</a>
             </li>
-            <li >
+            <li>
                 <a class="staff-login" target="_blank" href="https://web.mail.eu-west-1.awsapps.com/">Staff Mail</a>
             </li>
             <li>
                 <a class="customer-login" href="{{ route('w.u.login') }}">Client Area</a>
             </li>
-        </ul> 
-        
+        </ul>
+
         <div class="canvas-contact">
-                <div class="address-area">
-                    <div class="address-list">
-                        <div class="info-icon">
-                            <i class="flaticon-location"></i>
-                        </div>
-                        <div class="info-content">
-                            <h4 class="title">Address</h4>
-                            <em>{{ $glabal_settings->address }}</em>
-                        </div>
+            <div class="address-area">
+                <div class="address-list">
+                    <div class="info-icon">
+                        <i class="flaticon-location"></i>
                     </div>
-                    <div class="address-list">
-                        <div class="info-icon">
-                            <i class="flaticon-email"></i>
-                        </div>
-                        <div class="info-content">
-                            <h4 class="title">Email</h4>
-                            <em><a href="mailto:{{ $glabal_settings->support_email }}">{{ $glabal_settings->support_email }}</a></em>
-                        </div>
-                    </div>
-                    <div class="address-list">
-                        <div class="info-icon">
-                            <i class="flaticon-call"></i>
-                        </div>
-                        <div class="info-content">
-                            <h4 class="title">Phone</h4>
-                            <em>{{ $glabal_settings->phone }}</em>
-                        </div>
+                    <div class="info-content">
+                        <h4 class="title">Address</h4>
+                        <em>{{ $glabal_settings->address }}</em>
                     </div>
                 </div>
+                <div class="address-list">
+                    <div class="info-icon">
+                        <i class="flaticon-email"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4 class="title">Email</h4>
+                        <em><a href="mailto:{{ $glabal_settings->support_email }}">{{ $glabal_settings->support_email }}</a></em>
+                    </div>
+                </div>
+                <div class="address-list">
+                    <div class="info-icon">
+                        <i class="flaticon-call"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4 class="title">Phone</h4>
+                        <em>{{ $glabal_settings->phone }}</em>
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
     <!-- Canvas Menu end -->

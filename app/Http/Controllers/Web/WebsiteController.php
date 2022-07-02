@@ -16,36 +16,48 @@ use App\Mail\AdminPayment;
 use App\Mail\CustomerPayment;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Service;
+use App\Models\ServiceGroup;
 use Storage;
 
 class WebsiteController extends Controller
 {
-    public function smstest(){
-        $msg = new SmsController();
-        // $resp = $msg->dispatchSms('0112384140');
-        // print_r($resp);
-    }
 
-    public function index(){
+    public function index()
+    {
         return view('web.welcome');
     }
-    public function email(){
-        $data = [
-            'pin' => 'A007jgjggjgjgjX',
-            'name' => 'Juma james',
-            'amount' => 100
-        ];
-        return view('emails.admin.payment', [ 'payload' => $data]);
-        // return view('emails.customer.welcome', [ 'payload' => $data]);
-    }
-    public function about(){
+
+    public function about()
+    {
         return view('web.about');
     }
-    
-    public function payform(){
+
+    public function single_service($id)
+    {
+        return view('web.single_service', [
+            'serviceData' => Service::find($id)
+        ]);
+    }
+
+    public function single_category($id)
+    {
+        $data = [];
+        $find = Service::where('enabled', true)->where('type', $id)->get();
+        if (is_object($find)) {
+            $data = $find->toArray();
+        }
+        return view('web.single_group', [
+            'categoryData' => ServiceGroup::find($id),
+            'services' => $data
+        ]);
+    }
+
+    public function payform()
+    {
         $billId = Session::get('bill_id');
         $bill = Bill::find($billId);
-        if(!$billId){
+        if (!$billId) {
             return redirect()->route('w.f.return', ['id' => 0]);
         }
         return view('checkout.pay', [
@@ -53,7 +65,8 @@ class WebsiteController extends Controller
             'amount' => $bill->amount
         ]);
     }
-    public function post_Pay(Request $request){
+    public function post_Pay(Request $request)
+    {
         try {
             $billId = $request->get('bill');
             $mpesaPhone = $request->get('MpesaPhone');
@@ -66,7 +79,7 @@ class WebsiteController extends Controller
                 config('app.app_mpesa_passkey'),
                 config('app.app_mpesa_env'),
                 config('app.app_mpesa_trans_type'),
-                10,//$bill->amount,
+                10, //$bill->amount,
                 $mpesaPhone,
                 route('mpesa.callback'),
                 $billId,
@@ -75,7 +88,7 @@ class WebsiteController extends Controller
             );
             $response = $mpesa->TriggerStkPush();
             $response = json_decode($response);
-            if($response->ResponseCode == '0'){
+            if ($response->ResponseCode == '0') {
                 Session::put('CheckoutRequestID', $response->CheckoutRequestID);
                 $bill->mpesa_checkout_id = $response->CheckoutRequestID;
                 $bill->save();
@@ -83,10 +96,11 @@ class WebsiteController extends Controller
             }
             return redirect()->back()->withInput()->with(['Err' => 'Error Sending Payment notification. Please try again']);
         } catch (\Throwable $th) {
-            return redirect()->back()->withInput()->with(['Err' => $th->getMessage() ]);
+            return redirect()->back()->withInput()->with(['Err' => $th->getMessage()]);
         }
     }
-    public function checkStatus(Request $request){
+    public function checkStatus(Request $request)
+    {
         try {
             $mpesa = new MpesaController(
                 config('app.app_mpesa_c_key'),
@@ -101,7 +115,7 @@ class WebsiteController extends Controller
             $response = $res;
             $responseCode = $response->ResponseCode;
             $resultCode = $response->ResultCode;
-            if( $resultCode == '0'){
+            if ($resultCode == '0') {
                 $bill = Bill::where('mpesa_checkout_id', $CheckoutRequestID)->first();
                 $kra = $bill->created_by;
                 $billStatus =  $bill->payment_status;
@@ -110,42 +124,43 @@ class WebsiteController extends Controller
                 $bill->mpesa_log = $json;
                 $bill->save();
                 $customer = Customer::where('pin', $kra)->first();
-                if( !is_object($customer) ){
-                    return response(['Err' => 'failed login', 'Url' => route('w.u.login') ], 200);
+                if (!is_object($customer)) {
+                    return response(['Err' => 'failed login', 'Url' => route('w.u.login')], 200);
                 }
                 Session::put('login_kra_pin', $customer);
-                $mail_data = [ 'amount' => $amount, 'name' => $customer->fname ];
-                if( !$billStatus ){
+                $mail_data = ['amount' => $amount, 'name' => $customer->fname];
+                if (!$billStatus) {
                     $customer_sms = 'Hi ' . $customer->fname . ', your payment of KES ' . number_format($amount) . ' to EasyTax has been received';
                     $advanta = new SmsController();
                     $advanta->dispatchSms($customer->phone, $customer_sms);
                     Mail::to(config('mail.from.admin'))->send(new AdminPayment($mail_data));
                     Mail::to($customer->email)->send(new CustomerPayment($mail_data));
                 }
-                return response(['Msg' => 'logged', 'Url' => route('w.u.orders') ], 200);
+                return response(['Msg' => 'logged', 'Url' => route('w.u.orders')], 200);
             }
             throw new \Exception("Payment not completed yet. Please wait and try again in 2minutes");
         } catch (\Throwable $th) {
             return response(['Err' => $th->getMessage()], 200);
         }
     }
-    protected function existsPayment($mpesaCode){
+    protected function existsPayment($mpesaCode)
+    {
         return Payment::where('reference', $mpesaCode)->count() > 0;
     }
-    public function callback(){
+    public function callback()
+    {
         try {
             $data = file_get_contents("php://input");
-            if(!$data) {
+            if (!$data) {
                 return response(['ResultCode' => '1', 'ResultDesc' => 'Failed']);
-            }
-            else{
+            } else {
                 Storage::disk('local')->prepend('mpesa.log', $data);
                 /** callback urls */
                 $paylog = json_decode($data, true);
                 $stkCallback = $paylog['Body']['stkCallback'];
                 $CheckoutRequestID = $stkCallback['CheckoutRequestID'];
                 $bill = Bill::where('mpesa_checkout_id', $CheckoutRequestID)->first();
-                if( $stkCallback['ResultCode'] == '0' )//success
+                if ($stkCallback['ResultCode'] == '0') //success
                 {
                     $userCheckedStatus = $bill->payment_status;
                     $bill->payment_status = true;
@@ -163,13 +178,13 @@ class WebsiteController extends Controller
                         'order' => $bill->id,
                         'mpesa_log' => json_encode($paylog)
                     ];
-                    if( !$this->existsPayment($mpesaCode) ){
+                    if (!$this->existsPayment($mpesaCode)) {
                         Payment::create($paymentEntry);
                     }
-                    if( !$userCheckedStatus ){
+                    if (!$userCheckedStatus) {
                         $orderMeta = Order::find($bill->order);
                         $customer = Customer::find($orderMeta->customer);
-                        $mail_data = [ 'amount' => $mpesaAmount, 'name' => $customer->fname ];
+                        $mail_data = ['amount' => $mpesaAmount, 'name' => $customer->fname];
                         $customer_sms = 'Hi ' . $customer->fname . ', your payment of KES ' . number_format($mpesaAmount) . ' to EasyTax has been received.';
                         $advanta = new SmsController();
                         $advanta->dispatchSms($customer->phone, $customer_sms);
@@ -185,7 +200,25 @@ class WebsiteController extends Controller
             return response(['ResultCode' => '0', 'ResultDesc' => 'Accepted Successfully']);
         }
     }
-    protected function formatPhone($phone){
+    protected function formatPhone($phone)
+    {
         return '254' . substr($phone, -9);
+    }
+
+    public function smstest()
+    {
+        $msg = new SmsController();
+        // $resp = $msg->dispatchSms('0112384140');
+        // print_r($resp);
+    }
+    public function email()
+    {
+        $data = [
+            'pin' => 'A007jgjggjgjgjX',
+            'name' => 'Juma james',
+            'amount' => 100
+        ];
+        return view('emails.admin.payment', ['payload' => $data]);
+        // return view('emails.customer.welcome', [ 'payload' => $data]);
     }
 }

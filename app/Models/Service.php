@@ -14,6 +14,8 @@ class Service extends Model
         'artwork',
         'price',
         'type',
-        'enabled'
+        'enabled',
+        'description',
+        'type_name'
     ];
 }
