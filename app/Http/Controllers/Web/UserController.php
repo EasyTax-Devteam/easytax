@@ -29,7 +29,8 @@ class UserController extends Controller
         return view('customer.orders', [
             'orders' => $this->getOrders($customer->id),
             'bills' => $this->getBills($orderIDs),
-            'services' => $this->getServices()
+            'services' => $this->getServices(),
+            'customer' => $customer
         ]);
     }
     protected function getServices()
