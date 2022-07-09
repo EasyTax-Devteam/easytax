@@ -102,7 +102,6 @@ print_r($customer);
                   @php( $service = \App\Models\Service::find($_order['service']) )
                   <tr>
                     <td class="cell">#{{ $_order['id'] }}</td>
-                    <td class="cell">{{ $_order['pin'] }}</td>
                     <td class="cell">{{ $service->name }}</td>
                     <td class="cell">KES {{ number_format($service->price, 2)  }}</td>
                     <td class="cell">KES {{ number_format($billsum, 2)  }}</td>
