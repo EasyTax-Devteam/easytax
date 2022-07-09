@@ -49,6 +49,86 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected static function keyWords()
+    {
+        return [
+            'PIN', 'KRA', 'DST', 'ID', 'CR12', 'USD', 'UNICEF', 'MRI', 'ITAX', 'VAT', 'WHT', 'PAYE', 'KEBS', 'MOH', 'IDF', 'ISM', 'COC', 'PVOC', 'P9', 'NITA', 'NSSF', 'NHIF'
+        ];
+    }
+
+    protected static function getBracketSection($sentence)
+    {
+        $sentence = trim($sentence);
+        $sentenceArray = explode("(", $sentence);
+        if (count($sentenceArray) == 2) {
+            $lastItem = str_replace(")", "", $sentenceArray[1]);
+            return '(<span class="label-hint">' . $lastItem . '</span>)';
+        }
+        if (count($sentenceArray) == 3) {
+            $lastItem = str_replace(")", "", $sentenceArray[1]);
+            return '(<span class="label-hint">' . $lastItem . '</span>)';
+        }
+        return '';
+    }
+
+    protected static function getLabelSection($sentence)
+    {
+        $sentence = trim($sentence);
+        $sentenceArray = explode("(", $sentence);
+
+        if (count($sentenceArray) == 1) {
+            $rtn = implode(" ", $sentenceArray);
+            return $rtn;
+        }
+
+        if (count($sentenceArray) == 2) {
+            $sentenceArray = array_slice($sentenceArray, 0, 1);
+            $rtn = implode(" ", $sentenceArray);
+            return $rtn;
+        }
+
+        if (count($sentenceArray) > 2) {
+            $sentenceArray = array_slice($sentenceArray, 0, count($sentenceArray) - 1);
+            $rtn = implode(" ", $sentenceArray);
+            return $rtn;
+        }
+    }
+
+    protected static function mapShortForms($sentence)
+    {
+        $sentenceArray = explode(" ", strtolower($sentence));
+        $trimmed = [];
+        foreach ($sentenceArray as $key => $value) {
+            $value = trim($value);
+            if (in_array(strtoupper($value), self::keyWords())) {
+                $trimmed[$key] = strtoupper($value);
+            } else {
+                $trimmed[$key] = ucfirst(strtolower($value));
+            }
+        }
+        return implode(" ", $trimmed);
+    }
+
+    public static function formatViewable($sentence)
+    {
+        $sentence = str_replace("/", " or ", $sentence);
+        $sentenceArray = explode(" ", strtolower($sentence));
+        $trimmed = [];
+        foreach ($sentenceArray as $key => $value) {
+            $value = trim($value);
+            if (in_array(strtoupper($value), self::keyWords())) {
+                $trimmed[$key] = strtoupper($value);
+            } else {
+                $trimmed[$key] = ucfirst(strtolower($value));
+            }
+        }
+        $finalSentence = implode(" ", $trimmed);
+        $label = str_replace(")", "", self::getLabelSection($finalSentence));
+        $hint = self::mapShortForms(self::getBracketSection($finalSentence));
+        $merged = $label . $hint;
+        return str_replace("))", ")", $merged);
+    }
+
     public static function showFormNotice($errors)
     {
         if (Session::get('Msg')) {

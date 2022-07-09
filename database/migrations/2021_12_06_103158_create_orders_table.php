@@ -15,17 +15,10 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('customer');
-            $table->string('pin');
-            $table->string('itax_password');
-            $table->string('has_taxable_income');
-            $table->string('paying_kenyan_insurance_policies')->nullable();
-            $table->text('kenyan_insurance_policies_paid')->nullable();
-            $table->string('paid_mortgage_for_tax_year')->nullable();
-            $table->text('p_nine_form')->nullable();
-            $table->text('income_and_expenses_schedule')->nullable();
-            $table->text('financial_statements')->nullable();
-            $table->string('service');
+            $table->string('customer', 10);
+            $table->longText('order_requested');
+            $table->string('service', 10);
+            $table->string('progress', 25)->default('not_assigned');
             $table->timestamps();
         });
     }

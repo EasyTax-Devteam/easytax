@@ -97,6 +97,34 @@
             }
         }
 
+        @media only screen and (min-width: 991px) {
+            .label-wrap {
+                min-height: 20px;
+            }
+        }
+
+        .label-hint {
+            font-style: italic;
+            color: #498aca;
+        }
+
+        .input-hint {
+            color: #f87601;
+        }
+
+        .mandaory-note {
+            color: #ed2526;
+            font-weight: 600;
+        }
+
+        .service-button {
+            background-color: #1f3766 !important;
+            border-color: #1f3766 !important;
+            padding: 8px 30px !important;
+            border-radius: 20px !important;
+        }
+
+
         .rs-services.style3 .services-item .services-content .services-title,
         .rs-services.style5 .flip-box-inner .flip-box-wrap .front-part .front-content-part .front-title-part .title,
         .rs-services.style5 .flip-box-inner .flip-box-wrap .back-part .back-front-content .back-title-part .back-title,
@@ -112,6 +140,24 @@
             border-top: none !important;
             border-left: none !important;
             border-right: solid 2px #dbd9d9 !important;
+        }
+
+        .sec-sub-title {
+            font-size: 18px;
+            line-height: 30px;
+            font-weight: 700;
+            color: #498aca;
+            margin: 0;
+            position: relative;
+            padding-top: 28px;
+        }
+
+        .required {
+            color: red;
+        }
+
+        ::placeholder {
+            color: #d0cccc !important;
         }
     </style>
 
@@ -204,7 +250,7 @@
                         <h3 class="footer-title">Our Services</h3>
                         <ul class="site-map">
                             @foreach( $glabal_groups as $_one )
-                            <li><a href="#">{{ $_one['name'] }}</a></li>
+                            <li><a href="{{ route('w.s.category', ['id' => $_one['id']]) }}">{{ $_one['name'] }}</a></li>
                             @endforeach
                         </ul>
                     </div>

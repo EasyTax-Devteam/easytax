@@ -158,6 +158,7 @@
                             <table class="table app-table-hover mb-0 text-left">
                                 <thead>
                                     <tr>
+                                        <th class="cell">{{" "}}</th>
                                         <th class="cell">service</th>
                                         <th class="cell">field_label</th>
                                         <th class="cell">field_is_required</th>
@@ -169,11 +170,33 @@
                                         <th class="cell">field_is_multiple</th>
                                         <th class="cell">field_max_uploads</th>
                                         <th class="cell">field_options_json</th>
-                                        <th class="cell">field_form_code</th>
+                                        <th class="cell">order</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    @foreach( $forms as $key => $_form )
+                                    <tr>
+                                        <td class="cell">
+                                            <a class="btn-sm app-btn-secondary" href="{{ route('e.tax.view.form', ['id' => $_form['id'] ]) }}">Edit</a>
+                                        </td>
+                                        <td class="cell">#{{ $_form['service'] }}</td>
+                                        <td class="cell">{{ $_form['field_label'] }}</td>
+                                        <td class="cell">
+                                            <span class="badge {{ $_form['field_is_required'] == 0 ? 'bg-danger' : 'bg-success' }}">{{ $_form['field_is_required'] == 0 ? 'No' : 'Yes' }}</span>
+                                        </td>
+                                        <td class="cell">{{ $_form['field_name'] }}</td>
+                                        <td class="cell">{{ $_form['field_id'] }}</td>
+                                        <td class="cell">{{ $_form['field_placeholder'] }}</td>
+                                        <td class="cell">{{ $_form['field_default_value'] }}</td>
+                                        <td class="cell">{{ $_form['field_type'] }}</td>
+                                        <td class="cell">
+                                            <span class="badge {{ $_form['field_is_multiple'] == 0 ? 'bg-danger' : 'bg-success' }}">{{ $_form['field_is_multiple'] == 0 ? 'No' : 'Yes' }}</span>
+                                        </td>
+                                        <td class="cell">{{ $_form['field_max_uploads'] }}</td>
+                                        <td class="cell">{{ $_form['field_options_json'] }}</td>
+                                        <td class="cell">{{ $_form['order'] }}</td>
+                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

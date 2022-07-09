@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\ServiceGroupsController;
+use App\Http\Controllers\User\ServiceFormController;
 use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\ServiceGroup;
@@ -60,9 +61,11 @@ class ServiceController extends Controller
     public function view($id)
     {
         $serviceGroup = new ServiceGroupsController();
+        $forms = new ServiceFormController();
         return view('user.edit_service', [
             'service' => Service::find($id),
             'groups' => $serviceGroup->getServiceGroups(),
+            'forms' => $forms->getServiceFields($id),
             'booleans' => [
                 0 => 'No',
                 1 => 'Yes'
