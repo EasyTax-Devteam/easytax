@@ -39,10 +39,10 @@ Route::group(['prefix' => 'categories'], function () {
 
 /** user */
 Route::group(['prefix' => 'users'], function () {
-    Route::get('/home', [UserController::class, 'index'])->name('w.u.orders');
-    Route::get('/access', [UserController::class, 'login'])->name('w.u.login');
-    Route::post('/post/access', [UserController::class, 'post_login'])->name('w.u.post_login');
-    Route::get('/logout/app', [UserController::class, 'logout'])->name('w.u.logout');
+    Route::get('/home', [App\Http\Controllers\Web\UserController::class, 'orders'])->name('w.u.orders');
+    Route::get('/access', [App\Http\Controllers\Web\UserController::class, 'login'])->name('w.u.login');
+    Route::post('/post/access', [App\Http\Controllers\Web\UserController::class, 'post_login'])->name('w.u.post_login');
+    Route::get('/logout/app', [App\Http\Controllers\Web\UserController::class, 'logout'])->name('w.u.logout');
 });
 
 /** Admin */
