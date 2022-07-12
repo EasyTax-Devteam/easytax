@@ -91,15 +91,18 @@ class WebsiteController extends Controller
             foreach ($serviceFormFields as $_field) :
                 switch (strtolower($_field['field_type'])) {
                     case 'text':
-                        $input[$_field['field_name']] = trim($request->get($_field['field_name']));
-                        if (!array_key_exists('pin', $newCustomer)) {
-                            if (str_contains($_field['field_name'], 'kra_pin')) {
-                                $newCustomer['pin'] = strtoupper(trim($request->get($_field['field_name'])));
+                        $checkker = $request->get($_field['field_name']);
+                        if (strlen($checkker) > 0) {
+                            $input[$_field['field_name']] = trim($request->get($_field['field_name']));
+                            if (!array_key_exists('pin', $newCustomer)) {
+                                if (str_contains($_field['field_name'], 'kra_pin')) {
+                                    $newCustomer['pin'] = strtoupper(trim($request->get($_field['field_name'])));
+                                }
                             }
-                        }
-                        if (!array_key_exists('itax_password', $newCustomer)) {
-                            if (str_contains($_field['field_name'], '_password')) {
-                                $newCustomer['itax_password'] = strtoupper(trim($request->get($_field['field_name'])));
+                            if (!array_key_exists('itax_password', $newCustomer)) {
+                                if (str_contains($_field['field_name'], '_password')) {
+                                    $newCustomer['itax_password'] = strtoupper(trim($request->get($_field['field_name'])));
+                                }
                             }
                         }
                         break;
@@ -186,6 +189,9 @@ class WebsiteController extends Controller
             endforeach;
 
             $input['additional_instructions'] = $request->get('additional_instructions');
+            if (count($input) < 2) {
+                return redirect()->back()->withInput()->with(['Err' => 'Error. You must provide some information to process the order ']);
+            }
 
             $customerId = null;
             $existsUser = $this->existsUser($newCustomer);
@@ -301,7 +307,7 @@ class WebsiteController extends Controller
                 if (!is_object($customer)) {
                     return response(['Err' => 'failed login', 'Url' => route('w.u.login')], 200);
                 }
-                Session::put('login_kra_pin', $customer->pin);
+                Session::put('login_kra_pin', $customer);
                 $mail_data = ['amount' => $amount, 'name' => $customer->fname];
                 if ($bill->payment_status) {
                     $customer_sms = 'Hi ' . $customer->fname . ', your payment of KES ' . number_format($amount) . ' to EasyTax has been received';

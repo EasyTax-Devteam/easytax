@@ -56,6 +56,11 @@ class User extends Authenticatable
         ];
     }
 
+    public static function nameTolabel($sentence)
+    {
+        $sentence = ucwords(str_replace("_", " ", $sentence));
+        return self::mapShortForms($sentence);
+    }
     protected static function getBracketSection($sentence)
     {
         $sentence = trim($sentence);

@@ -26,6 +26,19 @@
         .tiny {
             font-size: 8px !important;
         }
+
+        .btn-custom {
+            color: #fff !important;
+            background-color: #1e3665;
+            margin-bottom: 13px;
+            min-width: 200px;
+            border-radius: 20px;
+        }
+
+        .custom-label-adm {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 

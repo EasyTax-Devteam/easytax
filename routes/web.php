@@ -40,6 +40,10 @@ Route::group(['prefix' => 'categories'], function () {
 /** user */
 Route::group(['prefix' => 'users'], function () {
     Route::get('/home', [App\Http\Controllers\Web\UserController::class, 'orders'])->name('w.u.orders');
+    Route::get('/pay/{id}', [App\Http\Controllers\Web\UserController::class, 'userPayform'])->name('w.u.pay.form');
+    Route::post('/pay/form', [App\Http\Controllers\Web\UserController::class, 'userPostPay'])->name('w.u.post.pay');
+    Route::post('/check/status', [App\Http\Controllers\Web\UserController::class, 'userCheckStatus'])->name('w.u.check.pay.status');
+
     Route::get('/access', [App\Http\Controllers\Web\UserController::class, 'login'])->name('w.u.login');
     Route::post('/post/access', [App\Http\Controllers\Web\UserController::class, 'post_login'])->name('w.u.post_login');
     Route::get('/logout/app', [App\Http\Controllers\Web\UserController::class, 'logout'])->name('w.u.logout');

@@ -312,11 +312,13 @@
 </div>
 <!--//app-content-->
 @endif
+
 @endsection
 
 
 @section('page_scripts')
 
+@if( \Auth::user()->root == 1)
 @php( $orderLables = implode(',', $ordersGraph['label']))
 @php( $orderDatas = implode(',', $ordersGraph['data']))
 
@@ -496,4 +498,5 @@
 
     });
 </script>
+@endif
 @endsection

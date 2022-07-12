@@ -1,12 +1,12 @@
 @extends('layouts.inner')
 
 @section('navigation')
+@include('inner.user-nav', ['customer' => $customer ])
 @endsection
 
 
 @section('content')
 
-{{print_r($customer);}}
 <div class="app-content pt-3 p-md-3 p-lg-4">
   <div class="container-xl">
     <div class="row g-3 mb-4 align-items-center justify-content-between">
@@ -52,7 +52,7 @@
                     </td>
                     <td class="cell">
                       @if( $_bill['payment_status'] != 1 )
-                      <a href="#" class="badge bg-success">Pay Now</a>
+                      <a href="{{ route('w.u.pay.form', ['id' => $_bill['id']]) }}" class="badge bg-success">Pay Now</a>
                       @endif
                     </td>
                   </tr>
@@ -90,7 +90,6 @@
                 <thead>
                   <tr>
                     <th class="cell">#Order Id</th>
-                    <th class="cell">KRA pin</th>
                     <th class="cell">Service</th>
                     <th class="cell">Cost</th>
                     <th class="cell">Total bills</th>
