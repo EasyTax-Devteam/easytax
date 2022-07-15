@@ -221,7 +221,7 @@ class WebsiteController extends Controller
                 $mail_data = ['name' => $newCustomer['fname'], 'pin' => $newCustomer['pin']];
                 $customer_sms = 'Hi ' . $newCustomer['fname'] . ', your EasyTax account is set. Visit ' . config('app.url') . 'users/access to view your orders';
                 $advanta = new SmsController();
-                // $advanta->dispatchSms($newCustomer['phone'], $customer_sms);
+                $advanta->dispatchSms($newCustomer['phone'], $customer_sms);
                 Mail::to($newCustomer['email'])->send(new CustomerWelcome($mail_data));
             }
             DB::commit();
@@ -312,7 +312,7 @@ class WebsiteController extends Controller
                 if ($bill->payment_status) {
                     $customer_sms = 'Hi ' . $customer->fname . ', your payment of KES ' . number_format($amount) . ' to EasyTax has been received';
                     $advanta = new SmsController();
-                    // $advanta->dispatchSms($customer->phone, $customer_sms);
+                    $advanta->dispatchSms($customer->phone, $customer_sms);
                     Mail::to(config('mail.from.admin'))->send(new AdminPayment($mail_data));
                     Mail::to($customer->email)->send(new CustomerPayment($mail_data));
                 }
