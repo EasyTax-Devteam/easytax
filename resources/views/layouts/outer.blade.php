@@ -38,6 +38,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}"> <!-- This stylesheet dynamically changed from style.less -->
     <!-- responsive css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
     <style>
         h1 {
             color: #ffffff;
@@ -158,6 +161,26 @@
 
         ::placeholder {
             color: #d0cccc !important;
+        }
+
+
+        .float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+        }
+
+        .my-float {
+            margin-top: 16px;
         }
     </style>
 
@@ -314,6 +337,11 @@
         </div>
     </footer>
     <!-- Footer End -->
+
+
+    <a href="https://api.whatsapp.com/send?phone={{ config('app.whatsapp') }}&text=Hi%20Admin%2C%20I%20need%20help%20with" class="float" target="_blank">
+        <i class="fa fa-whatsapp my-float"></i>
+    </a>
 
     <!-- start scrollUp  -->
     <div id="scrollUp" class="orange-color">

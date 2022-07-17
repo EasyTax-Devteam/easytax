@@ -14,6 +14,9 @@ return [
     */
     'name' => env('APP_NAME', 'Laravel'),
 
+
+    'whatsapp' => env('WHATSAPP'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -82,9 +85,9 @@ return [
     'app_mpesa_c2b_paybill' => env('APP_MPESA_C2B_PAYBILL'),
 
 
-    
+
     /** SMS configurations */
-  
+
     'sms_sender_id' => env('SENDER_ID'),
     'sms_key' => env('SMS_KEY'),
     'sms_url' => env('SMS_URL'),
