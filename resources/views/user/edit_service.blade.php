@@ -65,7 +65,7 @@
                                 <label for="setting-input-3" class="form-label">Service Artwork
                                     <img src="{{ $service->artwork }}" style="width:100px;height:auto" />
                                 </label>
-                                <input required type="file" class="form-control" id="setting-input-2" name="artwork">
+                                <input type="file" class="form-control" id="setting-input-2" name="artwork">
                             </div>
                             <div class="mb-3 col-md-12">
                                 <label for="setting-input-3" class="form-label">Description</label>
