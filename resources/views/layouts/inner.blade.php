@@ -74,6 +74,8 @@
     <!-- Page Specific JS -->
     <script src="{{ asset('auth/assets/js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+
     @yield('page_scripts')
 
     <script>
@@ -84,6 +86,44 @@
                 height: 300
             });
         });
+    </script>
+
+    <script>
+        setTimeout(() => {
+            $('.check-status').show();
+        }, 30000);
+
+        checkStatus = function() {
+            $.LoadingOverlay('show');
+            $.ajax({
+                method: 'post',
+                data: 'data=none',
+                url: "{{ route('w.u.check.pay.status') }}",
+                success: function(data) {
+                    $.LoadingOverlay('hide');
+                    if (data.hasOwnProperty('Url') && data.hasOwnProperty('Msg')) {
+                        $('.alert-success').text(data.Msg);
+                        setTimeout(() => {
+                            window.location.href = data.Url;
+                        }, 3000);
+                        return;
+                    }
+                    if (data.hasOwnProperty('Url')) {
+                        window.location.href = data.Url;
+                        return;
+                    }
+                    if (data.hasOwnProperty('Err')) {
+                        alert(data.Err);
+                        return;
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $.LoadingOverlay('hide');
+                    console.log('ajax errors', xhr, status, error);
+                    alert(error);
+                }
+            });
+        }
     </script>
 
 </body>

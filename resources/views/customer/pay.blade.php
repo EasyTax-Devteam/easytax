@@ -28,6 +28,21 @@
                                 @csrf
                                 <div class="mb-2 col-md-12">
                                     {{ \App\Models\User::showFormNotice($errors) }}
+
+                                    @php( $wasSuccess = session('Msg') )
+                                    @if( strlen($wasSuccess) > 0 )
+                                    <p>If you did not get the automatic notification please use the steps below to make the payment:</p>
+                                    <ol>
+                                        <li>Go to M-PESA menu on your phone</li>
+                                        <li>Go to Lipa na M-PESA, PayBill option.</li>
+                                        <li>Enter the business number 4080087</li>
+                                        <li>Enter account number {{ $bill }}</li>
+                                        <li>Enter amount kes {{ $amount }}</li>
+                                        <li>Enter M-PESA pin.</li>
+                                        <li>SMS confirmation received on phone</li>
+                                    </ol>
+                                    @endif
+
                                     <p class="mt-4">Your Mpesa will be debited <b>KES {{ number_format($amount, 0)}}</b></p>
                                 </div>
 
@@ -38,18 +53,10 @@
                                 </div>
                                 <div class="col-md-4" style="margin-top: 5px !important;">
                                     <button type="submit" class="btn app-btn-primary">Pay Now</button>
+                                    <button type="button" class="btn-link btn check-status ml-4" style="display: none;" onclick="checkStatus()">Finished Paying? Check payment status here</button>
                                 </div>
                             </form>
                             <hr>
-                            <form class="settings-form row" method="post" action="{{ route('w.u.check.pay.status') }}">
-                                @csrf
-                                <div class="mb-2 col-md-12">
-                                    <p class="mt-4">Finished Paying? Click below button to check status.</b></p>
-                                </div>
-                                <div class="col-md-4" style="margin-top: 5px !important;">
-                                    <button type="submit" class="btn app-btn-primary">Check Payment Status</button>
-                                </div>
-                            </form>
 
                             <hr>
 

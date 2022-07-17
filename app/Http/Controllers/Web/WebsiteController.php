@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\CustomerWelcome;
 use App\Mail\AdminPayment;
 use App\Mail\CustomerPayment;
+use App\Mail\AdminServiceRequest;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Service;
@@ -224,6 +225,8 @@ class WebsiteController extends Controller
                 $advanta->dispatchSms($newCustomer['phone'], $customer_sms);
                 Mail::to($newCustomer['email'])->send(new CustomerWelcome($mail_data));
             }
+            Mail::to(config('mail.from.admin'))->send(new AdminServiceRequest([]));
+
             DB::commit();
             return redirect()->route('w.f.payform');
         } catch (\Throwable $th) {

@@ -387,7 +387,7 @@
         //
         setTimeout(() => {
             $('.check-status').show();
-        }, 6000);
+        }, 15000);
 
         checkStatus = function() {
             $.LoadingOverlay('show');

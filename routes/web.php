@@ -10,6 +10,7 @@ use App\Http\Controllers\User\ServiceFormController;
 use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\SettingController;
 use App\Http\Controllers\User\CustomerController;
+use App\Http\Controllers\Auth\CustomPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,6 +110,9 @@ Route::group(['prefix' => 'easy/admin'], function () {
 
     Route::get('/log/out', [UserController::class, 'exit'])->name('app.exit');
 });
+
+
+Route::post('/custom/reset/password', [CustomPasswordController::class, 'reset'])->name('custom.password.update');
 
 
 Route::group(['prefix' => 'callbacks'], function () {

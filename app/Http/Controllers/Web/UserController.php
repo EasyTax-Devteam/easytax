@@ -102,12 +102,14 @@ class UserController extends Controller
             $resultCode = $response->ResultCode;
             if ($resultCode == '0') {
                 $bill = Bill::where('mpesa_checkout_id', $CheckoutRequestID)->first();
-                $customerId = $bill->created_by;
                 $amount = $bill->amount;
                 $bill->payment_status = true;
                 $bill->mpesa_log = $json;
                 $bill->save();
-                $customer = Customer::find($customerId);
+                $customer = Session::get('login_kra_pin');
+                if (!is_object($customer)) {
+                    return response(['Msg' => 'Session expired', 'Url' => route('w.u.login')], 200);
+                }
                 $mail_data = ['amount' => $amount, 'name' => $customer->fname];
                 if ($bill->payment_status) {
                     $customer_sms = 'Hi ' . $customer->fname . ', your payment of KES ' . number_format($amount) . ' to EasyTax has been received';
@@ -116,11 +118,11 @@ class UserController extends Controller
                     Mail::to(config('mail.from.admin'))->send(new AdminPayment($mail_data));
                     Mail::to($customer->email)->send(new CustomerPayment($mail_data));
                 }
-                return redirect()->back()->withInput()->with(['Msg' => 'Payment was successful. Thank you.']);
+                return response(['Msg' => 'Payment was successful. Thank you', 'Url' => route('w.u.orders')], 200);
             }
             throw new \Exception("Payment not completed yet. Please wait and try again");
         } catch (\Throwable $th) {
-            return redirect()->back()->withInput()->with(['Err' => $th->getMessage()]);
+            return response(['Err' => $th->getMessage()], 200);
         }
     }
 
@@ -164,6 +166,10 @@ class UserController extends Controller
 
     public function login()
     {
+        $customer = Session::get('login_kra_pin');
+        if (is_object($customer) && strlen($customer->id) > 0) {
+            return redirect()->route('w.u.orders');
+        }
         return view('customer.login');
     }
 

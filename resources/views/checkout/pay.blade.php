@@ -23,6 +23,19 @@
             <form method="post" action="{{ route('w.f.payment') }}">
                 @csrf
                 {{ \App\Models\User::showFormNotice($errors) }}
+                @php( $wasSuccess = session('Msg') )
+                @if( strlen($wasSuccess) > 0 )
+                <p>If you did not get the automatic notification please use the steps below to make the payment:</p>
+                <ol>
+                    <li>Go to M-PESA menu on your phone</li>
+                    <li>Go to Lipa na M-PESA, PayBill option.</li>
+                    <li>Enter the business number 4080087</li>
+                    <li>Enter account number {{ $bill }}</li>
+                    <li>Enter amount kes {{ $amount }}</li>
+                    <li>Enter M-PESA pin.</li>
+                    <li>SMS confirmation received on phone</li>
+                </ol>
+                @endif
                 <p class="mt-4">Your Mpesa will be debited <b>KES {{ number_format($amount, 0)}}</b></p>
                 <div class="billing-fields">
                     <div class="checkout-title">
