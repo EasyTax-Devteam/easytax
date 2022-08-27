@@ -72,7 +72,12 @@
                         <div class="services-text">
                             <br>
                             <h3 class="title"><a href="{{ route('w.s.service', ['id' => $_service['id']]) }}">{{ $_service['name'] }}</a></h3>
-                            <p class="services-txt">from <b>KES {{ number_format($_service['price'], 0) }}</b></p>
+
+                            @if(intval($_service['price']) == 0 )
+                            <p class="services-txt">from <b>KES {{ number_format($_service['deposit'], 0) }}</b></p>
+                            @else
+                            <p class="services-txt">For <b>KES {{ number_format($_service['price'], 0) }}</b></p>
+                            @endif
                             <br>
                             <a class="readon consultant discover" href="{{ route('w.s.service', ['id' => $_service['id']]) }}">
                                 Request Service

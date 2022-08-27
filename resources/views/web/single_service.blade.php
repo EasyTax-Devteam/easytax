@@ -10,17 +10,47 @@
     .animate-style {
         display: none !important;
     }
+
+    .title-price {
+        font-size: 20px;
+        font-weight: 500;
+        color: #478aca;
+    }
+
+    .price-bolder {
+        font-size: 20px;
+        font-weight: 700;
+    }
 </style>
 <div class="rs-about style2 pt-50 pb-50 md-pt-70 md-pb-70">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 ">
                 <div class="sec-title">
-                    <h2 class="title pb-22">
+                    <h2 class="title pb-3">
                         {{
                             $serviceData->name 
                         }}
                     </h2>
+
+
+                    @if(intval($serviceData->price) == 0 )
+                    <h2 class="title-price pb-2">
+                        Deposit: <span class="price-bolder">
+                            KES {{ number_format($serviceData->deposit, 0) }}
+                        </span>
+                    </h2>
+                    @else
+
+                    <h2 class="title-price pb-2">
+                        Price: <span class="price-bolder">
+                            KES {{ number_format($serviceData->price, 0) }}
+                        </span>
+                    </h2>
+
+                    @endif
+
+
                     {!!
                     $serviceData->description
                     !!}
@@ -41,7 +71,11 @@
                     {{ \App\Models\User::showFormNotice($errors) }}
                     <div class="mb-5 col-md-3">
                         <input type="hidden" name="service" value="{{ $serviceData->id }}" />
+                        @if(intval($serviceData->price) == 0 )
+                        <input type="hidden" name="amount" value="{{ $serviceData->deposit }}" />
+                        @else
                         <input type="hidden" name="amount" value="{{ $serviceData->price }}" />
+                        @endif
                         <div class="label-wrap"> <label class="form-label"><sup class="required">*</sup> Email Address </label></div>
                         <input required type="email" placeholder="jane.doe@example.com" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
                         @error('email')

@@ -263,7 +263,7 @@ class WebsiteController extends Controller
                 config('app.app_mpesa_passkey'),
                 config('app.app_mpesa_env'),
                 config('app.app_mpesa_trans_type'),
-                10, //$bill->amount,
+                $bill->amount,
                 $mpesaPhone,
                 route('mpesa.callback'),
                 $billId,
