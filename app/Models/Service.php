@@ -12,10 +12,12 @@ class Service extends Model
     protected $fillable = [
         'name',
         'artwork',
+        'deposit',
         'price',
         'type',
         'enabled',
         'description',
-        'type_name'
+        'type_name',
+        'delivery_time'
     ];
 }

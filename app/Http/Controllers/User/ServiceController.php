@@ -35,7 +35,8 @@ class ServiceController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'price' => 'required|string',
+            'deposit' => 'required|integer',
+            'price' => 'required|integer',
             'type' => 'required|string',
         ]);
         if ($validator->fails()) {
@@ -78,7 +79,8 @@ class ServiceController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'price' => 'required|string',
+            'deposit' => 'required|integer',
+            'price' => 'required|integer',
             'type' => 'required|string',
         ]);
         if ($validator->fails()) {

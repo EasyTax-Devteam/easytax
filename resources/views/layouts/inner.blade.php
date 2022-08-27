@@ -83,7 +83,7 @@
             $('.summernote').summernote({
                 placeholder: 'Type your text here',
                 tabsize: 2,
-                height: 300
+                height: 150
             });
         });
     </script>

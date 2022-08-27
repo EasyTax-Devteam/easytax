@@ -22,6 +22,11 @@
 
 @if( \Auth::user()->root == 1)
 
+<style>
+    .form-control {
+        min-width: 100%;
+    }
+</style>
 <div class="app-content pt-3 p-md-3 p-lg-4">
     <div class="container-xl">
         <div class="row g-3 mb-4 align-items-center justify-content-between">
@@ -128,26 +133,37 @@
                         <form class="settings-form row" method="post" enctype="multipart/form-data" action="{{ route('e.tax.add.service') }}">
                             @csrf
                             {{ \App\Models\User::showFormNotice($errors) }}
-                            <div class="mb-3 col-md-3">
+                            <div class="mb-3 col-md-4">
                                 <label for="setting-input-1" class="form-label">Name <span class="ms-2" data-container="body" data-bs-toggle="popover" data-trigger="hover" data-placement="top" data-content="">
                                     </span>
                                 </label>
                                 <input required type="text" name="name" class="form-control" id="setting-input-1" value="">
                             </div>
-                            <div class="mb-3 col-md-3">
-                                <label for="setting-input-2" class="form-label">Price in KES</label>
+                            <div class="mb-3 col-md-4">
+                                <label for="setting-input-2" class="form-label">
+                                    Deposit(if price is not known)
+                                </label>
+                                <input required type="number" class="form-control" id="setting-input-2" name="deposit">
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label for="setting-input-2" class="form-label">Exact Price(Leave deposit blank)</label>
                                 <input required type="number" class="form-control" id="setting-input-2" name="price">
                             </div>
-                            <div class="mb-3 col-md-3">
+
+                            <div class="mb-3 col-md-4">
+                                <label for="setting-input-2" class="form-label">Delivery Time</label>
+                                <input required type="text" class="form-control" id="setting-input-2" placeholder="24 Hours" name="delivery_time">
+                            </div>
+                            <div class="mb-3 col-md-4">
                                 <label for="setting-input-3" class="form-label">Service Group</label>
-                                <select class="form-select w-auto" name="type" required>
+                                <select class="form-control w-auto" name="type" required>
                                     <option value="">Select group</option>
                                     @foreach( $groups as $_grp )
                                     <option value="{{ $_grp['id'] }}">{{ $_grp['name'] }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="mb-3 col-md-3">
+                            <div class="mb-3 col-md-4">
                                 <label for="setting-input-3" class="form-label">Service Artwork</label>
                                 <input required type="file" class="form-control" id="setting-input-2" name="artwork">
                             </div>

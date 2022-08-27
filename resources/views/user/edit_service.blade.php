@@ -26,7 +26,7 @@
     <div class="container-xl">
         <div class="row g-3 mb-4 align-items-center justify-content-between">
             <div class="col-auto">
-                <h1 class="app-page-title mb-0">Edit Service Group</h1>
+                <h1 class="app-page-title mb-0">Edit Service</h1>
             </div>
         </div>
         <!--//row-->
@@ -44,9 +44,20 @@
                                 </label>
                                 <input required type="text" name="name" class="form-control" id="setting-input-1" value="{{  $service->name }}">
                             </div>
+
                             <div class="mb-3 col-md-4">
-                                <label for="setting-input-2" class="form-label">Price in KES</label>
+                                <label for="setting-input-2" class="form-label">
+                                    Deposit(if price is not known)
+                                </label>
+                                <input required type="number" class="form-control" id="setting-input-2" name="deposit" value="{{  $service->deposit }}">
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label for="setting-input-2" class="form-label">Exact Price(Leave deposit blank)</label>
                                 <input required type="number" class="form-control" id="setting-input-2" name="price" value="{{  $service->price }}">
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label for="setting-input-2" class="form-label">Delivery Time</label>
+                                <input required type="text" class="form-control" id="setting-input-2" placeholder="24 Hours" name="delivery_time" value="{{  $service->delivery_time }}">
                             </div>
                             <div class="mb-3 col-md-4">
                                 <label for="setting-input-3" class="form-label">Service Group</label>
