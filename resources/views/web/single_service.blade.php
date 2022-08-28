@@ -36,9 +36,9 @@
 
                     @if(intval($serviceData->price) == 0 )
                     <h2 class="title-price pb-2">
-                        Deposit: <span class="price-bolder">
+                        You'll pay <span class="price-bolder">
                             KES {{ number_format($serviceData->deposit, 0) }}
-                        </span>
+                        </span> commitment fee. The final fee quotation shall be based on matter.
                     </h2>
                     @else
 

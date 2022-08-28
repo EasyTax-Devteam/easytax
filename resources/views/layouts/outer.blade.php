@@ -104,6 +104,13 @@
             .label-wrap {
                 min-height: 20px;
             }
+
+            .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li a {
+                height: 40px !important;
+                line-height: 32px !important;
+                border-radius: 0px !important;
+                margin-top: 0px !important;
+            }
         }
 
         .label-hint {
