@@ -42,8 +42,9 @@ class WebsiteController extends Controller
         if (!is_object($service)) {
             abort(403);
         }
-        $forms = ServiceForm::where('service', $id)->get();
-        $forms->sort();
+        $forms = ServiceForm::where('service', $id)
+            ->orderBy('order')->get();
+        // $forms->sort();
         if (!is_object($forms)) {
             abort(403);
         }
