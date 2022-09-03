@@ -274,6 +274,10 @@
                             <li>
                                 <a href="{{ $glabal_settings->linkedin }}" target="_blank"><span><i class="fa fa-linkedin"></i></span></a>
                             </li>
+
+                            <li>
+                                <a href="{{ $glabal_settings->instagram }}" target="_blank"><span><i class="fa fa-instagram"></i></span></a>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-12 col-sm-12 md-mb-10 pl-55 md-pl-15">
