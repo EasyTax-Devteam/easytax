@@ -18,5 +18,6 @@ class Site extends Model
         'facebook',
         'twitter',
         'linkedin',
+        'instagram'
     ];
 }

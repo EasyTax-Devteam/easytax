@@ -97,7 +97,7 @@ class ServiceController extends Controller
         }
         $group_meta = ServiceGroup::find($input['type']);
         $input['type_name'] = $group_meta->name;
-        $input['name'] = trim(ucwords(strtolower($input['name'])));
+        $input['name'] = trim($input['name']);
         Service::find($id)->update($input);
         return redirect()->back()->with(['Msg' => 'Service created']);
     }

@@ -19,13 +19,15 @@ class SettingController extends Controller
         $this->middleware('auth');
     }
 
-    public function settings(){
+    public function settings()
+    {
         return view('user.settings', [
             'settings' => json_decode(json_encode($this->getSettings())),
         ]);
     }
-    public function update(Request $request){
-        $validator = Validator::make($request->all(), [ 
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'email' => 'email|required',
             'support_email' => 'email|required',
             'phone' => 'string|required',
@@ -34,13 +36,14 @@ class SettingController extends Controller
             'facebook' => 'string|required',
             'twitter' => 'string|required',
             'linkedin' => 'string|required',
+            'instagram' => 'string|required',
         ]);
         if ($validator->fails()) {
-            return redirect()->back()->withInput()->with([ 'Err' => 'Invalid input fields', ]);
+            return redirect()->back()->withInput()->with(['Err' => 'Invalid input fields',]);
         }
         $input = $request->all();
         $count = Site::where('id', 1)->count();
-        if( $count > 0 ){
+        if ($count > 0) {
             $site = Site::find(1);
             $site->email = $input['email'];
             $site->support_email = $input['support_email'];
@@ -50,21 +53,23 @@ class SettingController extends Controller
             $site->facebook = $input['facebook'];
             $site->twitter = $input['twitter'];
             $site->linkedin = $input['linkedin'];
+            $site->instagram = $input['instagram'];
             $site->save();
-            return redirect()->back()->with([ 'Msg' => 'Settings updated']);
+            return redirect()->back()->with(['Msg' => 'Settings updated']);
         }
         Site::create($input);
-        return redirect()->back()->with([ 'Msg' => 'Settings created']);
+        return redirect()->back()->with(['Msg' => 'Settings created']);
     }
 
-    protected function getSettings(){
+    protected function getSettings()
+    {
         $site = Site::find(1);
-        if( is_object($site) ){
+        if (is_object($site)) {
             return $site->toArray();
         }
-        return [ 
-            'email' => null, 'support_email' => null, 'phone' => null, 'address' => null, 
-            'working_hours' => null, 'facebook' => null, 'twitter' => null, 'linkedin' => null,
+        return [
+            'email' => null, 'support_email' => null, 'phone' => null, 'address' => null,
+            'working_hours' => null, 'facebook' => null, 'twitter' => null, 'linkedin' => null, 'instagram' => null
         ];
     }
 }

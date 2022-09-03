@@ -62,9 +62,9 @@
                                 <i class="flaticon-call"></i>
                                 <a href="tel:{{ $glabal_settings->phone }}"> {{ $glabal_settings->phone }}</a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a class="staff-login" target="_blank" href="https://web.mail.eu-west-1.awsapps.com/">Staff Mail</a>
-                            </li>
+                            </li> -->
                             <li>
                                 <a class="customer-login" href="{{ route('w.u.login') }}">Client Area</a>
                             </li>
@@ -78,6 +78,7 @@
                             <li><a href="{{ $glabal_settings->facebook }}"><i class="fa fa-facebook"></i></a></li>
                             <li><a href="{{ $glabal_settings->twitter }}"><i class="fa fa-twitter"></i></a></li>
                             <li><a href="{{ $glabal_settings->linkedin }}"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="{{ $glabal_settings->instagram }}"><i class="fa fa-instagram"></i></a></li>
                         </ul>
                     </div>
                 </div>
@@ -199,6 +200,7 @@
                 <li><a href="{{ $glabal_settings->facebook }}"><i class="fa fa-facebook"></i></a></li>
                 <li><a href="{{ $glabal_settings->twitter }}"><i class="fa fa-twitter"></i></a></li>
                 <li><a href="{{ $glabal_settings->linkedin }}"><i class="fa fa-linkedin"></i></a></li>
+                <li><a href="{{ $glabal_settings->instagram }}"><i class="fa fa-instagram"></i></a></li>
             </ul>
         </div>
     </nav>
@@ -235,9 +237,9 @@
             <li class="">
                 <a href="{{ route('w.index') }}">Blog</a>
             </li>
-            <li>
+            <!-- <li>
                 <a class="staff-login" target="_blank" href="https://web.mail.eu-west-1.awsapps.com/">Staff Mail</a>
-            </li>
+            </li> -->
             <li>
                 <a class="customer-login" href="{{ route('w.u.login') }}">Client Area</a>
             </li>

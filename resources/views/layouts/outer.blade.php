@@ -326,13 +326,13 @@
             <div class="container">
                 <div class="row y-middle">
                     <div class="col-lg-6 md-mb-10 text-lg-end text-center order-last">
-                        <ul class="copy-right-menu">
+                        <!-- <ul class="copy-right-menu">
                             <li><a href="{{ route('w.index') }}">Home</a></li>
                             <li><a href="{{ route('w.about') }}">About</a></li>
                             <li><a href="{{ route('w.u.login') }}">Client Area</a></li>
                             <li><a href="https://web.mail.eu-west-1.awsapps.com">Staff Mail</a></li>
                             <li><a href="#">Blog</a></li>
-                        </ul>
+                        </ul> -->
                     </div>
                     <div class="col-lg-6">
                         <div class="copyright text-lg-start text-center ">
