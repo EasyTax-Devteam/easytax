@@ -81,12 +81,15 @@ class WebsiteController extends Controller
                 return redirect()->back()->withInput()->withErrors($validator);
             }
             $predefinedInput = $request->all();
+            $default_kra = 'default-' . time();
             $newCustomer = [
                 'email' => $predefinedInput['email'],
                 'phone' => $this->formatPhone($predefinedInput['phone']),
                 'fname' => $predefinedInput['fname'],
                 'lname' => $predefinedInput['lname'],
                 'service' => $predefinedInput['service'],
+                'pin' => $default_kra,
+                'itax_password' => $default_kra
             ];
             $input = [];
 

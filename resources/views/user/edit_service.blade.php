@@ -120,10 +120,10 @@
                                 <label for="setting-input-1" class="form-label">field_placeholder </label>
                                 <input required type="text" name="field_placeholder" class="form-control" value="">
                             </div>
-                            <div class="mb-3 col-md-3">
-                                <label for="setting-input-1" class="form-label">default_value </label>
-                                <input type="text" name="field_default_value" class="form-control" value="">
-                            </div>
+                            <!-- <div class="mb-3 col-md-3"> -->
+                            <!-- <label for="setting-input-1" class="form-label">default_value </label> -->
+                            <input type="hidden" name="field_default_value" class="form-control" value="oo">
+                            <!-- </div> -->
                             <div class="mb-3 col-md-3">
                                 <label for="setting-input-1" class="form-label">field_type </label>
                                 <input required type="text" name="field_type" class="form-control" value="">
