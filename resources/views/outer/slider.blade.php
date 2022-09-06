@@ -24,7 +24,7 @@
                     <h1 class="sl-title"> Experts <br> in Tax Services</h1>
                     <div class="desc">At EasyTax, we help individuals & corporates with all their tax needs.</div>
                     <div class="slider-bottom ">
-                        <a class="readon consultant slider" href="#step-one">Browser services</a>
+                        <a class="readon consultant slider" href="#step-one">Browse Our services</a>
                     </div>
                 </div>
             </div>
@@ -57,7 +57,7 @@
                     <h1 class="sl-title">Region's <br> Preferred Firm</h1>
                     <div class="desc">When it comes to tax solutions, EasyTax is the most preferred by individuals and corporates in the region.</div>
                     <div class="slider-bottom ">
-                        <a class="readon consultant slider" href="#step-one">Browser services</a>
+                        <a class="readon consultant slider" href="#step-one">Browse Our services</a>
                     </div>
                 </div>
             </div>
@@ -85,7 +85,7 @@
                     </div>
                     <div class="desc">EasyTax offers a wide range of tax services to individuals & corporates.</div>
                     <div class="slider-bottom ">
-                        <a class="readon consultant slider" href="#step-one">Browser services</a>
+                        <a class="readon consultant slider" href="#step-one">Browse Our services</a>
                     </div>
                 </div>
             </div>
