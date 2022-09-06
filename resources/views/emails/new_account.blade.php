@@ -387,7 +387,7 @@
                               <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                 <tbody>
                                   <tr>
-                                    <td> <a href="{{ config('app.url')}}/login" target="_blank">Login here</a> </td>
+                                    <td> <a href="{{ config('app.url')}}login" target="_blank">Login here</a> </td>
                                   </tr>
                                 </tbody>
                               </table>
