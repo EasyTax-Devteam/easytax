@@ -87,7 +87,7 @@ class ServiceFormController extends Controller
     public function drop($id)
     {
         ServiceForm::find($id)->delete();
-        return redirect()->back()->with(['Msg' => 'Service Form deleted']);
+        return redirect()->back()->with(['Msg' => 'Service Form Field deleted']);
     }
 
     protected function clean_fields($fields)

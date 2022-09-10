@@ -15,7 +15,7 @@
 
     <script defer src="{{ asset('auth/assets/plugins/fontawesome/js/all.min.js') }}"></script>
     <link id="theme-style" rel="stylesheet" href="{{ asset('auth/assets/css/portal.css') }}">
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <style>
         .app-branding .logo-icon {
@@ -38,6 +38,14 @@
         .custom-label-adm {
             font-size: 16px;
             margin-bottom: 15px;
+        }
+
+        .app-card-body {
+            padding: 20px;
+        }
+
+        .red {
+            color: red !important;
         }
     </style>
 </head>
@@ -75,8 +83,9 @@
     <script src="{{ asset('auth/assets/js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
-
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     @yield('page_scripts')
+
 
     <script>
         $(document).ready(function() {
@@ -85,6 +94,9 @@
                 tabsize: 2,
                 height: 150
             });
+
+            /** dataTables */
+            $('.reportable').DataTable();
         });
     </script>
 

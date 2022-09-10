@@ -96,8 +96,15 @@ class OrderController extends Controller
 
     public function orders()
     {
+        $unassigned = $this->getOrders('not_assigned');
+        $inProgress = $this->getOrders('in_progress');
+        $inReview = $this->getOrders('in_review');
+        $approved = $this->getOrders('complete');
         return view('user.orders', [
-            'orders' => $this->getOrders()
+            'unassigned' => $unassigned,
+            'inProgress' => $inProgress,
+            'inReview' => $inReview,
+            'approved' => $approved
         ]);
     }
 
@@ -125,9 +132,9 @@ class OrderController extends Controller
     {
         return OrderAssignment::where('order', $order)->count() > 0;
     }
-    protected function getOrders()
+    protected function getOrders($pipeline)
     {
-        $data = Order::where('id', '>', 0)->orderBy('id', 'desc')->get();
+        $data = Order::where('progress', $pipeline)->orderBy('id', 'desc')->get();
         if (is_object($data)) {
             return $data->toArray();
         }

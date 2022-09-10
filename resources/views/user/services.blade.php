@@ -34,10 +34,14 @@
                 <h1 class="app-page-title mb-0">Service Groups</h1>
             </div>
         </div>
-        <!--//row-->
 
-        <div class="row g-3 mb-4 align-items-center justify-content-between">
-            <div class="col-md-12">
+        <!-- Groups -->
+        <nav id="groups-table-tab" class="groups-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
+            <a class="flex-sm-fill text-sm-center nav-link active" id="add-group-tab" data-bs-toggle="tab" href="#add-group" role="tab" aria-controls="add-group" aria-selected="true">Add Group</a>
+            <a class="flex-sm-fill text-sm-center nav-link" id="all-groups-tab" data-bs-toggle="tab" href="#all-groups" role="tab" aria-controls="all-groups" aria-selected="true">Service groups</a>
+        </nav>
+        <div class="tab-content" id="groups-table-tab-content">
+            <div class="tab-pane fade show active" id="add-group" role="tabpanel" aria-labelledby="add-group-tab">
                 <div class="app-card app-card-settings shadow-sm p-4">
                     <div class="app-card-body">
                         <form class="settings-form row" method="post" enctype="multipart/form-data" action="{{ route('e.tax.add.group') }}">
@@ -69,17 +73,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-            <a class="flex-sm-fill text-sm-center nav-link active" id="orders-all-tab" data-bs-toggle="tab" href="#orders-all" role="tab" aria-controls="orders-all" aria-selected="true">All groups</a>
-        </nav>
-        <div class="tab-content" id="orders-table-tab-content">
-            <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
+            <div class="tab-pane fade" id="all-groups" role="tabpanel" aria-labelledby="all-groups-tab">
                 <div class="app-card app-card-orders-table shadow-sm mb-5">
                     <div class="app-card-body">
                         <div class="table-responsive">
-                            <table class="table app-table-hover mb-0 text-left">
+                            <table class="table app-table-hover mb-0 text-left reportable">
                                 <thead>
                                     <tr>
                                         <th class="cell">ID</th>
@@ -112,7 +110,6 @@
                 </div>
             </div>
         </div>
-        <!--//tab-content-->
     </div>
     <!--//container-fluid-->
 
@@ -121,13 +118,18 @@
     <div class="container-xl">
         <div class="row g-3 mb-4 align-items-center justify-content-between">
             <div class="col-auto">
+                <br><br>
                 <h1 class="app-page-title mb-0">Services</h1>
             </div>
         </div>
         <!--//row-->
 
-        <div class="row g-3 mb-4 align-items-center justify-content-between">
-            <div class="col-md-12">
+        <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
+            <a class="flex-sm-fill text-sm-center nav-link active" id="admin-services-tab" data-bs-toggle="tab" href="#add-service" role="tab" aria-controls="add-service" aria-selected="true">Add Service</a>
+            <a class="flex-sm-fill text-sm-center nav-link" id="list-services-tab" data-bs-toggle="tab" href="#list-services" role="tab" aria-controls="list-services" aria-selected="false">All Services</a>
+        </nav>
+        <div class="tab-content" id="orders-table-tab-content">
+            <div class="tab-pane fade show active" id="add-service" role="tabpanel" aria-labelledby="admin-services-tab">
                 <div class="app-card app-card-settings shadow-sm p-4">
                     <div class="app-card-body">
                         <form class="settings-form row" method="post" enctype="multipart/form-data" action="{{ route('e.tax.add.service') }}">
@@ -178,18 +180,12 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-            <a class="flex-sm-fill text-sm-center nav-link active" id="orders-services-tab" data-bs-toggle="tab" href="#orders-services" role="tab" aria-controls="orders-services" aria-selected="true">All</a>
-            <a class="flex-sm-fill text-sm-center nav-link" id="services-pending-tab" data-bs-toggle="tab" href="#services-pending" role="tab" aria-controls="services-pending" aria-selected="false">Inactive</a>
-        </nav>
-        <div class="tab-content" id="orders-table-tab-content">
-            <div class="tab-pane fade show active" id="orders-services" role="tabpanel" aria-labelledby="orders-services-tab">
+            <!--//tab-pane-->
+            <div class="tab-pane fade" id="list-services" role="tabpanel" aria-labelledby="list-services-tab">
                 <div class="app-card app-card-orders-table shadow-sm mb-5">
                     <div class="app-card-body">
                         <div class="table-responsive">
-                            <table class="table app-table-hover mb-0 text-left">
+                            <table class="table app-table-hover mb-0 text-left reportable">
                                 <thead>
                                     <tr>
                                         <th class="cell">ID</th>
@@ -214,47 +210,6 @@
                                         </td>
                                         <td class="cell">
                                             <a class="btn-sm app-btn-secondary" href="{{ route('e.tax.view.service', ['id' => $_all['id'] ]) }}">View</a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <!--//table-responsive-->
-                    </div>
-                    <!--//app-card-body-->
-                </div>
-            </div>
-            <!--//tab-pane-->
-            <div class="tab-pane fade" id="services-pending" role="tabpanel" aria-labelledby="services-pending-tab">
-                <div class="app-card app-card-orders-table mb-5">
-                    <div class="app-card-body">
-                        <div class="table-responsive">
-                            <table class="table app-table-hover mb-0 text-left">
-                                <thead>
-                                    <tr>
-                                        <th class="cell">ID</th>
-                                        <th class="cell">Name</th>
-                                        <th class="cell">Group</th>
-                                        <th class="cell">Price</th>
-                                        <th class="cell">Status</th>
-                                        <th class="cell"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach( $inactive as $_inactive )
-                                    <tr>
-                                        <td class="cell">#{{ $_inactive['id'] }}</td>
-                                        <td class="cell">
-                                            <span class="truncate">{{ $_inactive['name'] }}</span>
-                                        </td>
-                                        <td class="cell">{{ $_inactive['type'] }}</td>
-                                        <td class="cell"> KES {{ number_format($_inactive['price'], 1) }} </td>
-                                        <td class="cell">
-                                            <span class="badge {{ $_inactive['enabled'] == 1 ? 'bg-success' : 'bg-danger' }}">{{ $_inactive['enabled'] == 1 ? 'active' : 'inactive' }}</span>
-                                        </td>
-                                        <td class="cell">
-                                            <a class="btn-sm app-btn-secondary" href="{{ route('e.tax.enable.svc', ['id' => $_inactive['id']]) }}">enable</a>
                                         </td>
                                     </tr>
                                     @endforeach

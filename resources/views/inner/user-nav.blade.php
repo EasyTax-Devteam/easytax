@@ -75,12 +75,12 @@
                         <span class="nav-link-text">Overview</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="https://web.mail.eu-west-1.awsapps.com">
                         <span class="nav-icon"></span>
                         <span class="nav-link-text"> Staff Mail</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </nav>
 
