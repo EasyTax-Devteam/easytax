@@ -12,9 +12,11 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Bill;
 use App\Models\Customer;
+use App\Models\OrderDocument;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Validator;
+use Auth;
 
 class OrderController extends Controller
 {
@@ -63,6 +65,35 @@ class OrderController extends Controller
             return redirect()->back()->with(['Err' => $th->getMessage()]);
         }
     }
+
+    public function send_review(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $validator = Validator::make($request->all(), ['new_status' => 'required|string', 'order' => 'required|string',]);
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with(['Err' => 'Invalid  input fields',]);
+            }
+            $input = $request->all();
+            if ($input['new_status'] == 'in_progres') {
+                return redirect()->back()->with(['Err' => 'Error. You cannot change status to ' . $input['new_status']]);
+            }
+            $order = Order::find($input['order']);
+            if ($order->progress == 'in_review') {
+                return redirect()->back()->with(['Err' => 'Error. This order is already in review']);
+            }
+            $order->update(['progress' => $input['new_status']]);
+            $reviewers = config('app.super_users');
+
+            DB::commit();
+            return redirect()->back()->with(['Msg' => 'Order status changed successfully!']);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with(['Err' => $th->getMessage()]);
+        }
+    }
     public function add_bill(Request $request)
     {
         DB::beginTransaction();
@@ -94,6 +125,42 @@ class OrderController extends Controller
         }
     }
 
+    public function addReturnDoc(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|string',
+                'order' => 'required|string',
+            ]);
+            if ($validator->fails()) {
+                return redirect()->back()->withInput()->with(['Err' => 'Invalid  input fields' . json_encode($validator->errors()),]);
+            }
+            $input = $request->all();
+            $input['title'] = $this->createSlug($input['title']);
+            $input['uploaded_by'] = Auth::user()->id;
+            /** upload */
+            $file = $request->file('path');
+            $extension = $file->getClientOriginalExtension();
+            $initial_name = preg_replace('/\PL/u', '_', $file->getClientOriginalName());
+            $original_name = str_replace('__', '_', $input['title'] . '_' . $initial_name);
+            if (!in_array(strtolower($extension), $this->allowedExtensions())) {
+                return redirect()->back()->withInput()->with(['Err' => 'Error. Only valid files allowed e.g ' . implode(", ", $this->allowedExtensions())]);
+            }
+            $file_name = str_replace('__', '_', strtolower($original_name) . '_' . time() . '.' . $extension);
+            Storage::disk('local')->putFileAs('customers', $file, $file_name);
+            $input['path'] = $file_name;
+            OrderDocument::create($input);
+            return redirect()->back()->with(['Msg' => 'Document uploaded successfully!']);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with(['Err' => $th->getMessage()]);
+        }
+    }
+    public function dropDocument($id)
+    {
+        OrderDocument::find($id)->delete();
+        return redirect()->back()->with(['Msg' => 'Document deleted']);
+    }
+
     public function orders()
     {
         $unassigned = $this->getOrders('not_assigned');
@@ -110,13 +177,34 @@ class OrderController extends Controller
 
     public function order($id)
     {
+        $pipelines = ['not_assigned', 'in_progress', 'in_review', 'complete'];
+        if (Auth::user()->admin == 1) {
+            $pipelines = ['in_progress', 'in_review'];
+        }
         return view('user.order_details', [
             'assigned' => $this->is_assigned($id),
             'user' => $this->getOrderAssignee($id),
             'admins' => $this->getUsers(2),
             'thisOrder' => Order::find($id),
-            'bills' => $this->getOrderBills($id)
+            'bills' => $this->getOrderBills($id),
+            'returnDocs' => $this->getReturnDocs($id),
+            'pipelines' => $pipelines
         ]);
+    }
+
+    protected function allowedExtensions()
+    {
+        return ['xlsx', 'xls', 'pdf', 'docs', 'doc', 'docx', 'csv', 'odt', 'jpg', 'jpeg', 'png'];
+    }
+
+    protected function createSlug($title, $separator = '-', $language = 'en')
+    {
+        $flip = $separator == '-' ? '_' : '-';
+        $title = preg_replace('![' . preg_quote($flip) . ']+!u', $separator, $title);
+        $title = str_replace('@', $separator . 'at' . $separator, $title);
+        $title = preg_replace('![^' . preg_quote($separator) . '\pL\pN\s]+!u', '', $title);
+        $title = preg_replace('![' . preg_quote($separator) . '\s]+!u', $separator, $title);
+        return mb_strtolower(trim($title, $separator));
     }
 
     protected function getOrderAssignee($order)
@@ -143,6 +231,14 @@ class OrderController extends Controller
     protected function getOrderBills($order)
     {
         $data = Bill::where('order', $order)->get();
+        if (is_object($data)) {
+            return $data->toArray();
+        }
+        return [];
+    }
+    protected function getReturnDocs($order)
+    {
+        $data = OrderDocument::where('order', $order)->get();
         if (is_object($data)) {
             return $data->toArray();
         }

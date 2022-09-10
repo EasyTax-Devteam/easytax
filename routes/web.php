@@ -68,7 +68,10 @@ Route::group(['prefix' => 'easy/admin'], function () {
         Route::get('/details/{id}', [OrderController::class, 'order'])->name('e.tax.order');
         Route::post('/assign', [OrderController::class, 'assign_order'])->name('f.assign_order');
         Route::post('/upd/status', [OrderController::class, 'update_status'])->name('f.update_status');
+        Route::post('/send/review', [OrderController::class, 'send_review'])->name('f.send_review');
         Route::post('/add/bill', [OrderController::class, 'add_bill'])->name('f.add_bill');
+        Route::post('/add/return/doc', [OrderController::class, 'addReturnDoc'])->name('f.add_return_doc');
+        Route::get('/drop/doc/{id}', [OrderController::class, 'dropDocument'])->name('f.drop_return_doc');
     });
 
     Route::group(['prefix' => 'groups'], function () {

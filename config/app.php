@@ -17,6 +17,8 @@ return [
 
     'whatsapp' => env('WHATSAPP'),
 
+    'super_users' => env('SUPER_USERS'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

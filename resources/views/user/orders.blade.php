@@ -81,7 +81,7 @@
                                             KES {{ number_format($getOrderBillTotals[0], 2) }} <br>
                                             <span class="badge {{ $paymentStatus == true ? 'bg-success' : 'bg-warning' }} tiny">paid kes {{ number_format($getOrderBillTotals[1], 2) }}</span>
                                         </td>
-                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="{{ route('e.tax.order', ['id' => $_order['id'] ] ) }}">View</a></td>
+                                        <td class="cell"><a class="btn-sm app-btn-secondary" target="_blank" href="{{ route('e.tax.order', ['id' => $_order['id'] ] ) }}">View</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -131,7 +131,7 @@
                                             KES {{ number_format($getOrderBillTotals[0], 2) }} <br>
                                             <span class="badge {{ $paymentStatus == true ? 'bg-success' : 'bg-warning' }} tiny">paid kes {{ number_format($getOrderBillTotals[1], 2) }}</span>
                                         </td>
-                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="{{ route('e.tax.order', ['id' => $_inProg['id'] ] ) }}">View</a></td>
+                                        <td class="cell"><a class="btn-sm app-btn-secondary" target="_blank" href="{{ route('e.tax.order', ['id' => $_inProg['id'] ] ) }}">View</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -179,7 +179,7 @@
                                             KES {{ number_format($getOrderBillTotals[0], 2) }} <br>
                                             <span class="badge {{ $paymentStatus == true ? 'bg-success' : 'bg-warning' }} tiny">paid kes {{ number_format($getOrderBillTotals[1], 2) }}</span>
                                         </td>
-                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="{{ route('e.tax.order', ['id' => $_inRev['id'] ] ) }}">View</a></td>
+                                        <td class="cell"><a class="btn-sm app-btn-secondary" target="_blank" href="{{ route('e.tax.order', ['id' => $_inRev['id'] ] ) }}">View</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -227,7 +227,7 @@
                                             KES {{ number_format($getOrderBillTotals[0], 2) }} <br>
                                             <span class="badge {{ $paymentStatus == true ? 'bg-success' : 'bg-warning' }} tiny">paid kes {{ number_format($getOrderBillTotals[1], 2) }}</span>
                                         </td>
-                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="{{ route('e.tax.order', ['id' => $_complete['id'] ] ) }}">View</a></td>
+                                        <td class="cell"><a class="btn-sm app-btn-secondary" target="_blank" href="{{ route('e.tax.order', ['id' => $_complete['id'] ] ) }}">View</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>

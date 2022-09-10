@@ -26,8 +26,13 @@ class UserController extends Controller
     public function index()
     {
         if (Auth::user()->admin == 1) {
+            $inProgress = $this->getMyOrders('in_progress');
+            $inReview = $this->getMyOrders('in_review');
+            $approved = $this->getMyOrders('complete');
             return view('user.index', [
-                'orders' => $this->getMyOrders()
+                'inProgress' => $inProgress,
+                'inReview' => $inReview,
+                'approved' => $approved
             ]);
         }
         return view('user.index', [
@@ -64,10 +69,10 @@ class UserController extends Controller
             'data' => $data
         ];
     }
-    protected function getMyOrders()
+    protected function getMyOrders($pipeline)
     {
         $idList = $this->getMyOrdersIds();
-        $data = Order::whereIn('id', $idList)->orderBy('id', 'desc')->get();
+        $data = Order::whereIn('id', $idList)->where('progress', $pipeline)->orderBy('id', 'desc')->get();
         if (is_object($data)) {
             return $data->toArray();
         }
