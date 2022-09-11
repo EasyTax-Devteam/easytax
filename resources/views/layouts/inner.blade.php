@@ -97,6 +97,10 @@
 
             /** dataTables */
             $('.reportable').DataTable();
+
+            $('.reportable-customer').DataTable({
+                'pageLength': 5
+            });
         });
     </script>
 

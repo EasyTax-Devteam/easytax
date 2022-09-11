@@ -15,8 +15,11 @@ use App\Models\Customer;
 use App\Models\OrderDocument;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\AdminTaskReview;
+use App\Mail\OrderComplete;
 use Validator;
 use Auth;
+use Storage;
 
 class OrderController extends Controller
 {
@@ -77,18 +80,55 @@ class OrderController extends Controller
                     ->with(['Err' => 'Invalid  input fields',]);
             }
             $input = $request->all();
-            if ($input['new_status'] == 'in_progres') {
+            if ($input['new_status'] == 'in_progress') {
                 return redirect()->back()->with(['Err' => 'Error. You cannot change status to ' . $input['new_status']]);
             }
             $order = Order::find($input['order']);
             if ($order->progress == 'in_review') {
-                return redirect()->back()->with(['Err' => 'Error. This order is already in review']);
+                return redirect()->back()->with(['Err' => 'Error. This task is already in review']);
             }
             $order->update(['progress' => $input['new_status']]);
-            $reviewers = config('app.super_users');
-
+            $reviewers = explode(',', config('app.super_users'));
+            if (is_array($reviewers) && count($reviewers) > 0) {
+                Mail::to($reviewers)->send(new AdminTaskReview($order));
+            }
+            //mail
             DB::commit();
-            return redirect()->back()->with(['Msg' => 'Order status changed successfully!']);
+            return redirect()->back()->with(['Msg' => 'Task has been sent for review!']);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with(['Err' => $th->getMessage()]);
+        }
+    }
+    public function mark_approved(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $validator = Validator::make($request->all(), ['order' => 'required|string',]);
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with(['Err' => 'Invalid  input fields',]);
+            }
+            $input = $request->all();
+            $order = Order::find($input['order']);
+            if ($order->progress != 'in_review') {
+                return redirect()->back()->with(['Err' => 'Error. This task cannot be approved. You can only approve a task that is in review']);
+            }
+            $order->update(['progress' => 'complete']);
+            $customer = Customer::find($order->customer);
+            if (is_object($customer)) {
+                /** mail */
+                $full_name = $customer->fname . ' ' . $customer->lname;
+                $mail_data = ['name' => $full_name, 'order' => $order->id];
+                Mail::to($customer->email)->send(new OrderComplete($mail_data));
+                /** sms */
+                $customer_sms = 'Hi ' . $full_name . ', your order number #' . $order->id . ' has been completed. Visit ' . config('app.url') . 'users/access to download your documents';
+                $advanta = new SmsController();
+                $advanta->dispatchSms($customer->phone, $customer_sms);
+            }
+            DB::commit();
+            return redirect()->back()->with(['Msg' => 'Task has been approved and customer has been notified']);
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->back()->with(['Err' => $th->getMessage()]);

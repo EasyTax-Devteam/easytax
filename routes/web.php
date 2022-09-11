@@ -44,7 +44,7 @@ Route::group(['prefix' => 'users'], function () {
     Route::get('/pay/{id}', [App\Http\Controllers\Web\UserController::class, 'userPayform'])->name('w.u.pay.form');
     Route::post('/pay/form', [App\Http\Controllers\Web\UserController::class, 'userPostPay'])->name('w.u.post.pay');
     Route::post('/check/status', [App\Http\Controllers\Web\UserController::class, 'userCheckStatus'])->name('w.u.check.pay.status');
-
+    Route::get('/stream/{file}', [App\Http\Controllers\Web\UserController::class, 'stream'])->name('cust.stream');
     Route::get('/access', [App\Http\Controllers\Web\UserController::class, 'login'])->name('w.u.login');
     Route::post('/post/access', [App\Http\Controllers\Web\UserController::class, 'post_login'])->name('w.u.post_login');
     Route::get('/logout/app', [App\Http\Controllers\Web\UserController::class, 'logout'])->name('w.u.logout');
@@ -69,6 +69,7 @@ Route::group(['prefix' => 'easy/admin'], function () {
         Route::post('/assign', [OrderController::class, 'assign_order'])->name('f.assign_order');
         Route::post('/upd/status', [OrderController::class, 'update_status'])->name('f.update_status');
         Route::post('/send/review', [OrderController::class, 'send_review'])->name('f.send_review');
+        Route::post('/mark/approved', [OrderController::class, 'mark_approved'])->name('f.mark_approved');
         Route::post('/add/bill', [OrderController::class, 'add_bill'])->name('f.add_bill');
         Route::post('/add/return/doc', [OrderController::class, 'addReturnDoc'])->name('f.add_return_doc');
         Route::get('/drop/doc/{id}', [OrderController::class, 'dropDocument'])->name('f.drop_return_doc');

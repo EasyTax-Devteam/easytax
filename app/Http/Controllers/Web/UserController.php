@@ -33,6 +33,16 @@ class UserController extends Controller
         ]);
     }
 
+    public function stream($file)
+    {
+        try {
+            $filename = ('app/customers/' . $file);
+            return response()->download(storage_path($filename), null, [], null);
+        } catch (\Throwable $th) {
+            return abort(404, 'Error. File not found on server');
+        }
+    }
+
     public function userPayform($id)
     {
         $billId = $id;

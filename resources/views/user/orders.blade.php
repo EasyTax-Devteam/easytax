@@ -156,7 +156,7 @@
                                         <th class="cell">Product</th>
                                         <th class="cell">Customer</th>
                                         <th class="cell">Date</th>
-                                        <th class="cell">Return Docs</th>
+                                        <th class="cell">Status</th>
                                         <th class="cell">Total</th>
                                         <th class="cell"></th>
                                     </tr>
@@ -204,7 +204,7 @@
                                         <th class="cell">Product</th>
                                         <th class="cell">Customer</th>
                                         <th class="cell">Date</th>
-                                        <th class="cell">Return Docs</th>
+                                        <th class="cell">Status</th>
                                         <th class="cell">Total</th>
                                         <th class="cell"></th>
                                     </tr>

@@ -6,7 +6,16 @@
 
 
 @section('content')
+<style>
+  .btn-link {
+    color: #1e3665;
+    text-decoration: none;
+  }
 
+  .badge {
+    padding: 1.35em 1.65em;
+  }
+</style>
 <div class="app-content pt-3 p-md-3 p-lg-4">
   <div class="container-xl">
     <div class="row g-3 mb-4 align-items-center justify-content-between">
@@ -15,15 +24,12 @@
       </div>
     </div>
     <!--//row-->
-    <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-      <a class="flex-sm-fill text-sm-center nav-link active" id="orders-all-tab" data-bs-toggle="tab" href="#orders-all" role="tab" aria-controls="orders-all" aria-selected="true">All</a>
-    </nav>
     <div class="tab-content" id="orders-table-tab-content">
       <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
         <div class="app-card app-card-orders-table shadow-sm mb-5">
           <div class="app-card-body">
             <div class="table-responsive">
-              <table class="table app-table-hover mb-0 text-left">
+              <table class="table app-table-hover mb-0 text-left reportable-customer">
                 <thead>
                   <tr>
                     <th class="cell">#Bill Id</th>
@@ -77,16 +83,12 @@
         <h1 class="app-page-title mb-0">My orders</h1>
       </div>
     </div>
-    <!--//row-->
-    <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-      <a class="flex-sm-fill text-sm-center nav-link active" id="orders-all-tab" data-bs-toggle="tab" href="#orders-all" role="tab" aria-controls="orders-all" aria-selected="true">All</a>
-    </nav>
     <div class="tab-content" id="orders-table-tab-content">
       <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
         <div class="app-card app-card-orders-table shadow-sm mb-5">
           <div class="app-card-body">
             <div class="table-responsive">
-              <table class="table app-table-hover mb-0 text-left">
+              <table class="table app-table-hover mb-0 text-left reportable-customer">
                 <thead>
                   <tr>
                     <th class="cell">#Order Id</th>
@@ -102,10 +104,28 @@
                   <tr>
                     <td class="cell">#{{ $_order['id'] }}</td>
                     <td class="cell">{{ $service->name }}</td>
+                    @if($_order['progress'] == 'complete')
+                    <td class="cell">
+                      <span class="badge bg-success">
+                        Order Completed
+                      </span>
+                    </td>
+                    <td class="cell">
+                      <!-- <p class="documents-title">Documents</p> -->
+                      @php( $returnDocs = \App\Models\OrderDocument::getReturnDocs($_order['id']))
+                      @foreach( $returnDocs as $key => $returnDoc )
+                      <a class="btn btn-link" href="{{ route('cust.stream', ['file' => $returnDoc['path'] ]) }}" target="_blank" download="">
+                        <i class="fa fa-download"> </i>
+                        {{ $returnDoc['title'] }}
+                      </a><br>
+                      @endforeach
+                    </td>
+                    @else
                     <td class="cell">KES {{ number_format($service->price, 2)  }}</td>
                     <td class="cell">KES {{ number_format($billsum, 2)  }}</td>
+                    @endif
                   </tr>
-                  @endforeach;
+                  @endforeach
                 </tbody>
               </table>
             </div>

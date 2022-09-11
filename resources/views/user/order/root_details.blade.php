@@ -43,7 +43,7 @@
                             </div>
                             <div class="col-md-3">
                                 <input name="order" value="{{ $thisOrder->id }}" type="hidden" />
-                                <select name="admin" required class="form-select form-select-sm w-auto">
+                                <select name="admin" required class="form-select form-select-sm w-auto" @if( in_array($thisOrder->progress, ['in_review','complete']) ) disabled @endif >
                                     <option value="">Assigned to...</option>
                                     @foreach( $admins as $_admin )
                                     @if( is_object($user) && $user->id == $_admin['id'] )
@@ -56,7 +56,15 @@
                             </div>
                             <div class="col-md-1"></div>
                             <div class="col-md-4">
+                                @if( $thisOrder->progress == 'in_review' )
+                                <button type="button" class="btn app-btn-primary" data-bs-toggle="modal" data-bs-target="#approve-mdl">
+                                    Approve Task
+                                </button>
+                                @elseif($thisOrder->progress == 'complete')
+                                <!-- nothing -->
+                                @else
                                 <button type="submit" class="btn app-btn-primary">{{ $assigned ? 're-assign' : 'assign'}} </button>
+                                @endif
                             </div>
                         </form>
                     </div>
@@ -203,7 +211,12 @@
                                 @foreach( $returnDocs as $key => $returnDoc )
                                 @php( $date = $returnDoc['created_at'] )
                                 <td class="cell">{{ $returnDoc['title'] }}</td>
-                                <td class="cell">{{ $returnDoc['path'] }}</td>
+                                <td class="cell">
+                                    <a class="btn btn-custom" href="{{ route('f.stream', ['file' => $returnDoc['path'] ]) }}" target="_blank" download="">
+                                        <i class="fa fa-file-pdf"> </i>
+                                        Download
+                                    </a>
+                                </td>
                                 <td class="cell">
                                     <span>{{ date('d', strtotime($date)) }} {{ date('M', strtotime($date)) }}</span>
                                     <span class="note">{{ date('h:i a', strtotime($date)) }}</span>
@@ -222,4 +235,31 @@
         </div>
     </div>
     <!--//container-fluid-->
+</div>
+
+
+<div class="modal fade" id="approve-mdl" tabindex="-1" aria-labelledby="approve-mdlLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="approve-mdlLabel">Approve this Task?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    Kindly note that this action cannot be <b>reversed</b>.
+                    <br>
+                    Once approved, the customer will be notified and they will have access to download any return documents attached on this task.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Not now</button>
+                <form method="post" action="{{ route('f.mark_approved') }}">
+                    @csrf
+                    <input type="hidden" name="order" value="{{ $thisOrder->id }}" />
+                    <button type="submit" class="btn btn-custom">Approve Task</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

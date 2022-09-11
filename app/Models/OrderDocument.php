@@ -15,4 +15,13 @@ class OrderDocument extends Model
         'path',
         'uploaded_by'
     ];
+
+    public static function getReturnDocs($order)
+    {
+        $data = OrderDocument::where('order', $order)->get();
+        if (is_object($data)) {
+            return $data->toArray();
+        }
+        return [];
+    }
 }

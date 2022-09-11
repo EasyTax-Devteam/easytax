@@ -15,6 +15,11 @@
     .tab-pane {
         padding: 20px;
     }
+
+    .btn {
+        border-radius: 20px !important;
+        min-width: 140px !important;
+    }
 </style>
 
 @if( \Auth::user()->admin == 1 )

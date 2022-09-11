@@ -161,14 +161,14 @@
                     <!-- information -->
                 </div>
                 <div class="tab-pane fade show" id="return-docs" role="tabpanel" aria-labelledby="return-docs-tab">
-                    <p class="text-grey">Once you have finished the task, add return documents here for the customer to download</p>
+                    <p class="text-grey">Once you have finished the task, upload return documents here for the customer to download</p>
                     <hr>
                     <!-- add bill -->
                     <div class="row g-3 mb-4 align-items-center justify-content-between">
                         <div class="col-md-12">
                             <div class="app-card app-card-settings shadow-sm p-4">
                                 <div class="app-card-body">
-                                    <form class="settings-form row" method="post" action="{{ route('f.add_return_doc') }}">
+                                    <form enctype="multipart/form-data" class="settings-form row" method="post" action="{{ route('f.add_return_doc') }}">
                                         @csrf
                                         <div class="mb-3 col-md-4">
                                             <input required type="hidden" name="order" value="{{ $thisOrder->id }}">
@@ -206,7 +206,12 @@
                                     </a>
                                 </td>
                                 <td class="cell">{{ $returnDoc['title'] }}</td>
-                                <td class="cell">{{ $returnDoc['path'] }}</td>
+                                <td class="cell">
+                                    <a class="btn btn-custom" href="{{ route('f.stream', ['file' => $returnDoc['path'] ]) }}" target="_blank" download="">
+                                        <i class="fa fa-file-pdf"> </i>
+                                        Download
+                                    </a>
+                                </td>
                                 <td class="cell">
                                     <span>{{ date('d', strtotime($date)) }} {{ date('M', strtotime($date)) }}</span>
                                     <span class="note">{{ date('h:i a', strtotime($date)) }}</span>
