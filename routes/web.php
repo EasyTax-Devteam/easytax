@@ -90,6 +90,7 @@ Route::group(['prefix' => 'easy/admin'], function () {
         Route::post('/edit/{id}', [ServiceController::class, 'edit'])->name('e.tax.edit.service');
         Route::get('/enable/{id}', [ServiceController::class, 'enable'])->name('e.tax.enable.svc');
         Route::get('/disable/{id}', [ServiceController::class, 'disable'])->name('e.tax.disable.svc');
+        Route::get('/drop/{id}', [ServiceController::class, 'drop'])->name('e.tax.drop.service');
     });
 
     Route::group(['prefix' => 'forms'], function () {

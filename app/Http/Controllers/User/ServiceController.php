@@ -114,6 +114,12 @@ class ServiceController extends Controller
         return redirect()->back()->with(['Msg' => 'Service disabled']);
     }
 
+    public function drop($id)
+    {
+        Service::find($id)->delete();
+        return redirect()->back()->with(['Msg' => 'Service deleted']);
+    }
+
     protected function createCode($length = 5)
     {
         $characters = 'abcdefghijk';

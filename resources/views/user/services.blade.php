@@ -210,6 +210,10 @@
                                         </td>
                                         <td class="cell">
                                             <a class="btn-sm app-btn-secondary" href="{{ route('e.tax.view.service', ['id' => $_all['id'] ]) }}">View</a>
+
+                                            <a class="btn-sm app-btn-secondary red" href="{{ route('e.tax.drop.service', ['id' => $_all['id'] ]) }}">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                     @endforeach
