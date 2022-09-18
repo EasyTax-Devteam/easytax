@@ -189,6 +189,17 @@
         .my-float {
             margin-top: 16px;
         }
+
+        .small-li {
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .badge-primary {
+            background: #1d3766;
+            margin-right: 3px;
+            line-height: 12px;
+        }
     </style>
 
 </head>
@@ -415,6 +426,25 @@
 
 
     <script>
+        showUploadedFiles = function(event, id_of_the_operation) {
+            var showArea = document.getElementById(id_of_the_operation + '_show-area');
+            var list = [];
+            for (var i = 0; i < event.files.length; ++i) {
+                var name = event.files.item(i).name;
+                list.push('<div class="badge badge-primary">' + name + '</div>');
+            }
+            showArea.innerHTML = '<span class="small-li">' + list.join("") + '</span>';
+        }
+
+        showFileName = function(event) {
+            // the change event gives us the input it occurred in 
+
+            // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+            var fileName = input.files[0].name;
+            // use fileName however fits your app best, i.e. add it into a div
+
+        }
+
         $('.insupolicies').change(function() {
             if (this.value === 'Yes') {
                 $('.showhide').show();

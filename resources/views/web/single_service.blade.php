@@ -137,7 +137,8 @@
                                 {!! $field_label !!}
                             </label>
                         </div>
-                        <input {{ $required == 1 ? "required" : "" }} type="file" name="{{ $field_name }}{{ $field_is_multiple == 1 ? '[]' : '' }}" class="form-control" {{ $field_is_multiple == 1 ? "multiple" : "" }}>
+                        <input onchange="showUploadedFiles(this, '{{ $field_name }}')" {{ $required == 1 ? "required" : "" }} type="file" name="{{ $field_name }}{{ $field_is_multiple == 1 ? '[]' : '' }}" class="form-control" {{ $field_is_multiple == 1 ? "multiple" : "" }}>
+                        <div class="" id="{{ $field_name }}_show-area"></div>
                         <small class="input-hint">Select up to {{ $_form['field_max_uploads'] }} file(s) of up to 2MB each.</small>
                     </div>
                     @elseif($_form['field_type'] == 'select')
