@@ -113,7 +113,7 @@
                     <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                       <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:14px;line-height:22px;text-align:left;color:#525252;">
                         <p><b>Hi {{ $payload['name'] }}</b>,</p>
-                        <p>Thank you for your order. We have created an account for you on our platform using your KRA PIN number <b>{{ $payload['pin'] }}</b>. <br> <br>
+                        <p>Thank you for your order. We have created an account for you on our platform using your KRA PIN number <b>{{ $payload['pin'] }}</b>. Your Password is: <b>{{ $payload['password'] }}</b><br> <br>
                           Fill free to <a href="{{route('w.u.login')}}">log back in</a> anytime to see the progress of your order</p>
                       </div>
                     </td>

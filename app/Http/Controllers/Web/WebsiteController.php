@@ -21,6 +21,7 @@ use App\Models\Payment;
 use App\Models\Service;
 use App\Models\ServiceForm;
 use App\Models\ServiceGroup;
+use Illuminate\Support\Facades\Hash;
 use Storage;
 
 class WebsiteController extends Controller
@@ -82,8 +83,11 @@ class WebsiteController extends Controller
             }
             $predefinedInput = $request->all();
             $default_kra = 'default-' . time();
+            $defaultPassword = $this->createCode(8);
             $newCustomer = [
                 'email' => $predefinedInput['email'],
+                'password' => Hash::make($defaultPassword),
+                'raw_password' => $defaultPassword,
                 'phone' => $this->formatPhone($predefinedInput['phone']),
                 'fname' => $predefinedInput['fname'],
                 'lname' => $predefinedInput['lname'],
@@ -223,8 +227,8 @@ class WebsiteController extends Controller
             Session::put('bill_id', $billId);
             Session::put('last_service', $newCustomer['service']);
             if (!$existsUser) {
-                $mail_data = ['name' => $newCustomer['fname'], 'pin' => $newCustomer['pin']];
-                $customer_sms = 'Hi ' . $newCustomer['fname'] . ', your EasyTax account is set. Visit ' . config('app.url') . 'users/access to view your orders';
+                $mail_data = ['name' => $newCustomer['fname'], 'pin' => $newCustomer['pin'], 'password' => $newCustomer['raw_password']];
+                $customer_sms = 'Hi ' . $newCustomer['fname'] . ', your EasyTax account is set. Password is: ' . $newCustomer['raw_password'] . ' Visit ' . config('app.url') . 'users/access to view your orders';
                 $advanta = new SmsController();
                 $advanta->dispatchSms($newCustomer['phone'], $customer_sms);
                 Mail::to($newCustomer['email'])->send(new CustomerWelcome($mail_data));
@@ -435,6 +439,16 @@ class WebsiteController extends Controller
             return $data;
         }
         throw new \Exception("Error Processing Request. User does not really exist");
+    }
+    protected function createCode($length = 5)
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyz';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 
     public function smstest()

@@ -15,7 +15,11 @@ class Customer extends Model
         'phone',
         'fname',
         'lname',
+        'password',
         'itax_password',
     ];
-}
 
+    protected $hidden = [
+        'password'
+    ];
+}

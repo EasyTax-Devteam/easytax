@@ -13,6 +13,7 @@ use Validator;
 use App\Http\Controllers\Web\MpesaController;
 use App\Http\Controllers\Sms\SmsController;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Hash;
 use App\Mail\AdminPayment;
 use App\Mail\CustomerPayment;
 
@@ -187,17 +188,22 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'KraPin' => 'required|string|min:11|max:12|regex:/^[A-Z]{1}/|regex:/^[A-Z0-9]{10}[A-Z]$/',
+            'password' => 'required|string'
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
-        $kra = $request->get('KraPin');
+        $input = $request->all();
+        $kra = $input['KraPin'];
         $customer = Customer::where('pin', $kra)->first();
         if (!is_object($customer)) {
             return redirect()->route('w.index');
         }
-        Session::put('login_kra_pin', $customer);
-        return redirect()->route('w.u.orders');
+        if (Hash::check($input['password'], $customer->password)) {
+            Session::put('login_kra_pin', $customer);
+            return redirect()->route('w.u.orders');
+        }
+        return redirect()->back()->withInput()->with(['Err' => 'Invalid username or password']);
     }
 
     public function logout()
