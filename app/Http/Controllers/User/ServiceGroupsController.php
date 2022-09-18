@@ -20,6 +20,7 @@ class ServiceGroupsController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'order' => 'required|integer',
             'description' => 'required|string',
         ]);
         if ($validator->fails()) {
@@ -51,6 +52,7 @@ class ServiceGroupsController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'order' => 'required|integer',
             'description' => 'required|string',
         ]);
         if ($validator->fails()) {
@@ -86,19 +88,19 @@ class ServiceGroupsController extends Controller
     {
         switch ($case) {
             case 1:
-                $data = ServiceGroup::all();
+                $data = ServiceGroup::orderBy('order')->get();
                 if (is_object($data)) {
                     return $data->toArray();
                 }
                 break;
             case 2:
-                $data = ServiceGroup::where('enabled', true)->get();
+                $data = ServiceGroup::where('enabled', true)->orderBy('order')->get();
                 if (is_object($data)) {
                     return $data->toArray();
                 }
                 break;
             case 3:
-                $data = ServiceGroup::where('enabled', false)->get();
+                $data = ServiceGroup::where('enabled', false)->orderBy('order')->get();
                 if (is_object($data)) {
                     return $data->toArray();
                 }

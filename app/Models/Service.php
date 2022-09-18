@@ -18,6 +18,7 @@ class Service extends Model
         'enabled',
         'description',
         'type_name',
+        'order',
         'delivery_time'
     ];
 }

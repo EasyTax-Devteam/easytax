@@ -56,6 +56,10 @@
                                 <input required type="number" class="form-control" id="setting-input-2" name="price" value="{{  $service->price }}">
                             </div>
                             <div class="mb-3 col-md-4">
+                                <label class="form-label">Order</label>
+                                <input required type="number" class="form-control" id="setting-input-2" value="{{  $service->order }}" name="order">
+                            </div>
+                            <div class="mb-3 col-md-4">
                                 <label for="setting-input-2" class="form-label">Delivery Time</label>
                                 <input required type="text" class="form-control" id="setting-input-2" placeholder="24 Hours" name="delivery_time" value="{{  $service->delivery_time }}">
                             </div>

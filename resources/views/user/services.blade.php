@@ -47,19 +47,21 @@
                         <form class="settings-form row" method="post" enctype="multipart/form-data" action="{{ route('e.tax.add.group') }}">
                             @csrf
                             {{ \App\Models\User::showFormNotice($errors) }}
-                            <div class="mb-3 col-md-6">
-                                <label for="setting-input-1" class="form-label">Name <span class="ms-2" data-container="body" data-bs-toggle="popover" data-trigger="hover" data-placement="top" data-content="">
-                                    </span>
-                                </label>
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label">Name</label>
                                 <input required type="text" name="name" class="form-control" id="setting-input-1" value="">
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-4">
                                 <label for="setting-input-3" class="form-label">Service Artwork</label>
                                 <input required type="file" class="form-control" id="setting-input-2" name="artwork">
-
                             </div>
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label">Order</label>
+                                <input required type="number" name="order" class="form-control">
+                            </div>
+
                             <div class="col-md-12" style="margin-top: 35px !important;">
-                                <label for="setting-input-1" class="form-label">Description
+                                <label class="form-label">Description
                                     <span class="ms-2" data-container="body" data-bs-toggle="popover" data-trigger="hover" data-placement="top" data-content="">
                                     </span>
                                 </label>
@@ -80,7 +82,7 @@
                             <table class="table app-table-hover mb-0 text-left reportable">
                                 <thead>
                                     <tr>
-                                        <th class="cell">ID</th>
+                                        <th class="cell">#Order</th>
                                         <th class="cell">Name</th>
                                         <th class="cell">Status</th>
                                         <th class="cell"></th>
@@ -89,7 +91,7 @@
                                 <tbody>
                                     @foreach( $groups as $_group )
                                     <tr>
-                                        <td class="cell">#{{ $_group['id'] }}</td>
+                                        <td class="cell">#{{ $_group['order'] }}</td>
                                         <td class="cell">
                                             <span class="truncate">{{ $_group['name'] }}</span>
                                         </td>
@@ -136,27 +138,31 @@
                             @csrf
                             {{ \App\Models\User::showFormNotice($errors) }}
                             <div class="mb-3 col-md-4">
-                                <label for="setting-input-1" class="form-label">Name <span class="ms-2" data-container="body" data-bs-toggle="popover" data-trigger="hover" data-placement="top" data-content="">
+                                <label class="form-label">Name <span class="ms-2" data-container="body" data-bs-toggle="popover" data-trigger="hover" data-placement="top" data-content="">
                                     </span>
                                 </label>
                                 <input required type="text" name="name" class="form-control" id="setting-input-1" value="">
                             </div>
                             <div class="mb-3 col-md-4">
-                                <label for="setting-input-2" class="form-label">
+                                <label class="form-label">
                                     Deposit(if price is not known)
                                 </label>
                                 <input required type="number" class="form-control" id="setting-input-2" name="deposit">
                             </div>
                             <div class="mb-3 col-md-4">
-                                <label for="setting-input-2" class="form-label">Exact Price(Leave deposit blank)</label>
+                                <label class="form-label">Exact Price(Leave deposit blank)</label>
                                 <input required type="number" class="form-control" id="setting-input-2" name="price">
                             </div>
 
-                            <div class="mb-3 col-md-4">
-                                <label for="setting-input-2" class="form-label">Delivery Time</label>
+                            <div class="mb-3 col-md-3">
+                                <label class="form-label">Order</label>
+                                <input required type="number" class="form-control" id="setting-input-2" placeholder="1" name="order">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                <label class="form-label">Delivery Time</label>
                                 <input required type="text" class="form-control" id="setting-input-2" placeholder="24 Hours" name="delivery_time">
                             </div>
-                            <div class="mb-3 col-md-4">
+                            <div class="mb-3 col-md-3">
                                 <label for="setting-input-3" class="form-label">Service Group</label>
                                 <select class="form-control w-auto" name="type" required>
                                     <option value="">Select group</option>
@@ -165,7 +171,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="mb-3 col-md-4">
+                            <div class="mb-3 col-md-3">
                                 <label for="setting-input-3" class="form-label">Service Artwork</label>
                                 <input required type="file" class="form-control" id="setting-input-2" name="artwork">
                             </div>
@@ -188,7 +194,7 @@
                             <table class="table app-table-hover mb-0 text-left reportable">
                                 <thead>
                                     <tr>
-                                        <th class="cell">ID</th>
+                                        <th class="cell">#Order</th>
                                         <th class="cell">Name</th>
                                         <th class="cell">Group</th>
                                         <th class="cell">Price</th>
@@ -199,7 +205,7 @@
                                 <tbody>
                                     @foreach( $all as $_all )
                                     <tr>
-                                        <td class="cell">#{{ $_all['id'] }}</td>
+                                        <td class="cell">#{{ $_all['order'] }}</td>
                                         <td class="cell">
                                             <span class="truncate">{{ $_all['name'] }}</span>
                                         </td>

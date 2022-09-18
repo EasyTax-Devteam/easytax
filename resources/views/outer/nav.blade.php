@@ -46,6 +46,16 @@
         .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li.menu-item-has-children>a:before {
             top: 34%;
         }
+
+        .container-fluid {
+            padding-left: 40px !important;
+            padding-right: 40px !important;
+        }
+
+        .svc-sub-menu {
+            line-height: 20px !important;
+            font-size: 13px !important;
+        }
     </style>
     <!-- Topbar Area Start -->
     <div class="topbar-area style1">
@@ -89,7 +99,7 @@
 
     <!-- Menu Start -->
     <div class="menu-area menu-sticky">
-        <div class="container custom logo-hd-holder">
+        <div class="container-fluid custom logo-hd-holder">
             <div class="row-table">
                 <div class="col-cell header-logo">
                     <div class="logo-area">
@@ -112,7 +122,7 @@
                                         <a href="{{ route('w.s.category', ['id' => $_group['id']]) }}">{{ $_group['name'] }}</a>
                                         <ul class="sub-menu">
                                             @foreach( $group_services as $_service )
-                                            <li><a href="{{ route('w.s.service', ['id' => $_service['id']]) }}">{{ $_service['name'] }}</a></li>
+                                            <li><a class="svc-sub-menu" href="{{ route('w.s.service', ['id' => $_service['id']]) }}">{{ $_service['name'] }}</a></li>
                                             @endforeach
                                         </ul>
                                     </li>

@@ -212,7 +212,7 @@ class User extends Authenticatable
     }
     public static function getServiceGroups()
     {
-        $data = ServiceGroup::where('enabled', true)->get();
+        $data = ServiceGroup::where('enabled', true)->orderBy('order')->get();
         if (is_object($data)) {
             return $data->toArray();
         }
@@ -220,7 +220,7 @@ class User extends Authenticatable
     }
     public static function getServicesByGroup($group)
     {
-        $data = Service::where('enabled', true)->where('type', $group)->get();
+        $data = Service::where('enabled', true)->where('type', $group)->orderBy('order')->get();
         if (is_object($data)) {
             return $data->toArray();
         }
@@ -230,19 +230,19 @@ class User extends Authenticatable
     {
         switch ($case) {
             case 1:
-                $data = Service::all();
+                $data = Service::orderBy('order')->get();
                 if (is_object($data)) {
                     return $data->toArray();
                 }
                 break;
             case 2:
-                $data = Service::where('enabled', true)->get();
+                $data = Service::where('enabled', true)->orderBy('order')->get();
                 if (is_object($data)) {
                     return $data->toArray();
                 }
                 break;
             case 3:
-                $data = Service::where('enabled', false)->get();
+                $data = Service::where('enabled', false)->orderBy('order')->get();
                 if (is_object($data)) {
                     return $data->toArray();
                 }

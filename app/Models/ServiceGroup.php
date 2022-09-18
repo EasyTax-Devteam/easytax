@@ -13,6 +13,7 @@ class ServiceGroup extends Model
         'name',
         'artwork',
         'description',
+        'order',
         'enabled'
     ];
 }

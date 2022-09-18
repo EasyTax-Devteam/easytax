@@ -107,7 +107,7 @@
 
             .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li a {
                 height: 40px !important;
-                line-height: 32px !important;
+                line-height: 32px;
                 border-radius: 0px !important;
                 margin-top: 0px !important;
             }

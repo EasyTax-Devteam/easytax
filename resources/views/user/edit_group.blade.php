@@ -38,17 +38,19 @@
                         <form class="settings-form row" method="post" enctype="multipart/form-data" action="{{ route('e.tax.edit.group', ['id' => $service->id ]) }}">
                             @csrf
                             {{ \App\Models\User::showFormNotice($errors) }}
-                            <div class="mb-3 col-md-6">
-                                <label for="setting-input-1" class="form-label">Name <span class="ms-2" data-container="body" data-bs-toggle="popover" data-trigger="hover" data-placement="top" data-content="">
-                                    </span>
-                                </label>
-                                <input required type="text" name="name" class="form-control" id="setting-input-1" value="{{ $service->name }}">
+                            <div class="mb-3 col-md-4">
+                                <label for="setting-input-1" class="form-label">Name</label>
+                                <input required type="text" name="name" class="form-control" value="{{ $service->name }}">
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-4">
                                 <label for="setting-input-3" class="form-label">Service Artwork</label>
-                                <input type="file" class="form-control" id="setting-input-2" name="artwork">
-
+                                <input type="file" class="form-control" name="artwork">
                             </div>
+                            <div class="mb-3 col-md-4">
+                                <label for="setting-input-1" class="form-label">Order</label>
+                                <input required type="number" name="order" class="form-control" value="{{ $service->order }}">
+                            </div>
+
                             <div class="col-md-12" style="margin-top: 35px !important;">
                                 <label for="setting-input-1" class="form-label">Description
                                     <span class="ms-2" data-container="body" data-bs-toggle="popover" data-trigger="hover" data-placement="top" data-content="">
