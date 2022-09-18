@@ -32,6 +32,7 @@ class ServiceFormController extends Controller
             return redirect()->back()->withInput()->with(['Err' => 'Invalid input fields',]);
         }
         $input = $this->clean_fields($request->all());
+        $input['field_name'] = $this->removeSpecialChars($input['field_name']);
         $input['validation_rule'] = $request->get('validation_rule');
         $input['field_id'] = $input['field_name'] . '_id';
         $input['field_default_value'] = null;
@@ -98,5 +99,10 @@ class ServiceFormController extends Controller
         endforeach;
 
         return $cleaned;
+    }
+
+    protected function removeSpecialChars($string)
+    {
+        return preg_replace('/[^A-Za-z0-9\-]/', '', $string);
     }
 }

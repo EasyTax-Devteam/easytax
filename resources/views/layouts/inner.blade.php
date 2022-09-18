@@ -88,6 +88,13 @@
 
 
     <script>
+        prettyPrint = function(field_options_json) {
+            var ugly = document.getElementById(field_options_json).value;
+            var obj = JSON.parse(ugly);
+            var pretty = JSON.stringify(obj, undefined, 4);
+            document.getElementById(field_options_json).value = pretty;
+        }
+
         $(document).ready(function() {
             $('.summernote').summernote({
                 placeholder: 'Type your text here',

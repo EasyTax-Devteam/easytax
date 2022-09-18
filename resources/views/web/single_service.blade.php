@@ -131,11 +131,35 @@
                     </div>
                     @elseif($_form['field_type'] == 'file')
                     <div class="mb-5 col-md-6">
-                        <div class="label-wrap"><label class="form-label">
+                        <div class="label-wrap">
+                            <label class="form-label">
                                 {!! $required == 1 ? '<sup class="required">*</sup>' : '' !!}
-                                {!! $field_label !!}</label></div>
-                        <input {{ $required == 1 ? "required" : "" }} type="{{ $_form['field_type'] }}" name="{{ $field_name }}{{ $field_is_multiple == 1 ? '[]' : '' }}" class="form-control" {{ $field_is_multiple == 1 ? "multiple" : "" }}>
+                                {!! $field_label !!}
+                            </label>
+                        </div>
+                        <input {{ $required == 1 ? "required" : "" }} type="file" name="{{ $field_name }}{{ $field_is_multiple == 1 ? '[]' : '' }}" class="form-control" {{ $field_is_multiple == 1 ? "multiple" : "" }}>
                         <small class="input-hint">Select up to {{ $_form['field_max_uploads'] }} file(s) of up to 2MB each.</small>
+                    </div>
+                    @elseif($_form['field_type'] == 'select')
+                    @php( $selectOptions = json_decode($_form['field_options_json'], true) )
+                    <div class="mb-5 col-md-6">
+                        <div class="label-wrap">
+                            <label class="form-label">
+                                {!! $required == 1 ? '<sup class="required">*</sup>' : '' !!}
+                                {!! $field_label !!}
+                            </label>
+                        </div>
+                        <select {{ $required == 1 ? "required" : "" }} name="{{ $field_name }}" id="{{ $field_name }}_id" class="form-control @error($field_name) is-invalid @enderror">
+                            <option value="">Choose one</option>
+                            @foreach($selectOptions as $value )
+                            <option value="{{ $value['value'] }}">{{ strtoupper($value['label']) }}</option>
+                            @endforeach
+                        </select>
+                        @error($field_name)
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     @else
                     @endif

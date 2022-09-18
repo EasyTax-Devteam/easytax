@@ -160,7 +160,8 @@
 
                                     <div class="mb-3 col-md-6">
                                         <label for="setting-input-3" class="form-label">field_options_json</label>
-                                        <textarea rows="3" class="form-control" name="field_options_json"></textarea>
+                                        <textarea onkeyup="prettyPrint('field_options_json')" rows="3" class="form-control" name="field_options_json" id="field_options_json"></textarea>
+                                        <!-- <button type="button" onclick="prettyPrint()">Pretty Print</button> -->
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label for="setting-input-3" class="form-label">field_form_code</label>

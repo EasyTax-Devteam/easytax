@@ -106,7 +106,7 @@
 
                             <div class="mb-3 col-md-6">
                                 <label for="setting-input-3" class="form-label">field_options_json</label>
-                                <textarea rows="4" class="form-control" name="field_options_json">{{ $form->field_options_json }}</textarea>
+                                <textarea onkeyup="prettyPrint('field_options_json_edit')" rows="4" class="form-control" name="field_options_json" id="field_options_json_edit">{{ $form->field_options_json }}</textarea>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="setting-input-3" class="form-label">field_form_code</label>
