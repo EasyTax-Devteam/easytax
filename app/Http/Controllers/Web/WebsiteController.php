@@ -100,6 +100,7 @@ class WebsiteController extends Controller
             foreach ($serviceFormFields as $_field) :
                 switch (strtolower($_field['field_type'])) {
                     case 'text':
+                    case 'select':
                         $checkker = $request->get($_field['field_name']);
                         if (strlen($checkker) > 0) {
                             $input[$_field['field_name']] = trim($request->get($_field['field_name']));
