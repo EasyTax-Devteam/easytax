@@ -18,8 +18,13 @@
         color: #478aca;
     }
 
+    .disclaimer-title {
+        font-style: italic;
+    }
+
     .disclaimer {
         margin-top: 30px;
+        padding: 15px;
     }
 
     .price-bolder,
