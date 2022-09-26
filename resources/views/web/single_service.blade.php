@@ -11,13 +11,19 @@
         display: none !important;
     }
 
-    .title-price {
+    .title-price,
+    .disclaimer-title {
         font-size: 20px;
         font-weight: 500;
         color: #478aca;
     }
 
-    .price-bolder {
+    .disclaimer {
+        margin-top: 30px;
+    }
+
+    .price-bolder,
+    .disclaimer-title {
         font-size: 20px;
         font-weight: 700;
     }
@@ -173,6 +179,11 @@
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
+                        @if(strlen($group->disclaimer) > 0 )
+                        <div class="disclaimer">
+                            <p class="disclaimer-title">{{ $group->disclaimer }}</p>
+                        </div>
+                        @endif
                     </div>
                     <div class="mb-5 col-md-12">
                         <div class="form-check">

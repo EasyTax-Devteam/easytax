@@ -61,8 +61,11 @@ class WebsiteController extends Controller
         }
         $forms = $forms->toArray();
 
+        $service = Service::find($id);
+        $group = ServiceGroup::find($service->type);
         return view('web.single_service', [
-            'serviceData' => Service::find($id),
+            'serviceData' => $service,
+            'group' => $group,
             'requestForm' => $forms
         ]);
     }

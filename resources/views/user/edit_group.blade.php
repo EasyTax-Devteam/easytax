@@ -50,6 +50,10 @@
                                 <label for="setting-input-1" class="form-label">Order</label>
                                 <input required type="number" name="order" class="form-control" value="{{ $service->order }}">
                             </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label">Disclaimer</label>
+                                <input required type="text" name="disclaimer" class="form-control" value="{{ $service->disclaimer }}">
+                            </div>
 
                             <div class="col-md-12" style="margin-top: 35px !important;">
                                 <label for="setting-input-1" class="form-label">Description

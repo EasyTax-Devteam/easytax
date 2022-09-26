@@ -59,6 +59,10 @@
                                 <label class="form-label">Order</label>
                                 <input required type="number" name="order" class="form-control">
                             </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label">Disclaimer</label>
+                                <input required type="text" name="disclaimer" class="form-control">
+                            </div>
 
                             <div class="col-md-12" style="margin-top: 35px !important;">
                                 <label class="form-label">Description
