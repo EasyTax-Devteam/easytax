@@ -87,6 +87,12 @@
             max-height: 60px;
         }
 
+        @media only screen and (max-width: 1366px) {
+            .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li a {
+                font-size: 13px !important;
+            }
+        }
+
         .rs-services.home-style2 .services-item .services-icon img {
             height: 200px !important;
             width: 300px !important;

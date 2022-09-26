@@ -2,6 +2,10 @@
 @php( $glabal_groups = \App\Models\User::getServiceGroups() )
 <header id="rs-header" class="rs-header style2 header-transparent">
     <style>
+        .header-logo {
+            margin-right: 16px;
+        }
+
         @media only screen and (max-width: 1366px) {
             .full-width-header .rs-header .menu-area .main-menu .rs-menu ul.nav-menu li {
                 margin-right: 0px;
@@ -99,7 +103,7 @@
 
     <!-- Menu Start -->
     <div class="menu-area menu-sticky">
-        <div class="container-fluid custom logo-hd-holder">
+        <div class="container-fluid custom logo-hd-holder ">
             <div class="row-table">
                 <div class="col-cell header-logo">
                     <div class="logo-area">
