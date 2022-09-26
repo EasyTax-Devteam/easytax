@@ -29,6 +29,9 @@ Route::get('/sms', [App\Http\Controllers\Web\WebsiteController::class, 'smstest'
 Route::get('/', [App\Http\Controllers\Web\WebsiteController::class, 'index'])->name('w.index');
 Route::get('/email', [App\Http\Controllers\Web\WebsiteController::class, 'email']);
 Route::get('/about', [App\Http\Controllers\Web\WebsiteController::class, 'about'])->name('w.about');
+Route::get('/privacy-policy', [App\Http\Controllers\Web\WebsiteController::class, 'privacy'])->name('w.policy');
+Route::get('/terms', [App\Http\Controllers\Web\WebsiteController::class, 'terms'])->name('w.terms');
+
 Route::group(['prefix' => 'categories'], function () {
     Route::get('/service/{id}', [WebsiteController::class, 'single_service'])->name('w.s.service');
     Route::post('/service/send', [WebsiteController::class, 'post_service'])->name('w.s.service.send');
@@ -47,6 +50,13 @@ Route::group(['prefix' => 'users'], function () {
     Route::get('/stream/{file}', [App\Http\Controllers\Web\UserController::class, 'stream'])->name('cust.stream');
     Route::get('/access', [App\Http\Controllers\Web\UserController::class, 'login'])->name('w.u.login');
     Route::post('/post/access', [App\Http\Controllers\Web\UserController::class, 'post_login'])->name('w.u.post_login');
+
+    Route::get('/user/reset/link', [App\Http\Controllers\Web\UserController::class, 'reset_link'])->name('w.u.reset.link_form');
+    Route::post('/u/post/rest/frm', [App\Http\Controllers\Web\UserController::class, 'post_reset_link'])->name('w.u.post_reset_link');
+
+    Route::get('/user/reset/form/{token}', [App\Http\Controllers\Web\UserController::class, 'reset_form'])->name('w.u.reset.form');
+    Route::post('/u/rest/password', [App\Http\Controllers\Web\UserController::class, 'post_change_pwd'])->name('w.u.post_change_pwd');
+
     Route::get('/logout/app', [App\Http\Controllers\Web\UserController::class, 'logout'])->name('w.u.logout');
 });
 

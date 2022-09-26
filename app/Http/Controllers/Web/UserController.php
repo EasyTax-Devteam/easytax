@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\AdminPayment;
 use App\Mail\CustomerPayment;
+use App\Mail\CustomerPwdReset;
+use App\Models\CustomerReset;
 
 class UserController extends Controller
 {
@@ -183,7 +185,56 @@ class UserController extends Controller
         }
         return view('customer.login');
     }
-
+    public function reset_link()
+    {
+        return view('customer.reset_link');
+    }
+    public function post_reset_link(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'emailAddress' => 'required|email'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+        $input = $request->all();
+        $email = $input['emailAddress'];
+        $customer = Customer::where('email', $email)->first();
+        if (is_object($customer)) {
+            $token = bin2hex(random_bytes(16));
+            $data = ['token' => $token];
+            CustomerReset::create(['email' => $email, 'token' => $token]);
+            Mail::to($email)->send(new CustomerPwdReset($data));
+            return redirect()->back()->withInput()->with(['Msg' => 'An email containing a password reset link has been sent.']);
+        }
+    }
+    public function reset_form($token)
+    {
+        $isValid = CustomerReset::where('token', $token)->count() > 0;
+        if ($isValid) {
+            return view('customer.reset_form', ['token' => $token]);
+        }
+        abort(403, 'Invalid or expired token');
+    }
+    public function post_change_pwd(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required|string',
+            'password' => 'required|string:confirmed'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+        $input = $request->all();
+        $token = $input['token'];
+        $isValid = CustomerReset::where('token', $token)->count() > 0;
+        if ($isValid) {
+            $reset = CustomerReset::where('token', $token)->first();
+            $userEmail = $reset->email;
+            Customer::where('email', $userEmail)->update(['password' => Hash::make($input['password'])]);
+            return redirect()->back()->withInput()->with(['Msg' => 'Your password has been reset']);
+        }
+    }
     public function post_login(Request $request)
     {
         $validator = Validator::make($request->all(), [

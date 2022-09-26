@@ -37,6 +37,16 @@ class WebsiteController extends Controller
         return view('web.about');
     }
 
+    public function privacy()
+    {
+        return view('web.privacy');
+    }
+
+    public function terms()
+    {
+        return view('web.terms');
+    }
+
     public function single_service($id)
     {
         $service = Service::find($id);
@@ -460,12 +470,12 @@ class WebsiteController extends Controller
     }
     public function email()
     {
+        $token = bin2hex(random_bytes(16));
         $data = [
-            'pin' => 'A007jgjggjgjgjX',
-            'name' => 'Juma james',
-            'amount' => 100
+            'token' => $token,
+            'name' => 'Juma james'
         ];
-        return view('emails.admin.payment', ['payload' => $data]);
+        return view('emails.customer.reset_link', ['payload' => $data]);
         // return view('emails.customer.welcome', [ 'payload' => $data]);
     }
 }

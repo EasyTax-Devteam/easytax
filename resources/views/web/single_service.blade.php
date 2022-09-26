@@ -175,6 +175,14 @@
                         @enderror
                     </div>
                     <div class="mb-5 col-md-12">
+                        <div class="form-check">
+                            <input required class="form-check-input" type="checkbox" value="1" id="flexCheckChecked">
+                            <label class="form-check-label" for="flexCheckChecked">
+                                By signing up you agree to our <a href="{{ route('w.terms') }}" target="_blank">Terms & Conditions</a> and <a href="{{ route('w.policy') }}" target="_blank">Privacy Policy</a>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-5 col-md-12">
                         <button type="submit" name="request_service" class="btn btn-primary service-button">Proceed to Payment</button>
                     </div>
                 </form>

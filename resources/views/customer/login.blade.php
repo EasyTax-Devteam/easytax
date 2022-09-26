@@ -54,10 +54,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="payment-method mt-40 md-mt-20">
-                    <div class="bottom-area">
-                        <p class="mt-15"></p>
-                        <button class="add-btn" type="submit">Proceed</button>
+                <div class="payment-method mt-40 md-mt-20 row">
+                    <div class="col-md-4">
+                        <button class="add-btn" type="submit">Login</button>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn btn-link" href="{{ route('w.u.reset.link_form') }}">Reset Password</a>
                     </div>
                 </div>
             </form>
