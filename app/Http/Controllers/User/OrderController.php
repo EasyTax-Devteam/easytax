@@ -31,6 +31,7 @@ class OrderController extends Controller
     public function assign_order(Request $request)
     {
         DB::beginTransaction();
+        $assigner = Auth::user()->name;
         try {
             $validator = Validator::make($request->all(), [
                 'admin' => 'required|string',
@@ -40,6 +41,7 @@ class OrderController extends Controller
                 return redirect()->back()->withInput()->with(['Err' => 'Invalid  input fields',]);
             }
             $input = $request->all();
+            $input['assigned_by'] = $assigner;
             OrderAssignment::create($input);
             Order::find($input['order'])->update(['progress' => 'in_progress']);
             $user = User::find($input['admin']);

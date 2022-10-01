@@ -12,6 +12,6 @@ class OrderAssignment extends Model
     protected $fillable = [
         'admin',
         'order',
+        'assigned_by',
     ];
-
 }
