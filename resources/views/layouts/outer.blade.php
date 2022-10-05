@@ -207,7 +207,17 @@
             line-height: 12px;
         }
     </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPXJ0VW6J5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-GPXJ0VW6J5');
+    </script>
 </head>
 
 <body class="defult-home">
