@@ -29,7 +29,7 @@
                 <ol>
                     <li>Go to M-PESA menu on your phone</li>
                     <li>Go to Lipa na M-PESA, PayBill option.</li>
-                    <li>Enter the business number 4080087</li>
+                    <li>Enter the business number 4080761</li>
                     <li>Enter account number {{ $bill }}</li>
                     <li>Enter amount kes {{ $amount }}</li>
                     <li>Enter M-PESA pin.</li>
