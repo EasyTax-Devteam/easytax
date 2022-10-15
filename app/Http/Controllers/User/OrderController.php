@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Bill;
 use App\Models\Customer;
+use App\Models\Payment;
 use App\Models\OrderDocument;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -245,6 +246,48 @@ class OrderController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with(['Err' => $th->getMessage()]);
         }
+    }
+
+    public function manual_pay(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $request->all();
+            $paylog = json_encode(['kind' => 'manual payment']);
+            $mpesaCode = strtoupper($data['reference']);
+            $bill = Bill::find($data['billId']);
+            if ($bill->payment_status) {
+                throw new \Exception("Error Processing Request: This bill is already paid for");
+            }
+            $bill->payment_status = true;
+            $bill->mpesa_log = $paylog;
+            $bill->save();
+            $paymentEntry = [
+                'reference' => $mpesaCode,
+                'paid_by' => '2547xxxxxxxx',
+                'amount' => $data['amount'],
+                'is_paid' => true,
+                'order' => $bill->id,
+                'mpesa_log' => $paylog
+            ];
+            if (!$this->existsPayment($mpesaCode)) {
+                Payment::create($paymentEntry);
+            }
+            DB::commit();
+            return response([
+                'msg' => 'Payment entry uploaded successfully!'
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response([
+                'err' => $th->getMessage()
+            ]);
+        }
+    }
+
+    protected function existsPayment($mpesaCode)
+    {
+        return Payment::where('reference', $mpesaCode)->count() > 0;
     }
 
     protected function allowedExtensions()

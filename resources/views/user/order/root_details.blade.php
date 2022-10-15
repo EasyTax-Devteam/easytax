@@ -1,6 +1,26 @@
 @php( $orderService = \App\Models\Service::find($thisOrder->service) )
 @php( $orderDate = $thisOrder->created_at )
 @php( $orderCustomer = \App\Models\Customer::find($thisOrder->customer) )
+<style>
+    .bill-label {
+        font-size: 15px;
+        font-style: italic;
+        font-weight: 200;
+    }
+
+    .cell {
+        width: 200px;
+    }
+
+    .cell-td {
+        max-width: 70px;
+        width: 70px;
+    }
+
+    .bill-input {
+        padding: 2px 1px 2px 8px;
+    }
+</style>
 <div class="app-content pt-3 p-md-3 p-lg-4">
     <div class="container-xl">
         <div class="position-relative mb-3">
@@ -171,25 +191,72 @@
                                     <th class="cell">Amount</th>
                                     <th class="cell">Created</th>
                                     <th class="cell">Status</th>
+                                    <th class="cell">{{" "}}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach( $bills as $_bill )
                                 @php( $date = $_bill['created_at'] )
                                 @php( $paymentStatus = $_bill['payment_status'] )
+                                @php( $billId = $_bill['id'] )
                                 <tr>
-                                    <td class="cell">#{{ $_bill['id'] }}</td>
+                                    <td class="cell cell-td">#{{ $billId }}</td>
                                     <td class="cell">{{ $_bill['narration'] }}</td>
-                                    <td class="cell">KES {{ number_format($_bill['amount'], 2) }}</td>
+                                    <td class="cell cell-td">KES {{ number_format($_bill['amount'], 2) }}</td>
                                     <td class="cell">
                                         <span>{{ date('d', strtotime($date)) }} {{ date('M', strtotime($date)) }}</span>
                                         <span class="note">{{ date('h:i a', strtotime($date)) }}</span>
                                     </td>
-                                    <td class="cell">
+                                    <td class="cell cell-td">
                                         <span class="badge {{ $paymentStatus == true ? 'bg-success' : 'bg-danger' }}">{{ $paymentStatus == true ? 'paid' : 'pending'}}</span>
                                     </td>
-
+                                    <td class="cell cell-td">
+                                        <button id="pay-btn-no-{{ $billId }}" class="btn-sm app-btn-danger" onclick="showManPaymentForm('{{ $billId }}')">
+                                            <i class="fa fa-plus-circle"> </i>
+                                            Enter Payment
+                                        </button>
+                                    </td>
                                 </tr>
+                                @if($paymentStatus != true)
+                                <tr id="pay-td-no-{{ $billId }}" style="display: none;">
+                                    <form name="pay-form-no-{{ $billId }}">
+                                        @csrf()
+                                        <td class="cell">
+                                            <label class="bill-label" for="billid">Bill</label>
+                                            <input class="form-control bill-input" type="number" value="{{ $billId }}" readonly name="billId" />
+                                        </td>
+                                        <td class="cell">
+                                            <label class="bill-label" for="narration">Narration</label>
+                                            <input class="form-control bill-input" type="text" value="{{ $_bill['narration'] }}" readonly name="narration" />
+                                        </td>
+                                        <td class="cell">
+                                            <label class="bill-label" for="amount">Amount</label>
+                                            <input class="form-control bill-input" type="text" value="{{ $_bill['amount'] }}" readonly name="amount" />
+                                        </td>
+                                        <td class="cell">
+                                            <label class="bill-label" for="reference">Mpesa Reference</label>
+                                            <input class="form-control bill-input" type="text" value="" name="reference" />
+                                        </td>
+                                        <td class="cell" colspan="2">
+                                            <br>
+                                            <div class="buttons-wrapper">
+                                                <button type="button" onclick="submitManPayment('{{ $billId }}')" class="btn-sm app-btn-primary inactive">
+                                                    <svg style="width: 20px; display:none;" version="1.1" id="bill-loader-no-{{ $billId }}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                                                        <path fill="#fff" d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                                                            <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+                                                        </path>
+                                                    </svg>
+                                                    Save Payment
+                                                </button>
+                                                <a onclick="closePayForm('{{ $billId }}')" class="btn-sm app-btn-danger" style="cursor: pointer;">
+                                                    <i class="fa fa-times"> </i>
+                                                    Close
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </form>
+                                </tr>
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>

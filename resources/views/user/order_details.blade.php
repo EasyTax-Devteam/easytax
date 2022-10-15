@@ -36,3 +36,55 @@
 @endif
 
 @endsection
+
+<!-- dhhd foof -->
+@section('page_scripts')
+<script>
+    showManPaymentForm = function(billId) {
+        var buttonId = 'pay-btn-no-' + billId;
+        var rowId = 'pay-td-no-' + billId;
+        $('#' + buttonId).hide(1000);
+        $('#' + rowId).show(1000);
+    }
+    closePayForm = function(billId) {
+        var buttonId = 'pay-btn-no-' + billId;
+        var rowId = 'pay-td-no-' + billId;
+        var loader = 'bill-loader-no-' + billId;
+        $('.inactive').prop('disabled', false);
+        $('#' + loader).hide();
+        $('#' + buttonId).show(10);
+        $('#' + rowId).hide(10);
+    }
+    submitManPayment = function(billId) {
+        var formName = 'pay-form-no-' + billId;
+        var loader = 'bill-loader-no-' + billId;
+        $('.inactive').prop('disabled', true);
+        $('#' + loader).show();
+        var formData = $('form[name=' + formName + ']').serialize();
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('bill.man.payment') }}",
+            data: formData,
+            success: function(resp, message, xhr) {
+                $('.inactive').prop('disabled', false);
+                $('#' + loader).hide();
+                if (resp.hasOwnProperty('msg')) {
+                    alert('Payment added');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 100)
+                    return;
+                } else if (resp.hasOwnProperty('err')) {
+                    alert(resp.err);
+                    return;
+                }
+            },
+            error: function(xhr, status, error) {
+                $('.inactive').prop('disabled', false);
+                $('#' + loader).hide();
+                console.log('error', error);
+            }
+        })
+    }
+</script>
+@endsection
