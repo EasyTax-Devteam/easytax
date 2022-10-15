@@ -45,8 +45,10 @@
             <a class="flex-sm-fill text-sm-center nav-link" id="orders-completed-tab" data-bs-toggle="tab" href="#orders-completed" role="tab" aria-controls="orders-completed" aria-selected="false">Completed</a>
         </nav>
 
-
         <div class="tab-content" id="orders-table-tab-content">
+
+            {{ \App\Models\User::showFormNotice($errors) }}
+
             <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
                 <div class="app-card app-card-orders-table shadow-sm mb-5">
                     <div class="app-card-body">
@@ -81,7 +83,16 @@
                                             KES {{ number_format($getOrderBillTotals[0], 2) }} <br>
                                             <span class="badge {{ $paymentStatus == true ? 'bg-success' : 'bg-warning' }} tiny">paid kes {{ number_format($getOrderBillTotals[1], 2) }}</span>
                                         </td>
-                                        <td class="cell"><a class="btn-sm app-btn-secondary" target="_blank" href="{{ route('e.tax.order', ['id' => $_order['id'] ] ) }}">View</a></td>
+                                        <td class="cell">
+                                            <a class="btn-sm app-btn-secondary" target="_blank" href="{{ route('e.tax.order', ['id' => $_order['id'] ] ) }}">
+                                                <i class="fa fa-eye"> </i>
+                                                View
+                                            </a>
+
+                                            <a class="btn-sm app-btn-danger" href="{{ route('e.tax.order.del', ['id' => $_order['id'] ] ) }}">
+                                                <i class="fa fa-trash"> </i>
+                                            </a>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>

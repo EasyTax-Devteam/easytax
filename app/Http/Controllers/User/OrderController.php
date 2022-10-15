@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AdminTaskReview;
 use App\Mail\OrderComplete;
+use App\Models\OrderArchive;
 use Validator;
 use Auth;
 use Storage;
@@ -232,6 +233,18 @@ class OrderController extends Controller
             'returnDocs' => $this->getReturnDocs($id),
             'pipelines' => $pipelines
         ]);
+    }
+
+    public function deleteOrder($id)
+    {
+        try {
+            $order = Order::find($id);
+            OrderArchive::create($order->toArray());
+            $order->delete();
+            return redirect()->back()->with(['Msg' => 'Order deleted successfully!']);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with(['Err' => $th->getMessage()]);
+        }
     }
 
     protected function allowedExtensions()

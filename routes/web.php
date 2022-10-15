@@ -76,6 +76,7 @@ Route::group(['prefix' => 'easy/admin'], function () {
     Route::group(['prefix' => 'orders'], function () {
         Route::get('/', [OrderController::class, 'orders'])->name('e.tax.orders');
         Route::get('/details/{id}', [OrderController::class, 'order'])->name('e.tax.order');
+        Route::get('/delete/{id}', [OrderController::class, 'deleteOrder'])->name('e.tax.order.del');
         Route::post('/assign', [OrderController::class, 'assign_order'])->name('f.assign_order');
         Route::post('/upd/status', [OrderController::class, 'update_status'])->name('f.update_status');
         Route::post('/send/review', [OrderController::class, 'send_review'])->name('f.send_review');
