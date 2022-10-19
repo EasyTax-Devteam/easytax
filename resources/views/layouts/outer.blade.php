@@ -39,9 +39,23 @@
     <!-- responsive css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}">
 
+    <!-- international phone input -->
+    <link rel="stylesheet" href="{{ asset('intl-tel/css/intlTelInput.css') }}">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <style>
+        .iti__flag {
+            background-image: url("{{ asset('intl-tel/img/flags.png') }}");
+        }
+
+        @media (-webkit-min-device-pixel-ratio: 2),
+        (min-resolution: 192dpi) {
+            .iti__flag {
+                background-image: url("{{ asset('intl-tel/img/flags@2x.png') }}");
+            }
+        }
+
         h1 {
             color: #ffffff;
             font-size: 60px !important;
@@ -436,8 +450,32 @@
     <script src="{{ asset('assets/js/contact.form.js') }}"></script>
     <!-- main js -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <!-- international phone input -->
+    <script src="{{ asset('intl-tel/js/intlTelInput.js') }}"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
 
+    @php( $utilScript = asset('intl-tel/js/utils.js') )
+    <script>
+        var input = document.querySelector(".intl-phone");
+        window.intlTelInput(input, {
+            initialCountry: "auto",
+            geoIpLookup: function(success, failure) {
+                $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+                    var countryCode = (resp && resp.country) ? resp.country : "ke";
+                    success(countryCode);
+                });
+            },
+            customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+                return "e.g. " + selectedCountryPlaceholder;
+            },
+            hiddenInput: "full",
+            separateDialCode: true,
+            utilsScript: "{{ $utilScript }}",
+            preferredCountries: ["ke", "ug", "tz", "rw", "bi", "za", "ss", "sd", "so", "et", "us", "gb"],
+        });
+    </script>
 
     <script>
         showUploadedFiles = function(event, id_of_the_operation) {
