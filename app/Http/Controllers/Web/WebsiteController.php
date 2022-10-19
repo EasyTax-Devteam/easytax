@@ -212,7 +212,7 @@ class WebsiteController extends Controller
             endforeach;
 
             $input['additional_instructions'] = $request->get('additional_instructions');
-            if (count($input) < 2) {
+            if (count($input) == 0) {
                 return redirect()->back()->withInput()->with(['Err' => 'Error. You must provide some information to process the order ']);
             }
 
