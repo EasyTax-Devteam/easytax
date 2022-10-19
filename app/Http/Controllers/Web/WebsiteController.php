@@ -101,7 +101,7 @@ class WebsiteController extends Controller
                 'email' => $predefinedInput['email'],
                 'password' => Hash::make($defaultPassword),
                 'raw_password' => $defaultPassword,
-                'phone' => $this->formatPhone($predefinedInput['phone']),
+                'phone' => $this->formatIntlPhone($predefinedInput['phone']),
                 'fname' => $predefinedInput['fname'],
                 'lname' => $predefinedInput['lname'],
                 'service' => $predefinedInput['service'],
@@ -411,6 +411,17 @@ class WebsiteController extends Controller
         return '254' . substr($phone, -9);
     }
 
+    protected function formatIntlPhone($phoneArray)
+    {
+        $fullTel = str_split($phoneArray['full']);
+        if (count($fullTel) < 10) {
+            throw new \Exception("Error: Invalid phone number format");
+        }
+        array_shift($fullTel);
+        $withoutPlus = implode($fullTel);
+        return $withoutPlus;
+    }
+
     protected function getFormsByService($service)
     {
         $forms = ServiceForm::where('service', $service)->get();
@@ -428,6 +439,11 @@ class WebsiteController extends Controller
                 $validator[$_form['field_name']] = $_form['validation_rule'];
             }
         endforeach;
+        /** constant fields validation */
+        $validator['phone'] = 'required|array';
+        $validator['fname'] = 'required|string';
+        $validator['lname'] = 'required|string';
+        $validator['email'] = 'required|email';
         return $validator;
     }
     protected function allowedExtensions()

@@ -115,7 +115,8 @@
                     </div>
                     <div class="mb-5 col-md-3">
                         <div class="label-wrap"> <label class="form-label"><sup class="required">*</sup> Phone Number </label></div>
-                        <input required type="text" placeholder="+254722222200" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}">
+                        <input required type="hidden" name="phone[full]" value="{{ old('phone.full') }}">
+                        <input required type="text" name="phone[main]" class="intl-phone form-control @error('phone') is-invalid @enderror" value="{{ old('phone.main') }}">
                         @error('phone')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
