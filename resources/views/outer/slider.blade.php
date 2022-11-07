@@ -43,7 +43,7 @@
                 <img src="{{ asset('assets/images/slider/slider3.jpg') }}" class="d-block w-100" alt="EasyTax offers">
                 <div class="carousel-caption d-none d-md-block">
                     <div class="sl-subtitle">We Are A</div>
-                    <h1 class="sl-title">Great Team<br> of Specialists</h1>
+                    <h1 class="sl-title">Great Team<br> of Tax Professionals</h1>
                     <div class="desc">Ready to get your tax needs sorted. We do filings, refunds, declaration among other services</div>
                     <div class="slider-bottom ">
                         <a class="readon consultant slider" href="#step-one">Get Started</a>
