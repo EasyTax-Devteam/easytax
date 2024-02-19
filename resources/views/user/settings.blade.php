@@ -2,7 +2,7 @@
 
 @section('navigation')
 @if( \Auth::user()->root == 1)
-@include('inner.root_nav', ['active' => [0,0,0,0,0,'active', 0,0,0,0,0,0]])
+@include('inner.root_nav', ['active' => [0,0,0,0,0, 0,0,'active',0,0,0,0]])
 @else
 @include('inner.nav', ['active' => ['active', 0,0,0,0,0,0]])
 @endif
@@ -51,6 +51,10 @@
                                     <input required type="text" name="phone" class="form-control" value="{{ $settings->phone }}">
                                 </div>
                                 <div class="mb-3 col-md-3">
+                                    <label for="setting-input-3" class="form-label">WhatsApp Phone</label>
+                                    <input required type="text" name="whatsapp" class="form-control" value="{{ $settings->whatsapp }}">
+                                </div>
+                                <div class="mb-3 col-md-3">
                                     <label for="setting-input-3" class="form-label">Office Address</label>
                                     <input required type="text" name="address" class="form-control" value="{{ $settings->address }}">
                                 </div>
@@ -75,6 +79,20 @@
                                     <label for="setting-input-3" class="form-label">Instagram page</label>
                                     <input required type="text" name="instagram" class="form-control" value="{{ $settings->instagram }}">
                                 </div>
+
+                                <div class="mb-3 col-md-12">
+                                    <label for="setting-input-3" class="form-label">Privacy Policy</label>
+                                    <textarea class="summernote-lg form-control" id="privacy_policy" type="text" placeholder="" name="privacy_policy">
+                                        {{ $settings->privacy_policy }}
+                                    </textarea>
+                                </div>
+                                <div class="mb-3 col-md-12">
+                                    <label for="setting-input-3" class="form-label">Terms & Conditions</label>
+                                    <textarea class="summernote-lg form-control" id="terms" type="text" placeholder="" name="terms">
+                                        {{ $settings->terms }}
+                                    </textarea>
+                                </div>
+
                                 <!-- btn -->
                                 <div class="col-md-6" style="margin-top: 35px !important;">
                                     <button type="submit" class="btn app-btn-primary">Save changes</button>

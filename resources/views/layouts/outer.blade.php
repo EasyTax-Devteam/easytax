@@ -242,7 +242,7 @@
     <div id="pre-load">
         <div id="loader" class="loader">
             <div class="loader-container">
-                <div class='loader-icon'><img src="{{ asset('assets/images/fav.png') }}" alt="Bizup Consulting Business"></div>
+                <div class='loader-icon'><img src="{{ asset('assets/images/fav.png') }}" alt="EasyTax Consulting"></div>
             </div>
         </div>
     </div>
@@ -388,8 +388,9 @@
     </footer>
     <!-- Footer End -->
 
+    @php( $settings = \App\Models\Site::getSettings())
 
-    <a href="https://api.whatsapp.com/send?phone={{ config('app.whatsapp') }}&text=Hi%20Admin%2C%20I%20need%20help%20with" class="float" target="_blank">
+    <a href="https://api.whatsapp.com/send?phone={{ $settings->whatsapp }}&text=Hi%20Admin%2C%20I%20need%20help%20with" class="float" target="_blank">
         <i class="fa fa-whatsapp my-float"></i>
     </a>
 

@@ -11,6 +11,7 @@ use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\SettingController;
 use App\Http\Controllers\User\CustomerController;
 use App\Http\Controllers\Auth\CustomPasswordController;
+use App\Http\Controllers\User\SliderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,17 @@ Route::group(['prefix' => 'users'], function () {
 /** Admin */
 Route::group(['prefix' => 'easy/admin'], function () {
     Route::get('/', [UserController::class, 'index'])->name('e.tax.index');
+
+    Route::group(['prefix' => 'sliders'], function () {
+        Route::get('/', [SliderController::class, 'sliders'])->name('e.tax.sliders');
+        Route::get('/view/{id}', [SliderController::class, 'slider'])->name('e.tax.slider');
+        Route::post('/add', [SliderController::class, 'add_slider'])->name('e.tax.add.slider');
+        Route::post('/edit', [SliderController::class, 'edit_slider'])->name('e.tax.edit.slider');
+        Route::get('/delete/{id}', [SliderController::class, 'delete_slider'])->name('e.tax.delete.slider');
+
+        Route::post('/ordering', [SliderController::class, 'setOrdering'])->name('e.tax.set.ordering');
+    });
+
     Route::group(['prefix' => 'users'], function () {
         Route::get('/', [UserController::class, 'users'])->name('e.tax.users');
         Route::post('/add', [UserController::class, 'add_user'])->name('e.tax.add.user');
@@ -70,6 +82,7 @@ Route::group(['prefix' => 'easy/admin'], function () {
         Route::post('/update', [UserController::class, 'update_user'])->name('e.tax.update.user');
         Route::get('/enable/{id}', [UserController::class, 'enable_user'])->name('e.tax.enable.user');
         Route::get('/disable/{id}', [UserController::class, 'disable_user'])->name('e.tax.disable.user');
+        Route::get('/delete/{id}', [UserController::class, 'delete_user'])->name('e.tax.delete.user');
         Route::get('/stream/{file}', [UserController::class, 'stream'])->name('f.stream');
     });
 
