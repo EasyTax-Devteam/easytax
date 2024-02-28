@@ -9,6 +9,7 @@ use App\Mail\NewAccount;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderAssignment;
+use App\Models\OrderDocument;
 use App\Models\Payment;
 use App\Models\Service;
 use App\Models\User;
@@ -128,6 +129,23 @@ class UserController extends Controller
     {
         User::find($id)->update(['enabled' => 0]);
         return redirect()->back()->with(['Msg' => 'Account disabled']);
+    }
+
+
+    public function delete_user($id)
+    {
+        $hasAssignments = OrderAssignment::where('admin', $id)->count() > 0;
+        if($hasAssignments){
+            $user = User::find($id);
+            return redirect()->back()->with(['Err' => 'Could not delete user '.$user->name.'. The user has active order assignments',]);
+        }
+        // $hasDocuments = OrderDocument::where('uploaded_by', $id)->count() > 0;
+        // if($hasDocuments){
+        //     return redirect()->back()->with(['Err' => 'Could not delete user. The user has active customer files',]);
+        // }
+        User::find($id)->delete();
+        return redirect()->back()->with(['Msg' => 'User account deleted!']);
+        
     }
 
     public function exit()

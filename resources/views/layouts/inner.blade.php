@@ -47,6 +47,9 @@
         .red {
             color: red !important;
         }
+        .easy-link{
+            color: green;
+        }
     </style>
 </head>
 
@@ -100,6 +103,23 @@
                 placeholder: 'Type your text here',
                 tabsize: 2,
                 height: 150
+            });
+
+            /** dataTables */
+            $('.reportable').DataTable();
+
+            $('.reportable-customer').DataTable({
+                'pageLength': 5
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('.summernote-lg').summernote({
+                placeholder: 'Type your text here',
+                tabsize: 2,
+                height: 450
             });
 
             /** dataTables */

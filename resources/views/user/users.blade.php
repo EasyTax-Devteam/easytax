@@ -98,7 +98,7 @@
                                     <span class="badge {{ $_all['enabled'] == 1 ? 'bg-success' : 'bg-danger' }}">{{ $_all['enabled'] == 1 ? 'active' : 'inactive' }}</span>
                                 </td>
                                 <td class="cell">
-                                    <a class="btn-sm app-btn-secondary" href="#">View</a>
+                                    <a class="btn-sm app-btn-secondary" href="{{ route('e.tax.delete.user', ['id' => $_all['id']]) }}">Delete</a>
                                 </td>
                             </tr>
                         @endforeach

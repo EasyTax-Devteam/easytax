@@ -37,6 +37,9 @@ class SettingController extends Controller
             'twitter' => 'string|required',
             'linkedin' => 'string|required',
             'instagram' => 'string|required',
+            'whatsapp' => 'string|required',
+            'privacy_policy' => 'string|required',
+            'terms' => 'string|required',
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->with(['Err' => 'Invalid input fields',]);
@@ -54,6 +57,9 @@ class SettingController extends Controller
             $site->twitter = $input['twitter'];
             $site->linkedin = $input['linkedin'];
             $site->instagram = $input['instagram'];
+            $site->whatsapp = $input['whatsapp'];
+            $site->privacy_policy = $input['privacy_policy'];
+            $site->terms = $input['terms'];
             $site->save();
             return redirect()->back()->with(['Msg' => 'Settings updated']);
         }
@@ -69,7 +75,8 @@ class SettingController extends Controller
         }
         return [
             'email' => null, 'support_email' => null, 'phone' => null, 'address' => null,
-            'working_hours' => null, 'facebook' => null, 'twitter' => null, 'linkedin' => null, 'instagram' => null
+            'working_hours' => null, 'facebook' => null, 'twitter' => null, 'linkedin' => null, 'instagram' => null,
+            'whatsapp' => null, 'privacy_policy' => null, 'terms' => null
         ];
     }
 }
