@@ -12,6 +12,7 @@ use App\Http\Controllers\User\SettingController;
 use App\Http\Controllers\User\CustomerController;
 use App\Http\Controllers\Auth\CustomPasswordController;
 use App\Http\Controllers\User\SliderController;
+use App\Http\Controllers\Calendar\CalendarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +65,12 @@ Route::group(['prefix' => 'users'], function () {
 /** Admin */
 Route::group(['prefix' => 'easy/admin'], function () {
     Route::get('/', [UserController::class, 'index'])->name('e.tax.index');
+
+    Route::group(['prefix' => 'calendars'], function () {
+        Route::get('/', [CalendarController::class, 'calendars'])->name('e.tax.calendars.calendar');
+        Route::get('/calendars/{id}', [CalendarController::class, 'calendar'])->name('e.tax.calendars.show');
+        Route::get('/calendars/delete/{id}', [CalendarController::class, 'delete'])->name('e.tax.calendars.delete');
+    });
 
     Route::group(['prefix' => 'sliders'], function () {
         Route::get('/', [SliderController::class, 'sliders'])->name('e.tax.sliders');

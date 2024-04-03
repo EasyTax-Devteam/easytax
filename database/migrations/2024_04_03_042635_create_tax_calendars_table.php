@@ -39,12 +39,14 @@ class CreateTaxCalendarsTable extends Migration
                 $year++;
                 $month = '01';
             }
+            $file_path = config('app.url') . 'artwork/services/calendar.webp';
             $data = [
                 'id' => $iter,
                 'year' => $year,
                 'month' => $month,
                 'title' => 'EasyTax Kenya Tax Calendar',
                 'theme' => '#ed2425',
+                'art_work' => $file_path,
                 'created_at' => $now->format('Y-m-d H:i:s'),
                 'updated_at' => $now->format('Y-m-d H:i:s')
             ];
