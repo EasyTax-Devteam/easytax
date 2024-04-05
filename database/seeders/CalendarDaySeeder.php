@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\TaxCalendar;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -20,8 +21,8 @@ class CalendarDaySeeder extends Seeder
         foreach( $caledars as $month):
             $days_in_this_month = cal_days_in_month(CAL_GREGORIAN, intval($month->month), intval($month->year));
             $iter = 0;
-            $dt = \DateTime::createFromFormat('!m', $month->month);
-            $month_name = $dt->format('F');
+            $month_name = TaxCalendar::monthName($month->month);
+            
             while($iter < $days_in_this_month){
 
                 $day_val = $iter + 1;

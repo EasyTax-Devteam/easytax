@@ -81,6 +81,7 @@
     <!-- Charts JS -->
     <script src="{{ asset('auth/assets/plugins/chart.js/chart.min.js') }}"></script>
     <!-- <script src="{{ asset('auth/assets/js/index-charts.js') }}"></script>  -->
+    <!-- <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script> -->
 
     <!-- Page Specific JS -->
     <script src="{{ asset('auth/assets/js/app.js') }}"></script>

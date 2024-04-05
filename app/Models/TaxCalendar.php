@@ -25,4 +25,9 @@ class TaxCalendar extends Model
         return $this->hasMany(TaxCalendarDay::class);
     }
 
+    public static function monthName($month_number){
+        $dt = \DateTime::createFromFormat('!m', $month_number);
+        return $dt->format('F');
+    }
+
 }

@@ -69,6 +69,7 @@ Route::group(['prefix' => 'easy/admin'], function () {
     Route::group(['prefix' => 'calendars'], function () {
         Route::get('/', [CalendarController::class, 'calendars'])->name('e.tax.calendars.calendar');
         Route::get('/calendars/{id}', [CalendarController::class, 'calendar'])->name('e.tax.calendars.show');
+        Route::get('/calendars/day/{id}', [CalendarController::class, 'calendar_day'])->name('e.tax.calendars.day.show');
         Route::get('/calendars/delete/{id}', [CalendarController::class, 'delete'])->name('e.tax.calendars.delete');
     });
 
