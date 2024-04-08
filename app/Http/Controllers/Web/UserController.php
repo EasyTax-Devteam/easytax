@@ -185,6 +185,7 @@ class UserController extends Controller
         }
         return view('customer.login');
     }
+
     public function reset_link()
     {
         return view('customer.reset_link');
@@ -238,7 +239,7 @@ class UserController extends Controller
     public function post_login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'KraPin' => 'required|string|min:11|max:12|regex:/^[A-Z]{1}/|regex:/^[A-Z0-9]{10}[A-Z]$/',
+            'KraPin' => 'required|string',
             'password' => 'required|string'
         ]);
         if ($validator->fails()) {
@@ -246,7 +247,7 @@ class UserController extends Controller
         }
         $input = $request->all();
         $kra = $input['KraPin'];
-        $customer = Customer::where('pin', $kra)->first();
+        $customer = Customer::where('phone', $kra)->first();
         if (!is_object($customer)) {
             return redirect()->route('w.index');
         }

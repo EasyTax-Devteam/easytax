@@ -29,9 +29,9 @@
                         <div class="row">
                             <div class="col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-group">
-                                    <label>Enter Your KRA PIN</label>
+                                    <label>Enter Your Phone Number</label>
                                     <small><br></small>
-                                    <input id="KraPin" name="KraPin" class="form-control-mod @error('KraPin') is-invalid @enderror" type="text" required value="{{ old('KraPin') }}" placeholder="A006234985H">
+                                    <input id="KraPin" name="KraPin" class="form-control-mod @error('KraPin') is-invalid @enderror" type="text" required value="{{ old('KraPin') }}" placeholder="254722000000">
                                     @error('KraPin')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

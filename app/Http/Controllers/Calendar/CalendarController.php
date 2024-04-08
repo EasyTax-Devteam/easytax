@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Calendar;
 use App\Http\Controllers\Controller;
 use App\Models\TaxCalendar;
 use App\Models\TaxCalendarDay;
+use App\Models\TaxCalendarDayEvent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CalendarController extends Controller
 {
@@ -34,6 +38,28 @@ class CalendarController extends Controller
         ]);
     }
 
+    public function calendar_img($id)
+    {
+        $calendar = TaxCalendar::find($id);
+        return view('user.calendar_img', [
+            'calendar' => $calendar,
+        ]);
+    }
+
+    public function calendar_img_update(Request $req, $id)
+    {
+        if (!$req->hasfile('art_work')) {
+            return redirect()->back()->withInput()->with(['Err' => 'Invalid banner. Must be a valid image',]);
+        }
+        $artwork = $req->file('art_work');
+        $extension = $artwork->getClientOriginalExtension();
+        $file_name = (string)Str::uuid() . '.' . $extension;
+        Storage::disk('custom')->putFileAs('services', $artwork, $file_name);
+        $file_path = config('app.url') . 'artwork/services/' . $file_name;
+        TaxCalendar::find($id)->update(['art_work' => $file_path]);
+        return redirect()->back()->with(['Msg' => 'Banner saved successfully!']);
+    }
+
     public function calendar_day($id)
     {
         $calendarDay = TaxCalendarDay::find($id);
@@ -47,7 +73,34 @@ class CalendarController extends Controller
         return view('user.calendar_day', [
             'event' => $event,
             'title' => $calendarDay->day . ' ' . $month . ' ' . $year,
+            'day_id' => $calendarDay->id
         ]);
+    }
+
+    public function calendar_day_add_event(Request $req, $id)
+    {
+        $validator = Validator::make($req->all(), [
+            'title' => 'required|string',
+            'content' => 'required|string',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->with(['Err' => 'Invalid  input fields' . json_encode($validator->errors()),]);
+        }
+        $data = $req->all();
+        $data['tax_calendar_day_id'] = $id;
+        if(TaxCalendarDayEvent::where('tax_calendar_day_id', $id)->count() > 0){
+            $event = TaxCalendarDayEvent::where('tax_calendar_day_id', $id)->first();
+            TaxCalendarDayEvent::find($event->id)->update($data);
+        }else{
+            TaxCalendarDayEvent::create($data);
+        }
+        return redirect()->back()->with(['Msg' => 'Event saved successfully!']);
+    }
+
+    public function calendar_day_event_del($id)
+    {
+        TaxCalendarDayEvent::where('tax_calendar_day_id', $id)->delete();
+        return redirect()->back()->with(['Msg' => 'Event deleted successfully!']);
     }
 
     public function delete($id)
@@ -116,7 +169,11 @@ class CalendarController extends Controller
              $currentDayRel = str_pad($currentDay, 2, "0", STR_PAD_LEFT);
              $date = "$year-$month-$currentDayRel";
              $link = route('e.tax.calendars.day.show', ['id' => $day_id]);
-             $eventBtn = $eventsCount > 0 ? "<a class='btn-sm app-btn-secondary' target='_blank' href='$link'>Manage Events</a>" : "<a class='btn-sm app-btn-secondary' target='_blank' href='$link'>Manage Events</a>";
+             $del_link = route('e.tax.calendars.day.evt.delete', ['id' => $day_id]);
+             $eventBtn = $eventsCount > 0 ? "
+             <a class='btn-sm app-btn-secondary has-evt' href='$link'>Edit</a>
+             <a class='btn-sm app-btn-secondary has-del' href='$del_link'>Delete</a>
+             " : "<a class='btn-sm app-btn-secondary' href='$link'>Add Event Here</a>";
              if ($date == date("Y-m-d")){
               $calendar .= "<td class='day today' rel='$date'>
               <span class='today-date'>$currentDay</span><br>

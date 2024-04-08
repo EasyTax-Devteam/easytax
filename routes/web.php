@@ -69,7 +69,13 @@ Route::group(['prefix' => 'easy/admin'], function () {
     Route::group(['prefix' => 'calendars'], function () {
         Route::get('/', [CalendarController::class, 'calendars'])->name('e.tax.calendars.calendar');
         Route::get('/calendars/{id}', [CalendarController::class, 'calendar'])->name('e.tax.calendars.show');
+        Route::get('/calendars/img/{id}', [CalendarController::class, 'calendar_img'])->name('e.tax.calendars.img.show');
+        Route::post('/calendars/img/{id}', [CalendarController::class, 'calendar_img_update'])->name('e.tax.calendars.img.add');
+
         Route::get('/calendars/day/{id}', [CalendarController::class, 'calendar_day'])->name('e.tax.calendars.day.show');
+        Route::get('/calendars/day/del/{id}', [CalendarController::class, 'calendar_day_event_del'])->name('e.tax.calendars.day.evt.delete');
+        Route::post('/calendars/day/{id}', [CalendarController::class, 'calendar_day_add_event'])->name('e.tax.calendars.day.add');
+
         Route::get('/calendars/delete/{id}', [CalendarController::class, 'delete'])->name('e.tax.calendars.delete');
     });
 

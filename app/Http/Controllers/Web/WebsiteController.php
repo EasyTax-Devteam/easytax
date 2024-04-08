@@ -61,7 +61,6 @@ class WebsiteController extends Controller
         }
         $forms = $forms->toArray();
 
-        $service = Service::find($id);
         $group = ServiceGroup::find($service->type);
         return view('web.single_service', [
             'serviceData' => $service,
@@ -241,7 +240,7 @@ class WebsiteController extends Controller
             Session::put('bill_id', $billId);
             Session::put('last_service', $newCustomer['service']);
             if (!$existsUser) {
-                $mail_data = ['name' => $newCustomer['fname'], 'pin' => $newCustomer['pin'], 'password' => $newCustomer['raw_password']];
+                $mail_data = ['name' => $newCustomer['fname'], 'pin' => $newCustomer['phone'], 'password' => $newCustomer['raw_password']];
                 $customer_sms = 'Hi ' . $newCustomer['fname'] . ', your EasyTax account is set. Password is: ' . $newCustomer['raw_password'] . ' Visit ' . config('app.url') . 'users/access to view your orders';
                 $advanta = new SmsController();
                 $advanta->dispatchSms($newCustomer['phone'], $customer_sms);
@@ -431,15 +430,20 @@ class WebsiteController extends Controller
         }
         throw new \Exception("No form fields found for service ID " . $service . ". Please contact EasyTax for assistance");
     }
-    protected function buildValidator($forms)
+    protected function buildValidator($forms, $includeForms = false)
     {
         $validator = [];
-        foreach ($forms as $_form) :
-            if (trim(strtoupper($_form['validation_rule'])) != 'NONE') {
-                $validator[$_form['field_name']] = $_form['validation_rule'];
-            }
-        endforeach;
+
+        if($includeForms){
+            foreach ($forms as $_form) :
+                if (trim(strtoupper($_form['validation_rule'])) != 'NONE') {
+                    $validator[$_form['field_name']] = $_form['validation_rule'];
+                }
+            endforeach;
+        }
+
         /** constant fields validation */
+        
         $validator['phone'] = 'required|array';
         $validator['fname'] = 'required|string';
         $validator['lname'] = 'required|string';

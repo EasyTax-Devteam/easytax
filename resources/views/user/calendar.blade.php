@@ -28,14 +28,45 @@
   td.day span.holiday{font-size: 12pt; color: #f56934;}
   th.header{background-color: #6fabe8; color: #fff; font-size: 14pt; padding: 5px; text-align: center;}
   .not-month{background-color: #ededed;}
-  td.today {background-color:#efefef;}
+  td.today {background-color:#72d5f0;}
   td.day span.today-date{font-size: 16pt;}
+  .has-evt{
+    color: #fff;
+    background-color: #6fabe8;
+    border-color: #6fabe8;
+    text-align: center;
+    float: right;
+    font-weight: 500;
+    min-width: 80px;
+    margin: 0px 0px 0px 10px;
+  }
+  .has-del{
+    color: #ff0000;
+    background-color: #fff;
+    border-color: #ff0000;
+    text-align: center;
+    float: right;
+    font-weight: 500;
+  }
+  .nav-link-a {
+    display: inline!important;
+  }
  </style>
 <div class="app-content pt-3 p-md-3 p-lg-4">
   <div class="container-xl">
     <div class="row g-3 mb-4 align-items-center justify-content-between">
       <div class="col-auto">
-        <h1 class="app-page-title mb-0">{{ \App\Models\TaxCalendar::monthName($calendar->month) . " " . $calendar->year }}</h1>
+        <h1 class="app-page-title mb-0">
+          <a class="nav-link nav-link-a" href="{{ route('e.tax.calendars.calendar') }}">
+              <span class="nav-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-90deg-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1.146 4.854a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H12.5A2.5 2.5 0 0 1 15 6.5v8a.5.5 0 0 1-1 0v-8A1.5 1.5 0 0 0 12.5 5H2.707l3.147 3.146a.5.5 0 1 1-.708.708z"/>
+              </svg>
+              </span>
+              <span class="nav-link-text">Back </span>
+          </a>
+          {{ \App\Models\TaxCalendar::monthName($calendar->month) . " " . $calendar->year }}
+        </h1>
       </div>
     </div>
     <!--//row-->
@@ -46,7 +77,7 @@
       <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
         <div class="app-card app-card-orders-table shadow-sm mb-5">
           <div class="app-card-body">
-            <!-- <pre>{{ print_r($days) }}</pre> -->
+          {{ \App\Models\User::showFormNotice($errors) }}
             <div class="table-responsive">
                <?=$html?>
             </div>

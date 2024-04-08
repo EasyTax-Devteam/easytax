@@ -36,7 +36,7 @@
       <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
         <div class="app-card app-card-orders-table shadow-sm mb-5">
           <div class="app-card-body">
-            <form class="settings-form" method="post" enctype="multipart/form-data" action="{{ route('e.tax.update.settings') }}">
+            <form class="settings-form" method="post" enctype="multipart/form-data" action="{{ route('e.tax.calendars.day.add', ['id' => $day_id ]) }}">
                 @csrf
                 {{ \App\Models\User::showFormNotice($errors) }}
                 <div class="row">
