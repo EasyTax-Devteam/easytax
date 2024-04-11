@@ -33,6 +33,7 @@ Route::get('/email', [App\Http\Controllers\Web\WebsiteController::class, 'email'
 Route::get('/about', [App\Http\Controllers\Web\WebsiteController::class, 'about'])->name('w.about');
 Route::get('/privacy-policy', [App\Http\Controllers\Web\WebsiteController::class, 'privacy'])->name('w.policy');
 Route::get('/terms', [App\Http\Controllers\Web\WebsiteController::class, 'terms'])->name('w.terms');
+Route::get('/tax/calendar/{month?}', [App\Http\Controllers\Web\WebsiteController::class, 'calendar'])->name('w.tax.calendar');
 
 Route::group(['prefix' => 'categories'], function () {
     Route::get('/service/{id}', [WebsiteController::class, 'single_service'])->name('w.s.service');

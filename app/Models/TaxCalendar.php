@@ -30,4 +30,9 @@ class TaxCalendar extends Model
         return $dt->format('F');
     }
 
+
+    public static function getCalendar(){
+        return self::where('is_active', true)->orderBy('year')->orderBy('month')->get();
+    }
+
 }

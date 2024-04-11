@@ -43,6 +43,8 @@
     <link rel="stylesheet" href="{{ asset('intl-tel/css/intlTelInput.css') }}">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- slick slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>		
 
     <style>
         .iti__flag {
@@ -447,6 +449,8 @@
     <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
     <!-- Nivo slider js -->
     <script src="{{ asset('assets/inc/custom-slider/js/jquery.nivo.slider.js') }}"></script>
+    <!-- slick slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <!-- contact form js -->
     <script src="{{ asset('assets/js/contact.form.js') }}"></script>
     <!-- main js -->
@@ -456,8 +460,47 @@
     <script src="{{ asset('intl-tel/js/intlTelInput.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+		
 
     @php( $utilScript = asset('intl-tel/js/utils.js') )
+
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+        $('#tax-calendar').slick({
+            dots: false,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            responsive: [
+                {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+                },
+                {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+                },
+                {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+                }
+            ]
+        });
+    });
+  </script>
     <script>
         var input = document.querySelector(".intl-phone");
         window.intlTelInput(input, {

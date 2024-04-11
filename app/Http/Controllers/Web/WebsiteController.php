@@ -21,8 +21,12 @@ use App\Models\Payment;
 use App\Models\Service;
 use App\Models\ServiceForm;
 use App\Models\ServiceGroup;
+use App\Models\TaxCalendar;
+use App\Models\TaxCalendarDayEvent;
 use Illuminate\Support\Facades\Hash;
 use Storage;
+
+use function PHPUnit\Framework\isNull;
 
 class WebsiteController extends Controller
 {
@@ -45,6 +49,67 @@ class WebsiteController extends Controller
     public function terms()
     {
         return view('web.terms');
+    }
+
+    public function calendar($month = null)
+    {
+        $calendar = $this->getCurrentMonth();
+        if($month != null ){
+            $calendar = TaxCalendar::find($month);
+        }
+        $dayIds = $this->getDayIds($calendar->days);
+        $events = TaxCalendarDayEvent::whereIn('tax_calendar_day_id', $dayIds)->orderBy('tax_calendar_day_id')->get();
+        $grouped_events = $this->groupEventsInThree($events);
+
+        return view('web.calendar',[
+            'calendar' => $calendar,
+            'month_name' => TaxCalendar::monthName($calendar->month),
+            'days' => $calendar->days,
+            'events' => $grouped_events,
+            'next' => intval($calendar->id) + 1,
+            'prev' => intval($calendar->id) - 1
+        ]);
+    }
+
+    protected function getCurrentMonth(){
+        $month = date("m");
+        $year = date("Y");
+        return TaxCalendar::where('year', $year)->where('month', $month)->first();
+    }
+
+    protected function getDayIds($days){
+        $return = [];
+        foreach( $days as $key => $day){
+            $return[$key] = $day->id;
+        }
+        return $return;
+    }
+
+    protected function groupEventsInThree($events){
+        $return = [];
+        if(!$events){
+            return [];
+        }
+        $iter = 0;
+        $numberOfGroups = $this->numberOfGroups(count($events));
+
+        while( $iter < $numberOfGroups){
+            $return[$iter]['group'] = 'group ' . $iter + 1;
+            if($iter == 0 ){
+                $return[$iter]['events'] = array_slice($events->toArray(), 0, 3);
+            }else{
+                $return[$iter]['events'] = array_slice($events->toArray(), $iter * 3, 3);
+            }
+            $iter ++;
+        }
+        return $return;
+    }
+
+    protected function numberOfGroups($count){
+        if(($count % 3) == 0){
+            return $count/3;
+        }
+        return intval($count/3) + 1;
     }
 
     public function single_service($id)
