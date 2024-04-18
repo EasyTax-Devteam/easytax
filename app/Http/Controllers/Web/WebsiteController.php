@@ -53,6 +53,10 @@ class WebsiteController extends Controller
 
     public function calendar($month = null)
     {
+        if(!TaxCalendar::where('id', $month)->count() > 0){
+            abort(404, "entry not found on this service");
+        }
+
         $calendar = $this->getCurrentMonth();
         if($month != null ){
             $calendar = TaxCalendar::find($month);
@@ -69,6 +73,24 @@ class WebsiteController extends Controller
             'next' => intval($calendar->id) + 1,
             'prev' => intval($calendar->id) - 1
         ]);
+    }
+
+    protected function getNextPrev($current, $isNext = true){
+        if($isNext){
+            $next = $current + 1;
+            if(TaxCalendar::where('id', $next)->count() > 0){
+                return $next;
+            }else{
+                abort(404, "entry not found on this service");
+            }
+        }else{
+            $prev = $current - 1;
+            if(TaxCalendar::where('id', $prev)->count() > 0){
+                return $prev;
+            }else{
+                abort(404, "entry not found on this service");
+            }
+        }
     }
 
     protected function getCurrentMonth(){

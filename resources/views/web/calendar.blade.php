@@ -11,7 +11,7 @@
         color: #fff;
         text-align: left;
         width: 35%;
-        left: 5%;
+        left: 13%;
         bottom: 45%;
     }
     .cap-inn{
@@ -38,6 +38,17 @@
         font-size: 20px;
         color: {{ $calendar->theme }};
     }
+    .padded{
+        background: rgb(0,0,0,0.9);
+        padding: 10px;
+    }
+    .carousel-control-prev {
+        opacity: .9;
+    } 
+    .carousel-control-next {
+        opacity: .9;
+    }
+
 </style>
 <div id="rs-slider" class="rs-slider slider3">
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -53,6 +64,18 @@
                     </div>
                 </div>
             </div>
+            <a class="carousel-control-prev" href="{{ route('w.tax.calendar', ['month' => $prev]) }}" data-bs-slide="prev">
+                <div class="padded">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </div>
+            </a>
+            <a class="carousel-control-next" href="{{ route('w.tax.calendar', ['month' => $next]) }}" data-bs-slide="next">
+                <div class="padded">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </div>
+            </a>
         </div>
     </div>
 </div>
