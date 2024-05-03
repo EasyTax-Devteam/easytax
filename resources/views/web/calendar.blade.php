@@ -7,6 +7,40 @@
 
 @section('slider')
 <style>
+  table.calendar{width:100%; border:1px solid #efefef;}
+  td.day{width: 14%; height: 90px; border: 1px solid #efefef; vertical-align: top;text-align: center; padding: 5px;}
+  td.day span.day-date{font-size: 14pt; font-weight: 700;}
+  td.day span.holiday{font-size: 12pt; color: #f56934;}
+  th.header{background-color: #6fabe8; color: #fff; font-size: 14pt; padding: 5px; text-align: center;}
+  .not-month{background-color: #ededed;}
+  td.today {background-color:#72d5f0;}
+  td.day span.today-date{font-size: 16pt;}
+  .has-evt{
+    color: #fff;
+    background-color: #6fabe8;
+    border-color: #6fabe8;
+    text-align: center;
+    float: right;
+    font-weight: 500;
+    min-width: 80px;
+    margin: 0px 0px 0px 10px;
+  }
+  .has-del{
+    color: #ff0000;
+    background-color: #fff;
+    border-color: #ff0000;
+    text-align: center;
+    float: right;
+    font-weight: 500;
+  }
+  .nav-link-a {
+    display: inline!important;
+  }
+  .has-e{
+    color: #ED2224!important;
+  }
+ </style>
+<style>
     .carousel-caption {
         color: #fff;
         text-align: left;
@@ -76,6 +110,23 @@
                     <span class="visually-hidden">Next</span>
                 </div>
             </a>
+        </div>
+    </div>
+</div>
+
+<div class="rs-services home-style2 gray-bg pt-60 pb-60 md-pt-20 md-pb-20" id="step-one">
+    <div class="container-fluid">
+        <div class="row y-middle">
+            <div class="col-lg-6 md-mb-50">
+                <div>
+                    {!! \App\Models\TaxCalendar::buildCalendar($calendar) !!}
+                </div>
+            </div>
+            <div class="col-lg-6 md-mb-50">
+                <div>
+                    {!! $calendar->description !!}
+                </div>
+            </div>
         </div>
     </div>
 </div>

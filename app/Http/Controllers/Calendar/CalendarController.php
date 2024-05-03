@@ -48,16 +48,25 @@ class CalendarController extends Controller
 
     public function calendar_img_update(Request $req, $id)
     {
-        if (!$req->hasfile('art_work')) {
-            return redirect()->back()->withInput()->with(['Err' => 'Invalid banner. Must be a valid image',]);
+        $validator = Validator::make($req->all(), [
+            'description' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->with(['Err' => 'Invalid  input fields' . json_encode($validator->errors()),]);
         }
-        $artwork = $req->file('art_work');
-        $extension = $artwork->getClientOriginalExtension();
-        $file_name = (string)Str::uuid() . '.' . $extension;
-        Storage::disk('custom')->putFileAs('services', $artwork, $file_name);
-        $file_path = config('app.url') . 'artwork/services/' . $file_name;
-        TaxCalendar::find($id)->update(['art_work' => $file_path]);
-        return redirect()->back()->with(['Msg' => 'Banner saved successfully!']);
+
+        if ($req->hasfile('art_work')) {
+            $artwork = $req->file('art_work');
+            $extension = $artwork->getClientOriginalExtension();
+            $file_name = (string)Str::uuid() . '.' . $extension;
+            Storage::disk('custom')->putFileAs('services', $artwork, $file_name);
+            $file_path = config('app.url') . 'artwork/services/' . $file_name;
+            TaxCalendar::find($id)->update(['art_work' => $file_path, 'description' => $req->get('description')]);
+        }else{
+            TaxCalendar::find($id)->update(['description' => $req->get('description')]);
+        }
+        return redirect()->back()->with(['Msg' => 'Info updated successfully!']);
     }
 
     public function calendar_day($id)

@@ -67,7 +67,7 @@
                                 </td>
                                 <td class="cell">
                                     <a class="btn-sm app-btn-primary" href="{{ route('e.tax.calendars.show', ['id' => $_all['id']]) }}">Manage</a>
-                                    <a class="btn-sm app-btn-secondary" href="{{ route('e.tax.calendars.img.show', ['id' => $_all['id']]) }}">Change Banner</a>
+                                    <a class="btn-sm app-btn-secondary" href="{{ route('e.tax.calendars.img.show', ['id' => $_all['id']]) }}">Edit Info</a>
                                 </td>
                             </tr>
                         @endforeach

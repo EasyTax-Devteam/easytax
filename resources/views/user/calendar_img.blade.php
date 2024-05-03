@@ -86,8 +86,14 @@
                         </label>
                         <input type="file" class="form-control" id="setting-input-2" name="art_work">
                     </div>
+                    <div class="mb-3 col-md-12">
+                      <label for="setting-input-3" class="form-label">Month Information</label>
+                        <textarea required class="summernote-lg form-control" id="description" type="text" placeholder="" name="description">
+                            {{ $calendar->description }}
+                        </textarea>
+                    </div>
                     <div class="col-md-2" style="margin-top: 35px !important;">
-                        <button type="submit" class="btn app-btn-primary">Upload Image</button>
+                        <button type="submit" class="btn app-btn-primary">Update Info</button>
                     </div>
                 </form>
             </div>
