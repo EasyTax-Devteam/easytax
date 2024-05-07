@@ -7,11 +7,11 @@
 
 @section('slider')
 <style>
-  table.calendar{width:100%; border:1px solid #efefef;}
-  td.day{width: 14%; height: 90px; border: 1px solid #efefef; vertical-align: top;text-align: center; padding: 5px;}
-  td.day span.day-date{font-size: 14pt; font-weight: 700;}
-  td.day span.holiday{font-size: 12pt; color: #f56934;}
-  th.header{background-color: #6fabe8; color: #fff; font-size: 14pt; padding: 5px; text-align: center;}
+  table.calendar{width:87%; border:1px solid #efefef;}
+  td.day{width: 14%; height: 80px; border: 1px solid #efefef; vertical-align: top;text-align: center; padding: 5px;}
+  td.day span.day-date{font-size: 22pt; font-weight: 700;}
+  td.day span.holiday{font-size: 10pt; color: #f56934;}
+  th.header{background-color: #6fabe8; color: #fff; font-size: 22pt; padding: 5px; text-align: center;}
   .not-month{background-color: #ededed;}
   td.today {background-color:#72d5f0;}
   td.day span.today-date{font-size: 16pt;}
@@ -39,6 +39,12 @@
   .has-e{
     color: #ED2224!important;
   }
+
+  .y-middle {
+    -ms-flex-align: flex-start!important;
+    -webkit-align-items: flex-start!important;
+    align-items: flex-start!important;
+}
  </style>
 <style>
     .carousel-caption {
@@ -59,13 +65,17 @@
         padding: 15px;
     }
     .grey-bg{
-        background: #cbcbcb;
+        background: #478BCA;
+    }
+    .gray-bg {
+        background: #fff;
     }
     .key-dates{
         font-size: 42px;
         line-height: 50px;
         font-weight: 400;
         margin-top: 18px;
+        color: #fff;
     }
     .dates-title{
         font-weight: 500;
@@ -81,6 +91,9 @@
     } 
     .carousel-control-next {
         opacity: .9;
+    }
+    ul {
+        list-style: inside;
     }
 
 </style>
@@ -122,7 +135,7 @@
                     {!! \App\Models\TaxCalendar::buildCalendar($calendar) !!}
                 </div>
             </div>
-            <div class="col-lg-6 md-mb-50">
+            <div class="col-lg-6 md-mb-50 pt-50">
                 <div>
                     {!! $calendar->description !!}
                 </div>

@@ -361,10 +361,12 @@
                     <div class="col-lg-3 col-md-12 col-sm-12">
                         <h3 class="footer-title">Newsletter</h3>
                         <p class="widget-desc white-color">Stay up to update with our latest news and products.</p>
-                        <p>
-                            <input type="email" name="EMAIL" placeholder="Your email address" required="">
-                            <input type="submit" value="Subscribe Now">
-                        </p>
+                            <form onsubmit="alert('Mail sending failed! Try again'); return;">
+                                <p>
+                                <input required type="email" name="email" placeholder="Your email address" required="">
+                                <input type="submit" value="Subscribe Now">
+                                </p>
+                            </form>
                     </div>
                 </div>
             </div>
@@ -469,7 +471,7 @@
     $(document).ready(function(){
         $('#tax-calendar').slick({
             dots: false,
-            infinite: false,
+            infinite: true,
             speed: 300,
             slidesToShow: 4,
             slidesToScroll: 4,

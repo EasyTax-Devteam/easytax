@@ -53,7 +53,7 @@ class WebsiteController extends Controller
 
     public function calendar($month = null)
     {
-        if(!TaxCalendar::where('id', $month)->count() > 0){
+        if($month != null && !TaxCalendar::where('id', $month)->count() > 0){
             abort(404, "entry not found on this service");
         }
 
@@ -488,6 +488,17 @@ class WebsiteController extends Controller
             return response(['ResultCode' => '0', 'ResultDesc' => 'Accepted Successfully']);
         }
     }
+
+    public function subscribe(Request $request)
+    {
+        try {
+            $email = $request->get('email');
+            return response($email . ' Subscribed!', 200, []);
+        } catch (\Throwable $th) {
+            return response($th->getMessage(), 400, []);
+        }
+    }
+
     protected function existsPayment($mpesaCode)
     {
         return Payment::where('reference', $mpesaCode)->count() > 0;

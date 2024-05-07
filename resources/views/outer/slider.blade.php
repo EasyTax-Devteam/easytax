@@ -76,7 +76,7 @@
             <h2 class="title">Tax Calendar</h2>
             <div class="text-secondary">Don't miss any Tax filing deadlines and events no more.</div>
         </div>
-        <div id="tax-calendar" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "initialSlide": <?=$currentMonth == 0 ? 0 :$currentMonth-1 ?>}'>
+        <div id="tax-calendar" data-slick='{"slidesToShow": 5, "slidesToScroll": 1, "initialSlide": <?=$currentMonth == 0 ? 0 :$currentMonth-1 ?>}'>
             @foreach( $calendarMonths as $index => $calendar)
             @if($index === $currentMonth )
             <div class="card" style="background-color:#c8e3fd;">

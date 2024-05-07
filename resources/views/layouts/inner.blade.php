@@ -11,12 +11,14 @@
 
     <meta name="description" content="{{ config('app.name') }}">
     <meta name="author" content="softbucket.io">
-    <link rel="shortcut icon" href="favicon.ico">
+    <!-- <link rel="shortcut icon" href="favicon.ico"> -->
 
     <script defer src="{{ asset('auth/assets/plugins/fontawesome/js/all.min.js') }}"></script>
     <link id="theme-style" rel="stylesheet" href="{{ asset('auth/assets/css/portal.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" />
+
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+   
     <style>
         .app-branding .logo-icon {
             width: 120px;
@@ -51,6 +53,79 @@
             color: green;
         }
     </style>
+
+    <style>
+        /* Material design styling */
+
+        /*placeholder style*/
+
+        .note-placeholder {
+        position: absolute;
+        top: 20%;
+        left: 5%;
+        font-size: 2rem;
+        color: #e4e5e7;
+        pointer-events: none;
+        }
+
+        /*Toolbar panel*/
+
+        .note-editor .note-toolbar {
+        background: #f0f0f1;
+        border-bottom: 1px solid #c2cad8;
+        -webkit-box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.14), 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.14), 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        /*Buttons from toolbar*/
+
+        .summernote .btn-group, .popover-content .btn-group {
+        background: transparent;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        }
+
+        .note-popover {
+        background: #f0f0f1!important;
+        }
+
+        .summernote .btn, .note-btn {
+        color: rgba(0, 0, 0, .54)!important;
+        background-color: transparent!important;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        }
+
+        .summernote .dropdown-toggle:after {
+        vertical-align: middle;
+        }
+
+        .note-editor.card {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-radius: 2px;
+        }
+
+        /* Border of the Summernote textarea */
+
+        .note-editor.note-frame {
+        border: 1px solid rgba(0, 0, 0, .14);
+        }
+
+        /* Padding of the text in textarea */
+
+        .note-editor.note-frame .note-editing-area .note-editable {
+        padding-top: 1rem;
+        }
+
+    </style>
 </head>
 
 <body class="app">
@@ -78,6 +153,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="{{ asset('auth/assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+
     <!-- Charts JS -->
     <script src="{{ asset('auth/assets/plugins/chart.js/chart.min.js') }}"></script>
     <!-- <script src="{{ asset('auth/assets/js/index-charts.js') }}"></script>  -->
@@ -85,7 +162,8 @@
 
     <!-- Page Specific JS -->
     <script src="{{ asset('auth/assets/js/app.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     @yield('page_scripts')
@@ -120,7 +198,29 @@
             $('.summernote-lg').summernote({
                 placeholder: 'Type your text here',
                 tabsize: 2,
-                height: 450
+                height: 450,
+                focus: false,
+                airMode: false,
+                fontNames: ['Roboto', 'Calibri', 'Times New Roman', 'Arial'],
+                fontNamesIgnoreCheck: ['Roboto', 'Calibri'],
+                dialogsInBody: true,
+                dialogsFade: true,
+                disableDragAndDrop: false,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['para', ['style', 'ul', 'ol', 'paragraph']],
+                    ['fontsize', ['fontsize']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['height', ['height']],
+                    ['misc', ['undo', 'redo', 'print', 'help', 'fullscreen']]
+                ],
+                popover: {
+                    air: [
+                    ['color', ['color']],
+                    ['font', ['bold', 'underline', 'clear']]
+                    ]
+                },
             });
 
             /** dataTables */
