@@ -361,12 +361,13 @@
                     <div class="col-lg-3 col-md-12 col-sm-12">
                         <h3 class="footer-title">Newsletter</h3>
                         <p class="widget-desc white-color">Stay up to update with our latest news and products.</p>
-                            <form onsubmit="alert('Mail sending failed! Try again'); return;">
-                                <p>
-                                <input required type="email" name="email" placeholder="Your email address" required="">
-                                <input type="submit" value="Subscribe Now">
-                                </p>
-                            </form>
+                        <form id="newsletterfrm" action="">
+                            <p>
+                            <input required type="email" id="email" name="email" placeholder="Your email address" required="">
+                            <input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">
+                            <input type="submit" value="Subscribe Now">
+                            </p>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -468,6 +469,27 @@
 
 
   <script type="text/javascript">
+    $("#newsletterfrm").submit(function(event) {
+        event.preventDefault();
+        var $form = $(this),
+        url = "{{ route('user.mail.sub') }}"
+
+        var posting = $.post(url, {
+            email: $('#email').val(),
+            _token: $('#_token').val(),
+        });
+
+        posting.done(function(data) {
+            // $('#result').text('success');
+            alert("sss " + data);
+        });
+
+        posting.fail(function( error ) {
+            // $('#result').text('failed');
+            alert("Failed. Error: " + JSON.stringify(error));
+        });
+    });
+
     $(document).ready(function(){
         $('#tax-calendar').slick({
             dots: false,

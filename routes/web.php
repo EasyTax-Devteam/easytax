@@ -31,7 +31,7 @@ Route::get('/sms', [App\Http\Controllers\Web\WebsiteController::class, 'smstest'
 Route::get('/', [App\Http\Controllers\Web\WebsiteController::class, 'index'])->name('w.index');
 Route::get('/email', [App\Http\Controllers\Web\WebsiteController::class, 'email']);
 
-Route::post('/subscribe/user', [App\Http\Controllers\Web\WebsiteController::class, 'subscribe']);
+Route::post('/subscribe/user', [App\Http\Controllers\Web\WebsiteController::class, 'subscribe'])->name('user.mail.sub');
 
 Route::get('/about', [App\Http\Controllers\Web\WebsiteController::class, 'about'])->name('w.about');
 Route::get('/privacy-policy', [App\Http\Controllers\Web\WebsiteController::class, 'privacy'])->name('w.policy');

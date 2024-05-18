@@ -11,11 +11,14 @@ use Session;
 use Validator;
 use App\Http\Controllers\Web\MpesaController;
 use App\Http\Controllers\Sms\SmsController;
+use App\Mail\AdminNewsletter;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CustomerWelcome;
 use App\Mail\AdminPayment;
 use App\Mail\CustomerPayment;
 use App\Mail\AdminServiceRequest;
+use App\Mail\CustomerNewsletter;
+use App\Models\Newsletter;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Service;
@@ -493,9 +496,12 @@ class WebsiteController extends Controller
     {
         try {
             $email = $request->get('email');
+            Newsletter::create(['email' => $email]);
+            Mail::to(config('mail.from.admin'))->send(new AdminNewsletter(['email' => $email]));
+            Mail::to($email)->send(new CustomerNewsletter([]));
             return response($email . ' Subscribed!', 200, []);
         } catch (\Throwable $th) {
-            return response($th->getMessage(), 400, []);
+            return response(['ResultCode' => 400, 'ResultDesc' => $th->getMessage()]);
         }
     }
 
