@@ -49,7 +49,7 @@
 <div class="rs-services home-style2 gray-bg pt-100 pb-100 md-pt-70 md-pb-70" id="step-one">
     <div class="container">
         <div class="sec-title2 text-center md-left mb-20">
-            <div class="sub-text">Step 1 - choose a service</div>
+            <div class="text-secondary">Step 1 - choose a service</div>
             <h2 class="title">Services Offered</h2>
         </div>
     </div>

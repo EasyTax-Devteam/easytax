@@ -2,7 +2,7 @@
 
 @section('navigation')
 @if( \Auth::user()->root == 1)
-@include('inner.root_nav', ['active' => [0,0,0,0,0, 0,0,'active',0,0,0,0]])
+@include('inner.root_nav', ['active' => [0,0,0,0,0, 0,0,0,'active',0,0,0,0]])
 @else
 @include('inner.nav', ['active' => ['active', 0,0,0,0,0,0]])
 @endif

@@ -11,18 +11,25 @@ use Session;
 use Validator;
 use App\Http\Controllers\Web\MpesaController;
 use App\Http\Controllers\Sms\SmsController;
+use App\Mail\AdminNewsletter;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CustomerWelcome;
 use App\Mail\AdminPayment;
 use App\Mail\CustomerPayment;
 use App\Mail\AdminServiceRequest;
+use App\Mail\CustomerNewsletter;
+use App\Models\Newsletter;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Service;
 use App\Models\ServiceForm;
 use App\Models\ServiceGroup;
+use App\Models\TaxCalendar;
+use App\Models\TaxCalendarDayEvent;
 use Illuminate\Support\Facades\Hash;
 use Storage;
+
+use function PHPUnit\Framework\isNull;
 
 class WebsiteController extends Controller
 {
@@ -47,6 +54,89 @@ class WebsiteController extends Controller
         return view('web.terms');
     }
 
+    public function calendar($month = null)
+    {
+        if($month != null && !TaxCalendar::where('id', $month)->count() > 0){
+            abort(404, "entry not found on this service");
+        }
+
+        $calendar = $this->getCurrentMonth();
+        if($month != null ){
+            $calendar = TaxCalendar::find($month);
+        }
+        $dayIds = $this->getDayIds($calendar->days);
+        $events = TaxCalendarDayEvent::whereIn('tax_calendar_day_id', $dayIds)->orderBy('tax_calendar_day_id')->get();
+        $grouped_events = $this->groupEventsInThree($events);
+
+        return view('web.calendar',[
+            'calendar' => $calendar,
+            'month_name' => TaxCalendar::monthName($calendar->month),
+            'days' => $calendar->days,
+            'events' => $grouped_events,
+            'next' => intval($calendar->id) + 1,
+            'prev' => intval($calendar->id) - 1
+        ]);
+    }
+
+    protected function getNextPrev($current, $isNext = true){
+        if($isNext){
+            $next = $current + 1;
+            if(TaxCalendar::where('id', $next)->count() > 0){
+                return $next;
+            }else{
+                abort(404, "entry not found on this service");
+            }
+        }else{
+            $prev = $current - 1;
+            if(TaxCalendar::where('id', $prev)->count() > 0){
+                return $prev;
+            }else{
+                abort(404, "entry not found on this service");
+            }
+        }
+    }
+
+    protected function getCurrentMonth(){
+        $month = date("m");
+        $year = date("Y");
+        return TaxCalendar::where('year', $year)->where('month', $month)->first();
+    }
+
+    protected function getDayIds($days){
+        $return = [];
+        foreach( $days as $key => $day){
+            $return[$key] = $day->id;
+        }
+        return $return;
+    }
+
+    protected function groupEventsInThree($events){
+        $return = [];
+        if(!$events){
+            return [];
+        }
+        $iter = 0;
+        $numberOfGroups = $this->numberOfGroups(count($events));
+
+        while( $iter < $numberOfGroups){
+            $return[$iter]['group'] = 'group ' . $iter + 1;
+            if($iter == 0 ){
+                $return[$iter]['events'] = array_slice($events->toArray(), 0, 3);
+            }else{
+                $return[$iter]['events'] = array_slice($events->toArray(), $iter * 3, 3);
+            }
+            $iter ++;
+        }
+        return $return;
+    }
+
+    protected function numberOfGroups($count){
+        if(($count % 3) == 0){
+            return $count/3;
+        }
+        return intval($count/3) + 1;
+    }
+
     public function single_service($id)
     {
         $service = Service::find($id);
@@ -61,7 +151,6 @@ class WebsiteController extends Controller
         }
         $forms = $forms->toArray();
 
-        $service = Service::find($id);
         $group = ServiceGroup::find($service->type);
         return view('web.single_service', [
             'serviceData' => $service,
@@ -241,7 +330,7 @@ class WebsiteController extends Controller
             Session::put('bill_id', $billId);
             Session::put('last_service', $newCustomer['service']);
             if (!$existsUser) {
-                $mail_data = ['name' => $newCustomer['fname'], 'pin' => $newCustomer['pin'], 'password' => $newCustomer['raw_password']];
+                $mail_data = ['name' => $newCustomer['fname'], 'pin' => $newCustomer['phone'], 'password' => $newCustomer['raw_password']];
                 $customer_sms = 'Hi ' . $newCustomer['fname'] . ', your EasyTax account is set. Password is: ' . $newCustomer['raw_password'] . ' Visit ' . config('app.url') . 'users/access to view your orders';
                 $advanta = new SmsController();
                 $advanta->dispatchSms($newCustomer['phone'], $customer_sms);
@@ -402,6 +491,20 @@ class WebsiteController extends Controller
             return response(['ResultCode' => '0', 'ResultDesc' => 'Accepted Successfully']);
         }
     }
+
+    public function subscribe(Request $request)
+    {
+        try {
+            $email = $request->get('email');
+            Newsletter::create(['email' => $email]);
+            Mail::to(config('mail.from.admin'))->send(new AdminNewsletter(['email' => $email]));
+            Mail::to($email)->send(new CustomerNewsletter([]));
+            return response($email . ' Subscribed!', 200, []);
+        } catch (\Throwable $th) {
+            return response(['ResultCode' => 400, 'ResultDesc' => $th->getMessage()]);
+        }
+    }
+
     protected function existsPayment($mpesaCode)
     {
         return Payment::where('reference', $mpesaCode)->count() > 0;
@@ -431,15 +534,20 @@ class WebsiteController extends Controller
         }
         throw new \Exception("No form fields found for service ID " . $service . ". Please contact EasyTax for assistance");
     }
-    protected function buildValidator($forms)
+    protected function buildValidator($forms, $includeForms = false)
     {
         $validator = [];
-        foreach ($forms as $_form) :
-            if (trim(strtoupper($_form['validation_rule'])) != 'NONE') {
-                $validator[$_form['field_name']] = $_form['validation_rule'];
-            }
-        endforeach;
+
+        if($includeForms){
+            foreach ($forms as $_form) :
+                if (trim(strtoupper($_form['validation_rule'])) != 'NONE') {
+                    $validator[$_form['field_name']] = $_form['validation_rule'];
+                }
+            endforeach;
+        }
+
         /** constant fields validation */
+        
         $validator['phone'] = 'required|array';
         $validator['fname'] = 'required|string';
         $validator['lname'] = 'required|string';

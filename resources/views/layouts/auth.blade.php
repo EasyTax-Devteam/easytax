@@ -11,7 +11,7 @@
     
     <meta name="description" content="{{ config('app.name') }}">
     <meta name="author" content="softbucket.io">    
-    <link rel="shortcut icon" href="favicon.ico"> 
+    <!-- <link rel="shortcut icon" href="favicon.ico">  -->
     
     <!-- FontAwesome JS-->
     <script defer src="{{ asset('auth/assets/plugins/fontawesome/js/all.min.js') }}"></script>

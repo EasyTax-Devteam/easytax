@@ -87,6 +87,7 @@
                         @else
                         <input type="hidden" name="amount" value="{{ $serviceData->price }}" />
                         @endif
+
                         <div class="label-wrap"> <label class="form-label"><sup class="required">*</sup> Email Address </label></div>
                         <input required type="email" placeholder="jane.doe@example.com" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
                         @error('email')
@@ -123,60 +124,7 @@
                         </span>
                         @enderror
                     </div>
-                    @foreach( $requestForm as $_form )
-
-                    @php($required = $_form['field_is_required'])
-                    @php($field_is_multiple = $_form['field_is_multiple'])
-                    @php($field_label = \App\Models\User::formatViewable($_form['field_label']))
-                    @php( $field_name = $_form['field_name'] )
-                    @if($_form['field_type'] == 'text')
-                    <div class="mb-5 col-md-6">
-                        <div class="label-wrap"><label class="form-label">
-                                {!! $required == 1 ? '<sup class="required">*</sup>' : '' !!}
-                                {!! $field_label !!}</label></div>
-                        <input {{ $required == 1 ? "required" : "" }} type="{{ $_form['field_type'] }}" placeholder="{{ strtoupper($_form['field_placeholder']) }}" name="{{ $field_name }}" class="form-control @error($field_name) is-invalid @enderror" value="{{ old($field_name) }}">
-                        @error($field_name)
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    @elseif($_form['field_type'] == 'file')
-                    <div class="mb-5 col-md-6">
-                        <div class="label-wrap">
-                            <label class="form-label">
-                                {!! $required == 1 ? '<sup class="required">*</sup>' : '' !!}
-                                {!! $field_label !!}
-                            </label>
-                        </div>
-                        <input onchange="showUploadedFiles(this, '{{ $field_name }}')" {{ $required == 1 ? "required" : "" }} type="file" name="{{ $field_name }}{{ $field_is_multiple == 1 ? '[]' : '' }}" class="form-control" {{ $field_is_multiple == 1 ? "multiple" : "" }}>
-                        <div class="" id="{{ $field_name }}_show-area"></div>
-                        <small class="input-hint">Select up to {{ $_form['field_max_uploads'] }} file(s) of up to 2MB each.</small>
-                    </div>
-                    @elseif($_form['field_type'] == 'select')
-                    @php( $selectOptions = json_decode($_form['field_options_json'], true) )
-                    <div class="mb-5 col-md-6">
-                        <div class="label-wrap">
-                            <label class="form-label">
-                                {!! $required == 1 ? '<sup class="required">*</sup>' : '' !!}
-                                {!! $field_label !!}
-                            </label>
-                        </div>
-                        <select {{ $required == 1 ? "required" : "" }} name="{{ $field_name }}" id="{{ $field_name }}_id" class="form-control @error($field_name) is-invalid @enderror">
-                            <option value="">Choose one</option>
-                            @foreach($selectOptions as $value )
-                            <option value="{{ $value['value'] }}">{{ strtoupper($value['label']) }}</option>
-                            @endforeach
-                        </select>
-                        @error($field_name)
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    @else
-                    @endif
-                    @endforeach
+                    
                     <div class="mb-5 col-md-12">
                         <label class="form-label">Any other specific instructions you may have for us</label>
                         <textarea rows="4" class="form-control @error('additional_instructions') is-invalid @enderror" name="additional_instructions">{{ old('additional_instructions') }}</textarea>

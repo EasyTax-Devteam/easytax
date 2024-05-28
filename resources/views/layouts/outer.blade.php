@@ -43,6 +43,8 @@
     <link rel="stylesheet" href="{{ asset('intl-tel/css/intlTelInput.css') }}">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- slick slider -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>		
 
     <style>
         .iti__flag {
@@ -359,10 +361,13 @@
                     <div class="col-lg-3 col-md-12 col-sm-12">
                         <h3 class="footer-title">Newsletter</h3>
                         <p class="widget-desc white-color">Stay up to update with our latest news and products.</p>
-                        <p>
-                            <input type="email" name="EMAIL" placeholder="Your email address" required="">
+                        <form id="newsletterfrm" action="">
+                            <p>
+                            <input required type="email" id="email" name="email" placeholder="Your email address" required="">
+                            <input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">
                             <input type="submit" value="Subscribe Now">
-                        </p>
+                            </p>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -447,6 +452,8 @@
     <script src="{{ asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
     <!-- Nivo slider js -->
     <script src="{{ asset('assets/inc/custom-slider/js/jquery.nivo.slider.js') }}"></script>
+    <!-- slick slider -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <!-- contact form js -->
     <script src="{{ asset('assets/js/contact.form.js') }}"></script>
     <!-- main js -->
@@ -456,8 +463,68 @@
     <script src="{{ asset('intl-tel/js/intlTelInput.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+		
 
     @php( $utilScript = asset('intl-tel/js/utils.js') )
+
+
+  <script type="text/javascript">
+    $("#newsletterfrm").submit(function(event) {
+        event.preventDefault();
+        var $form = $(this),
+        url = "{{ route('user.mail.sub') }}"
+
+        var posting = $.post(url, {
+            email: $('#email').val(),
+            _token: $('#_token').val(),
+        });
+
+        posting.done(function(data) {
+            // $('#result').text('success');
+            alert(data);
+        });
+
+        posting.fail(function( error ) {
+            // $('#result').text('failed');
+            alert("Failed. Error: " + JSON.stringify(error));
+        });
+    });
+
+    $(document).ready(function(){
+        $('#tax-calendar').slick({
+            dots: false,
+            infinite: true,
+            speed: 300,
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            responsive: [
+                {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+                },
+                {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+                },
+                {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+                }
+            ]
+        });
+    });
+  </script>
     <script>
         var input = document.querySelector(".intl-phone");
         window.intlTelInput(input, {

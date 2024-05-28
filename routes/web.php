@@ -12,6 +12,7 @@ use App\Http\Controllers\User\SettingController;
 use App\Http\Controllers\User\CustomerController;
 use App\Http\Controllers\Auth\CustomPasswordController;
 use App\Http\Controllers\User\SliderController;
+use App\Http\Controllers\Calendar\CalendarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,9 +30,13 @@ Route::get('/sms', [App\Http\Controllers\Web\WebsiteController::class, 'smstest'
 
 Route::get('/', [App\Http\Controllers\Web\WebsiteController::class, 'index'])->name('w.index');
 Route::get('/email', [App\Http\Controllers\Web\WebsiteController::class, 'email']);
+
+Route::post('/subscribe/user', [App\Http\Controllers\Web\WebsiteController::class, 'subscribe'])->name('user.mail.sub');
+
 Route::get('/about', [App\Http\Controllers\Web\WebsiteController::class, 'about'])->name('w.about');
 Route::get('/privacy-policy', [App\Http\Controllers\Web\WebsiteController::class, 'privacy'])->name('w.policy');
 Route::get('/terms', [App\Http\Controllers\Web\WebsiteController::class, 'terms'])->name('w.terms');
+Route::get('/tax/calendar/{month?}', [App\Http\Controllers\Web\WebsiteController::class, 'calendar'])->name('w.tax.calendar');
 
 Route::group(['prefix' => 'categories'], function () {
     Route::get('/service/{id}', [WebsiteController::class, 'single_service'])->name('w.s.service');
@@ -64,6 +69,19 @@ Route::group(['prefix' => 'users'], function () {
 /** Admin */
 Route::group(['prefix' => 'easy/admin'], function () {
     Route::get('/', [UserController::class, 'index'])->name('e.tax.index');
+
+    Route::group(['prefix' => 'calendars'], function () {
+        Route::get('/', [CalendarController::class, 'calendars'])->name('e.tax.calendars.calendar');
+        Route::get('/calendars/{id}', [CalendarController::class, 'calendar'])->name('e.tax.calendars.show');
+        Route::get('/calendars/img/{id}', [CalendarController::class, 'calendar_img'])->name('e.tax.calendars.img.show');
+        Route::post('/calendars/img/{id}', [CalendarController::class, 'calendar_img_update'])->name('e.tax.calendars.img.add');
+
+        Route::get('/calendars/day/{id}', [CalendarController::class, 'calendar_day'])->name('e.tax.calendars.day.show');
+        Route::get('/calendars/day/del/{id}', [CalendarController::class, 'calendar_day_event_del'])->name('e.tax.calendars.day.evt.delete');
+        Route::post('/calendars/day/{id}', [CalendarController::class, 'calendar_day_add_event'])->name('e.tax.calendars.day.add');
+
+        Route::get('/calendars/delete/{id}', [CalendarController::class, 'delete'])->name('e.tax.calendars.delete');
+    });
 
     Route::group(['prefix' => 'sliders'], function () {
         Route::get('/', [SliderController::class, 'sliders'])->name('e.tax.sliders');
