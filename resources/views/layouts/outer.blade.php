@@ -481,7 +481,7 @@
 
         posting.done(function(data) {
             // $('#result').text('success');
-            alert("sss " + data);
+            alert(data);
         });
 
         posting.fail(function( error ) {
