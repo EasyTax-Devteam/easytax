@@ -70,7 +70,7 @@
     @endif
 @endforeach
 
-<div class="rs-services home-style2 gray-bg pt-50 pb-20 md-pt-70 md-pb-70" id="step-one">
+<div style="display: none;" class="rs-services home-style2 gray-bg pt-50 pb-20 md-pt-70 md-pb-70" id="step-one">
     <div class="container">
         <div class="sec-title2 text-center md-left mb-20">
             <h2 class="title">Tax Calendar</h2>
